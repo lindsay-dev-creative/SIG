@@ -1,0 +1,142 @@
+/* ============================================================
+   SIGNATURE SOCIETY · SUBSCRIBE PAGES · TYPOGRAPHY
+   ------------------------------------------------------------
+   A trimmed-down version of signaturesociety/css/tokens.css and
+   typography.css, sized for small social subscribe pages.
+
+   Load in <head>, before the page's own <style>:
+
+       <link rel="stylesheet" href="https://use.typekit.net/hqq5dii.css">
+       <link rel="stylesheet" href="css/subscribe-type.css">
+
+   Kepler Std comes from Adobe Fonts kit hqq5dii (same kit as the
+   Shopify store). PP Playground is self-hosted in assets/fonts.
+
+   Kepler is an optical-size family. Pick the cut by the size it's
+   set at:
+       Caption    up to 14px
+       Regular    15px – 18px
+       Subhead    19px – 32px
+       Display    32px and up
+
+   Classes set type only (family, size, weight, line height,
+   tracking, case). No colour, no margins.
+   ============================================================ */
+
+@font-face {
+  font-family: "PP Playground";
+  src: url("../assets/fonts/PPPlayground-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Families ---- */
+  --ff-script:  "PP Playground", "kepler-std-display", Georgia, serif;
+  --ff-display: "kepler-std-display", Georgia, "Times New Roman", serif;
+  --ff-subhead: "kepler-std-subhead", Georgia, "Times New Roman", serif;
+  --ff-text:    "kepler-std", Georgia, "Times New Roman", serif;
+  --ff-caption: "kepler-std-caption", Georgia, "Times New Roman", serif;
+
+  /* ---- Weights (kit ships Kepler Light 300 and Regular 400) ---- */
+  --fw-regular: 400;
+
+  /* ---- Sizes ---- */
+  --fs-script:  3.25rem;    /* 52px · name in PP Playground        */
+  --fs-tagline: 1.375rem;   /* 22px · Subhead, uppercase           */
+  --fs-body:    1rem;       /* 16px · Regular                      */
+  --fs-meta:    0.875rem;   /* 14px · Caption                      */
+  --fs-input:   1rem;       /* 16px · Regular (16px stops iOS zoom) */
+  --fs-button:  0.8125rem;  /* 13px · Caption, uppercase           */
+  --fs-fine:    0.75rem;    /* 12px · Caption                      */
+
+  /* ---- Line heights ---- */
+  --lh-tight:  1.15;
+  --lh-normal: 1.5;
+  --lh-loose:  1.7;
+
+  /* ---- Tracking · uppercase opens as it shrinks ---- */
+  --ls-tagline: 0.08em;
+  --ls-meta:    0.04em;
+  --ls-button:  0.18em;   /* matches the store's --heading-letter-spacing */
+}
+
+@media (max-width: 480px) {
+  :root {
+    --fs-script:  2.875rem;   /* 46px */
+    --fs-tagline: 1.1875rem;  /* 19px · still inside the Subhead band */
+  }
+}
+
+
+/* ---- Script · PP Playground. Names only: one line, never uppercase. ---- */
+.type-script {
+  font-family: var(--ff-script);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-script);
+  line-height: var(--lh-tight);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---- Tagline · Kepler Subhead, uppercase ---- */
+.type-tagline {
+  font-family: var(--ff-subhead);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-tagline);
+  line-height: 1.4;
+  letter-spacing: var(--ls-tagline);
+  text-transform: uppercase;
+}
+
+/* ---- Body · Kepler Std Regular ---- */
+.type-body {
+  font-family: var(--ff-text);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-loose);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---- Meta · Kepler Caption, e.g. "Founder of … | @handle" ---- */
+.type-meta {
+  font-family: var(--ff-caption);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-meta);
+  text-transform: none;
+}
+
+/* ---- Form input and placeholder · Kepler Std Regular ---- */
+.type-input,
+.type-input::placeholder {
+  font-family: var(--ff-text);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-input);
+  line-height: var(--lh-normal);
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+/* ---- Button and link-button · Kepler Caption, uppercase ---- */
+.type-button {
+  font-family: var(--ff-caption);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-button);
+  line-height: 1.2;
+  letter-spacing: var(--ls-button);
+  text-transform: uppercase;
+}
+
+/* ---- Fine print · Kepler Caption ---- */
+.type-fine {
+  font-family: var(--ff-caption);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-fine);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
