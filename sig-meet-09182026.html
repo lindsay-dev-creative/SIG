@@ -83,14 +83,6 @@
     margin:0;
     max-width:56ch;
   }
-  .hint{
-    font-family:var(--ff-inter);
-    font-size:.8125rem;
-    line-height:1.6;
-    letter-spacing:.007em;
-    color:var(--neutral-500);
-    margin:.5rem 0 0;
-  }
 
   /* Groups */
   .group{margin-bottom:3.25rem;}
@@ -121,10 +113,13 @@
 
   /* Toggle */
   details summary{
-    display:block;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.5rem .875rem;
     cursor:pointer;
     position:relative;
-    padding:1.125rem 5rem 1.125rem 0;
+    padding:1.125rem 2.75rem 1.125rem 0;
     font-family:var(--ff-text);
     font-size:1.0625rem;
     line-height:1.5;
@@ -138,20 +133,19 @@
   details summary:hover{color:var(--tan-300);}
   details summary:focus-visible{outline:2px solid var(--tan-300);outline-offset:4px;}
   details summary::after{
-    content:"+";
+    content:"";
     position:absolute;
-    right:.25rem;
+    right:.5rem;
     top:50%;
-    transform:translateY(-50%);
-    font-family:var(--ff-inter);
-    font-size:1.125rem;
-    font-weight:400;
-    line-height:1;
-    color:var(--tan-500);
-    transition:color var(--ease-ui);
+    width:.5rem;
+    height:.5rem;
+    border-right:1.5px solid var(--tan-500);
+    border-bottom:1.5px solid var(--tan-500);
+    transform:translateY(-70%) rotate(45deg);
+    transition:transform var(--ease-ui),border-color var(--ease-ui);
   }
-  details[open] summary::after{content:"\2212";}
-  details summary:hover::after{color:var(--tan-300);}
+  details[open] summary::after{transform:translateY(-30%) rotate(-135deg);}
+  details summary:hover::after{border-color:var(--tan-300);}
 
   /* Always-open rows: no toggle */
   details.static summary{cursor:default;}
@@ -168,72 +162,22 @@
   details summary a:hover{color:var(--tan-300);text-decoration-color:var(--tan-300);}
   details summary a:focus-visible{outline:2px solid var(--tan-300);outline-offset:3px;}
 
-  /* Add or change a row link */
-  .link-btn{
-    position:absolute;
-    right:2rem;
-    top:50%;
-    transform:translateY(-50%);
-    width:2rem;
-    height:2rem;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:none;
-    border:none;
+  /* Image thumbnails */
+  .thumbs{display:flex;flex-wrap:wrap;gap:.5rem;}
+  .thumb{
+    display:block;
+    width:56px;height:56px;
     padding:0;
-    color:var(--neutral-500);
-    cursor:pointer;
-    transition:color var(--ease-ui),opacity var(--ease-ui);
-  }
-  .link-btn svg{width:1rem;height:1rem;}
-  .link-btn:hover{color:var(--tan-300);}
-  .link-btn:focus-visible{outline:2px solid var(--tan-300);outline-offset:2px;}
-  @media (hover:hover){
-    .link-btn{opacity:0;}
-    li:hover .link-btn,li:focus-within .link-btn{opacity:1;}
-  }
-
-  .link-editor{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:.5rem;
-    margin:0 0 1.125rem;
-    font-family:var(--ff-inter);
-    font-size:.875rem;
-  }
-  .link-editor[hidden]{display:none;}
-  .link-editor input{
-    flex:1 1 16rem;
-    min-width:0;
     background:var(--navy-800);
     border:1px solid var(--tan-700);
-    color:var(--neutral-100);
-    font:inherit;
-    padding:.625rem .75rem;
-    outline:none;
-    caret-color:var(--tan-300);
+    cursor:zoom-in;
+    transition:border-color var(--ease-ui);
   }
-  .link-editor input::placeholder{color:var(--neutral-500);}
-  .link-editor input:focus{border-color:var(--tan-400);}
-  .link-editor button{
-    background:none;
-    border:1px solid var(--tan-700);
-    color:var(--tan-300);
-    font:inherit;
-    font-weight:500;
-    letter-spacing:.033em;
-    padding:.625rem .875rem;
-    cursor:pointer;
-    transition:background var(--ease-ui),color var(--ease-ui),border-color var(--ease-ui);
-  }
-  .link-editor button:hover{background:var(--tan-400);border-color:var(--tan-400);color:var(--navy-900);}
-  .link-editor button:focus-visible{outline:2px solid var(--tan-300);outline-offset:2px;}
-  .link-editor .link-remove{border-color:transparent;color:var(--neutral-500);}
-  .link-editor .link-remove:hover{background:none;border-color:transparent;color:var(--tan-300);}
+  .thumb img{display:block;width:100%;height:100%;object-fit:cover;}
+  .thumb:hover{border-color:var(--tan-400);}
+  .thumb:focus-visible{outline:2px solid var(--tan-300);outline-offset:2px;}
 
-  /* Editable description */
+  /* Description */
   .note{
     display:block;
     margin:0 0 1.375rem;
@@ -245,13 +189,221 @@
     letter-spacing:.007em;
     color:var(--neutral-500);
     max-width:66ch;
-    caret-color:var(--tan-300);
+    white-space:pre-line;
     outline:none;
     transition:color var(--ease-ui),border-color var(--ease-ui);
   }
-  .note:hover{border-left-color:var(--tan-700);}
-  .note:focus{color:var(--neutral-300);border-left-color:var(--tan-400);}
-  .note.is-edited{border-left-color:var(--tan-700);}
+
+  /* Sub sections inside a description */
+  .parts{margin:-.375rem 0 1.625rem;padding-left:.875rem;max-width:66ch;}
+  .part{margin:0 0 1.125rem;}
+  .part:last-child{margin-bottom:0;}
+  .part-title{
+    font-family:var(--ff-inter);
+    font-weight:500;
+    font-size:.875rem;
+    line-height:1.6;
+    letter-spacing:.02em;
+    color:var(--tan-300);
+    margin:0 0 .25rem;
+    outline:none;
+  }
+  .part-line{
+    font-family:var(--ff-inter);
+    font-size:.9375rem;
+    line-height:1.7;
+    letter-spacing:.007em;
+    color:var(--neutral-500);
+    margin:0;
+  }
+  .part-label{
+    font-size:.75rem;
+    font-weight:500;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--neutral-300);
+    margin-right:.5rem;
+  }
+  .part-text{outline:none;white-space:pre-line;}
+
+  /* Full size image view */
+  .lightbox{
+    position:fixed;inset:0;z-index:50;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:.65rem;
+    padding:3rem 1.5rem;
+    background:rgba(3,8,17,.94);
+    cursor:zoom-out;
+  }
+  .lightbox img{
+    max-width:100%;min-height:0;flex:0 1 auto;
+    object-fit:contain;
+    border:1px solid var(--tan-700);
+  }
+  .lightbox-name,
+  .lightbox-caption{
+    flex:none;
+    max-width:60ch;
+    font-family:var(--ff-inter);
+    text-align:center;
+    outline:none;
+    padding:.2rem .5rem;
+    border-bottom:1px solid transparent;
+    transition:border-color var(--ease-ui),color var(--ease-ui);
+  }
+  .lightbox-name{font-size:.875rem;line-height:1.5;letter-spacing:.02em;color:var(--tan-300);}
+  .lightbox-caption{font-size:.75rem;line-height:1.7;letter-spacing:.09em;text-transform:uppercase;color:var(--neutral-300);}
+  .lightbox-name:empty,.lightbox-caption:empty{display:none;}
+  .lightbox-remove{
+    flex:none;
+    margin-top:.5rem;
+    background:none;
+    border:none;
+    padding:.25rem;
+    font-family:var(--ff-inter);
+    font-size:.8125rem;
+    color:var(--neutral-500);
+    text-decoration:underline;
+    cursor:pointer;
+  }
+  .lightbox-remove:hover{color:var(--tan-300);}
+
+  /* ---- Edit mode (only after unlocking with a GitHub token) ---- */
+  body.editing details summary{padding-right:8.5rem;}
+  body.editing [contenteditable="true"]{cursor:text;}
+  body.editing .note,
+  body.editing .part-title,
+  body.editing .part-text,
+  body.editing .item-title{border-bottom:1px dashed transparent;}
+  body.editing .note{border-left-color:var(--navy-700);}
+  body.editing .note:hover,body.editing .note:focus{border-left-color:var(--tan-400);color:var(--neutral-300);}
+  body.editing .item-title:hover,body.editing .item-title:focus,
+  body.editing .part-title:hover,body.editing .part-title:focus,
+  body.editing .part-text:hover,body.editing .part-text:focus{border-bottom-color:var(--tan-700);}
+  body.editing .item-title{outline:none;caret-color:var(--tan-300);}
+  body.editing .note:empty::before{content:"Add a description";color:var(--tan-700);}
+  body.editing .lightbox-name:empty,
+  body.editing .lightbox-caption:empty{display:block;border-bottom-color:var(--tan-700);}
+  body.editing .lightbox-name:empty::before,
+  body.editing .lightbox-caption:empty::before{content:attr(data-placeholder);color:var(--tan-500);}
+  body.editing .lightbox-name,body.editing .lightbox-caption{cursor:text;}
+  body.editing .lightbox-name:hover,body.editing .lightbox-name:focus,
+  body.editing .lightbox-caption:hover,body.editing .lightbox-caption:focus{border-bottom-color:var(--tan-400);}
+
+  .row-tools{
+    position:absolute;
+    right:1.75rem;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    gap:.125rem;
+  }
+  details.static .row-tools{right:0;}
+  .tool{
+    width:2rem;
+    height:2rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:none;
+    border:none;
+    padding:0;
+    color:var(--neutral-500);
+    cursor:pointer;
+    transition:color var(--ease-ui);
+  }
+  .tool svg{width:1rem;height:1rem;}
+  .tool:hover{color:var(--tan-300);}
+  .tool.is-set{color:var(--tan-400);}
+  .tool:focus-visible{outline:2px solid var(--tan-300);outline-offset:2px;}
+
+  .link-editor{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.5rem;
+    margin:0 0 1.125rem;
+    font-family:var(--ff-inter);
+    font-size:.875rem;
+  }
+  .link-editor[hidden]{display:none;}
+  .link-editor input,
+  .unlock input{
+    flex:1 1 16rem;
+    min-width:0;
+    background:var(--navy-800);
+    border:1px solid var(--tan-700);
+    color:var(--neutral-100);
+    font:inherit;
+    padding:.625rem .75rem;
+    outline:none;
+    caret-color:var(--tan-300);
+  }
+  .link-editor input::placeholder,.unlock input::placeholder{color:var(--neutral-500);}
+  .link-editor input:focus,.unlock input:focus{border-color:var(--tan-400);}
+  .ghost{
+    background:none;
+    border:1px solid var(--tan-700);
+    color:var(--tan-300);
+    font:inherit;
+    font-family:var(--ff-inter);
+    font-size:.875rem;
+    font-weight:500;
+    letter-spacing:.033em;
+    padding:.625rem .875rem;
+    cursor:pointer;
+    transition:background var(--ease-ui),color var(--ease-ui),border-color var(--ease-ui);
+  }
+  .ghost:hover{background:var(--tan-400);border-color:var(--tan-400);color:var(--navy-900);}
+  .ghost:focus-visible{outline:2px solid var(--tan-300);outline-offset:2px;}
+  .ghost.quiet{border-color:transparent;color:var(--neutral-500);}
+  .ghost.quiet:hover{background:none;border-color:transparent;color:var(--tan-300);}
+
+  .add-item{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    margin-top:.5rem;
+    background:none;
+    border:none;
+    padding:.5rem 0;
+    font-family:var(--ff-inter);
+    font-size:.875rem;
+    color:var(--tan-500);
+    cursor:pointer;
+  }
+  .add-item svg{width:.875rem;height:.875rem;}
+  .add-item:hover{color:var(--tan-300);}
+
+  .edit-bar{
+    position:fixed;
+    left:1rem;
+    bottom:1rem;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    max-width:calc(100% - 2rem);
+    background:var(--navy-800);
+    border:1px solid var(--tan-700);
+    padding:.5rem .5rem .5rem .875rem;
+    font-family:var(--ff-inter);
+    font-size:.8125rem;
+    color:var(--neutral-300);
+  }
+  .edit-bar .status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .unlock{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+    margin:0 0 3rem;
+    padding:1.25rem;
+    border:1px solid var(--tan-700);
+    font-family:var(--ff-inter);
+    font-size:.875rem;
+    color:var(--neutral-300);
+  }
+  .unlock p{flex:1 1 100%;margin:0 0 .25rem;line-height:1.6;}
 
   /* Save confirmation */
   .toast{
@@ -270,31 +422,9 @@
     transform:translateY(.5rem);
     pointer-events:none;
     transition:opacity var(--ease-ui),transform var(--ease-ui);
-    z-index:10;
+    z-index:60;
   }
   .toast.is-visible{opacity:1;transform:translateY(0);}
-
-  footer{
-    margin-top:4rem;
-    padding-top:2rem;
-    border-top:1px solid var(--tan-700);
-    font-family:var(--ff-inter);
-    font-size:.8125rem;
-    line-height:1.6;
-    letter-spacing:.007em;
-    color:var(--neutral-500);
-  }
-  .reset{
-    background:none;
-    border:none;
-    padding:0;
-    margin-left:.5rem;
-    font:inherit;
-    color:var(--tan-500);
-    text-decoration:underline;
-    cursor:pointer;
-  }
-  .reset:hover{color:var(--tan-300);}
 </style>
 </head>
 <body>
@@ -309,99 +439,129 @@
     <p class="meta">Thursday, September 17</p>
   </header>
 
-  <section class="group">
-    <h2>August 31 publish</h2>
-    <ol>
-      <li><details class="static" open><summary>Wrong site published August 31</summary><span class="note" data-key="aug31-publish">I have been working with Claude to cut down build time and it pushed the site live without my approval. I have deleted all of those files and everything is functioning the way it should now.</span></details></li>
-      <li><details class="static" open><summary>Placeholder prices, cause unknown</summary><span class="note" data-key="aug31-prices">The push also carried placeholder prices of $100. I am still not sure how those got in. They are gone, and nothing live carries them now.</span></details></li>
-    </ol>
-  </section>
-
-  <section class="group">
-    <h2>Launch party</h2>
-    <ol>
-      <li><details><summary>Landing page final review</summary><span class="note" data-key="lp-landing-review">Last look at the page together, plus a live test of the form connection.</span></details></li>
-      <li><details><summary>Orders placed by September 25</summary><span class="note" data-key="lp-order-deadline">Items and print material have to be ordered by September 25 to arrive in time for the party.</span></details></li>
-    </ol>
-  </section>
-
-  <section class="group">
-    <h2>Launch party: Klaviyo</h2>
-    <ol>
-      <li><details><summary>Original Society list and tag</summary><span class="note" data-key="lp-list-tag">Setting up the Klaviyo list and tag for the Original Society, a lifetime discount of 10% on the total of every order they place.</span></details></li>
-      <li><details><summary>How the 10% applies at checkout</summary><span class="note" data-key="lp-discount-mechanics">The Klaviyo tag marks who qualifies, but something still has to apply the discount. We need to choose between an automatic discount on a Shopify customer segment and a code we issue to each member.</span></details></li>
-      <li><details><summary>Discount code to be determined</summary><span class="note" data-key="lp-discount-code">We still need to land on the code itself, what it is called and how members receive it, before the list goes live.</span></details></li>
-      <li><details><summary>Emailing the current list</summary><span class="note" data-key="lp-consent">These contacts have not signed up for emails, even though Angel knows all of them. The cleanest option with no risk is not to send at all. If we do send, we take on some chance of complaints. I do not expect that to happen, but I want it on the record.</span></details></li>
-      <li><details><summary>RSVP email template review</summary><span class="note" data-key="lp-rsvp-templates">Walking through the RSVP templates so I can take your feedback and finalize them.</span></details></li>
-    </ol>
-  </section>
-
-  <section class="group">
-    <h2>Social subscribe pages</h2>
-    <ol>
-      <li><details><summary><a href="https://manage.kmail-lists.com/subscriptions/subscribe?a=SWWpGb&amp;g=ViP9RD" target="_blank" rel="noopener">Angel's page awaiting approval</a></summary><span class="note" data-key="social-angel">Only Angel's subscribe page is built in Klaviyo so far. Once that one is approved I will build the Signature Society version.</span></details></li>
-    </ol>
-  </section>
-
-  <section class="group">
-    <h2>Coming soon page</h2>
-    <ol>
-      <li><details><summary>Materials section copy</summary><span class="note" data-key="cs-materials">I have added the Materials section and need to go over the copy with you.</span></details></li>
-      <li><details><summary>Form connected to New Subscribers</summary><span class="note" data-key="cs-form">The signup form on the page is wired to the New Subscribers segment in Klaviyo.</span></details></li>
-    </ol>
-  </section>
-
-  <section class="group">
-    <h2>Policy and FAQ copy</h2>
-    <ol>
-      <li><details><summary>Policy questions for Matt</summary><span class="note" data-key="policy-matt">I have a set of questions that need Matt's answers before the policy copy can be finalized.</span></details></li>
-      <li><details><summary>FAQ copy sign off</summary><span class="note" data-key="policy-faq">Is the FAQ copy good to go as written, or do you want changes?</span></details></li>
-    </ol>
-  </section>
-
-  <section class="group">
-    <h2>Transactional emails</h2>
-    <ol>
-      <li><details><summary>Who writes the order emails</summary><span class="note" data-key="tx-emails">Do you want me to write the copy for the transactional emails customers receive when they place an order?</span></details></li>
-    </ol>
-  </section>
-
-  <footer>
-    Signature Society · Launch Party, November 7, 2026
-    <button type="button" class="reset" id="resetBtn">Restore originals</button>
-  </footer>
+  <div id="unlock-slot"></div>
+  <main id="sections"></main>
 
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite">Saved</div>
 
+<!--
+  PAGE CONTENT
+  Everything in the list lives in this JSON block. Editing on the page
+  (open the page with #edit and unlock with a GitHub token) rewrites this
+  block and commits the file back to lindsay-dev-creative/SIG.
+-->
+<script type="application/json" id="page-data">
+{
+  "sections": [
+    {
+      "id": "aug31",
+      "title": "August 31 publish",
+      "items": [
+        {"id": "aug31-publish", "static": true, "title": "Wrong site published August 31", "link": "", "description": "I have been working with Claude to cut down build time and it pushed the site live without my approval. I have deleted all of those files and everything is functioning the way it should now.", "images": []},
+        {"id": "aug31-prices", "static": true, "title": "Placeholder prices, cause unknown", "link": "", "description": "The push also carried placeholder prices of $100. I am still not sure how those got in. They are gone, and nothing live carries them now.", "images": []}
+      ]
+    },
+    {
+      "id": "lp-klaviyo",
+      "title": "Launch party: Klaviyo",
+      "items": [
+        {"id": "lp-original-society", "title": "Original Society discount", "link": "", "description": "I have set up the Original Society list and the original tag in Klaviyo. Three things need to be settled before the list goes live.", "images": [], "parts": [
+          {"title": "Discount terms", "lines": [
+            {"label": "Problem", "text": "We have not confirmed the terms of the discount."},
+            {"label": "Solution", "text": "Confirm it applies for life and takes 10% off the total of every order."}
+          ]},
+          {"title": "Applying it at checkout", "lines": [
+            {"label": "Problem", "text": "The Klaviyo tag shows who qualifies, but it does not apply the discount in Shopify on its own."},
+            {"label": "Solution", "text": "Choose between an automatic Shopify discount for members, so they never enter a code, or a code we give each member."}
+          ]},
+          {"title": "The discount code", "lines": [
+            {"label": "Problem", "text": "If we use a code, it still needs a name and a way to reach members."},
+            {"label": "Solution", "text": "Pick the name together and email it to members before the list goes live."}
+          ]}
+        ]},
+        {"id": "lp-consent", "title": "Emailing the current list", "link": "", "description": "These contacts have not signed up for emails, even though Angel knows all of them. The cleanest option with no risk is not to send at all. If we do send, we take on some chance of complaints. I do not expect that to happen, but I want it on the record.", "images": []},
+        {"id": "lp-rsvp-templates", "title": "RSVP email template review", "link": "", "description": "Walking through the RSVP templates so I can take your feedback and finalize them.", "images": []}
+      ]
+    },
+    {
+      "id": "lp",
+      "title": "Launch party",
+      "items": [
+        {"id": "lp-landing-review", "title": "Landing page final review", "link": "", "description": "Last look at the page together, plus a live test of the form connection.", "images": []},
+        {"id": "lp-order-deadline", "title": "Orders placed by September 25", "link": "", "description": "Items and print material have to be ordered by September 25 to arrive in time for the party.", "images": []}
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Social subscribe pages",
+      "items": [
+        {"id": "social-angel", "title": "Angel's page awaiting approval", "link": "https://manage.kmail-lists.com/subscriptions/subscribe?a=SWWpGb&g=ViP9RD", "description": "Only Angel's subscribe page is built in Klaviyo so far. Once that one is approved I will build the Signature Society version.", "images": []}
+      ]
+    },
+    {
+      "id": "cs",
+      "title": "Coming soon page",
+      "items": [
+        {"id": "cs-materials", "title": "Materials section copy", "link": "", "description": "I have added the Materials section and need to go over the copy with you.", "images": []},
+        {"id": "cs-form", "title": "Form connected to New Subscribers", "link": "", "description": "The signup form on the page is wired to the New Subscribers segment in Klaviyo.", "images": []},
+        {"id": "cs-meta", "title": "Meta title and description review", "link": "", "description": "This is what shows in search results and link previews. Let me know if you want any changes.", "images": [], "parts": [
+          {"title": "Proposed title", "lines": [
+            {"label": "", "text": "Signature Society | Luxury Self Care, Sleepwear and Home"}
+          ]},
+          {"title": "Proposed description", "lines": [
+            {"label": "", "text": "Signature Society makes luxury grooming tools and sleepwear in genuine European marble, buffalo horn, wood and silk. Launching November 7, 2026."}
+          ]}
+        ]}
+      ]
+    },
+    {
+      "id": "policy",
+      "title": "Policy and FAQ copy",
+      "items": [
+        {"id": "policy-matt", "title": "Policy questions for Matt", "link": "", "description": "I have a set of questions that need Matt's answers before the policy copy can be finalized.", "images": []},
+        {"id": "policy-faq", "title": "FAQ copy sign off", "link": "", "description": "Is the FAQ copy good to go as written, or do you want changes?", "images": []}
+      ]
+    },
+    {
+      "id": "tx",
+      "title": "Transactional emails",
+      "items": [
+        {"id": "tx-emails", "title": "Who writes the order emails", "link": "", "description": "Do you want me to write the copy for the transactional emails customers receive when they place an order?", "images": []}
+      ]
+    }
+  ]
+}
+</script>
+
 <script>
 (function () {
   "use strict";
 
-  var STORE = "sig_meet_09172026_notes_v1";
-  var LINKS = "sig_meet_09172026_links_v1";
-  var notes = document.querySelectorAll(".note");
+  /* ---- Where saves go ------------------------------------------------ */
+  var REPO = "lindsay-dev-creative/SIG";
+  var BRANCH = "main";
+  var FILE = "sig-meet-09182026.html";
+  var IMAGE_DIR = "assets/meet-09182026/";
+  var TOKEN_KEY = "sig_meet_gh_token";
+  var MAX_EDGE = 1800;
+
+  var ICONS = {
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>',
+    image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+    trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+  };
+
+  var dataEl = document.getElementById("page-data");
+  var data = JSON.parse(dataEl.textContent);
+  var root = document.getElementById("sections");
   var toast = document.getElementById("toast");
   var toastTimer = null;
-  var originals = {};
-
-  function read(name) {
-    try {
-      return JSON.parse(localStorage.getItem(name || STORE) || "{}") || {};
-    } catch (e) {
-      return {};
-    }
-  }
-
-  function write(data, name) {
-    try {
-      localStorage.setItem(name || STORE, JSON.stringify(data));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+  var editing = false;
+  var openIds = {};
+  var previews = {};   // image path -> local data URL, until Pages publishes the file
 
   function flash(message) {
     toast.textContent = message;
@@ -409,80 +569,330 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () {
       toast.classList.remove("is-visible");
-    }, 1600);
+    }, 1800);
   }
 
-  var saved = read();
-
-  Array.prototype.forEach.call(notes, function (note) {
-    var key = note.getAttribute("data-key");
-    originals[key] = note.textContent;
-
-    if (Object.prototype.hasOwnProperty.call(saved, key)) {
-      note.textContent = saved[key];
-      if (saved[key] !== originals[key]) {
-        note.classList.add("is-edited");
-      }
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) {
+      node.className = className;
     }
+    if (text != null) {
+      node.textContent = text;
+    }
+    return node;
+  }
 
-    note.setAttribute("contenteditable", "true");
-    note.setAttribute("spellcheck", "true");
-    note.setAttribute("role", "textbox");
-    note.setAttribute("aria-multiline", "true");
-    note.setAttribute("aria-label", "Description, editable");
+  function tool(icon, label) {
+    var b = el("button", "tool");
+    b.type = "button";
+    b.innerHTML = ICONS[icon];
+    b.title = label;
+    b.setAttribute("aria-label", label);
+    return b;
+  }
 
-    // Opening the toggle should not drop the caret into the text.
-    note.addEventListener("click", function (event) {
+  // Make a node editable in edit mode, calling onDone with its text on blur.
+  function editable(node, onDone, singleLine) {
+    if (!editing) {
+      return;
+    }
+    node.setAttribute("contenteditable", "true");
+    node.setAttribute("spellcheck", "true");
+    node.addEventListener("click", function (event) {
       event.stopPropagation();
-    });
-
-    note.addEventListener("focus", function () {
-      note.setAttribute("data-entry", note.textContent);
-    });
-
-    note.addEventListener("blur", function () {
-      var current = note.textContent;
-      if (current === note.getAttribute("data-entry")) {
-        return;
-      }
-      var store = read();
-      if (current === originals[key]) {
-        delete store[key];
-        note.classList.remove("is-edited");
-      } else {
-        store[key] = current;
-        note.classList.add("is-edited");
-      }
-      flash(write(store) ? "Saved" : "Could not save in this browser");
-    });
-
-    // Escape backs out of an edit without saving it.
-    note.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        note.textContent = note.getAttribute("data-entry") || originals[key];
-        note.blur();
+      if (node.closest("summary")) {
+        event.preventDefault();
       }
     });
-
+    node.addEventListener("keydown", function (event) {
+      event.stopPropagation();
+      if (event.key === "Enter" && singleLine) {
+        event.preventDefault();
+        node.blur();
+      }
+    });
+    node.addEventListener("keyup", function (event) {
+      if (node.closest("summary")) {
+        event.preventDefault();
+      }
+    });
     // Keep pasted text plain so the brand styling holds.
-    note.addEventListener("paste", function (event) {
+    node.addEventListener("paste", function (event) {
       event.preventDefault();
       var text = (event.clipboardData || window.clipboardData).getData("text");
-      document.execCommand("insertText", false, text);
+      document.execCommand("insertText", false, singleLine ? text.replace(/\s+/g, " ") : text);
     });
-  });
+    node.addEventListener("focus", function () {
+      node.setAttribute("data-entry", node.innerText);
+    });
+    node.addEventListener("blur", function () {
+      var text = node.innerText.replace(/\n{3,}/g, "\n\n").trim();
+      if (text === node.getAttribute("data-entry").trim()) {
+        return;
+      }
+      onDone(text);
+      save();
+    });
+  }
 
-  // Static rows stay open: clicking the title does not collapse them.
-  Array.prototype.forEach.call(document.querySelectorAll("details.static > summary"), function (summary) {
-    summary.setAttribute("tabindex", "-1");
-    summary.addEventListener("click", function (event) {
+  /* ---- Rendering ----------------------------------------------------- */
+
+  function render() {
+    Array.prototype.forEach.call(root.querySelectorAll("details[data-id]"), function (d) {
+      if (d.open) {
+        openIds[d.getAttribute("data-id")] = true;
+      } else {
+        delete openIds[d.getAttribute("data-id")];
+      }
+    });
+    root.textContent = "";
+    data.sections.forEach(function (section) {
+      var group = el("section", "group");
+      group.appendChild(el("h2", null, section.title));
+      var list = el("ol");
+      section.items.forEach(function (item) {
+        list.appendChild(renderItem(section, item));
+      });
+      group.appendChild(list);
+      if (editing) {
+        var add = el("button", "add-item");
+        add.type = "button";
+        add.innerHTML = ICONS.plus + "<span>Add item</span>";
+        add.addEventListener("click", function () {
+          var item = {id: "item-" + Date.now().toString(36), title: "New item", link: "", description: "", images: []};
+          section.items.push(item);
+          openIds[item.id] = true;
+          render();
+          save();
+          var title = root.querySelector('details[data-id="' + item.id + '"] .item-title');
+          if (title) {
+            title.focus();
+            document.execCommand("selectAll", false, null);
+          }
+        });
+        group.appendChild(add);
+      }
+      root.appendChild(group);
+    });
+  }
+
+  function renderItem(section, item) {
+    var li = el("li");
+    var details = el("details");
+    details.setAttribute("data-id", item.id);
+    if (item.static) {
+      details.className = "static";
+      details.open = true;
+    } else if (openIds[item.id]) {
+      details.open = true;
+    }
+
+    var summary = el("summary");
+    if (item.static) {
+      summary.setAttribute("tabindex", "-1");
+      summary.addEventListener("click", function (event) {
+        event.preventDefault();
+      });
+    }
+
+    var title;
+    if (item.link && !editing) {
+      title = el("a", "item-title", item.title);
+      title.href = item.link;
+      title.target = "_blank";
+      title.rel = "noopener";
+      // A link inside a summary should open the link, not toggle the row.
+      title.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+    } else {
+      title = el("span", "item-title", item.title);
+    }
+    editable(title, function (text) {
+      item.title = text || "Untitled";
+    }, true);
+    summary.appendChild(title);
+
+    if (item.images && item.images.length) {
+      var thumbs = el("span", "thumbs");
+      item.images.forEach(function (image) {
+        var b = el("button", "thumb");
+        b.type = "button";
+        b.setAttribute("aria-label", image.name ? "View image: " + image.name : "View image");
+        var img = el("img");
+        img.src = previews[image.src] || image.src;
+        img.alt = image.name || "";
+        img.loading = "lazy";
+        b.appendChild(img);
+        b.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          openLightbox(item, image);
+        });
+        thumbs.appendChild(b);
+      });
+      summary.appendChild(thumbs);
+    }
+
+    details.appendChild(summary);
+    li.appendChild(details);
+
+    var note = el("span", "note", item.description || "");
+    editable(note, function (text) {
+      item.description = text;
+    }, false);
+    if (item.description || editing) {
+      details.appendChild(note);
+    }
+
+    if (item.parts && item.parts.length) {
+      var parts = el("div", "parts");
+      item.parts.forEach(function (part) {
+        var box = el("div", "part");
+        var h = el("h3", "part-title", part.title);
+        editable(h, function (text) {
+          part.title = text;
+        }, true);
+        box.appendChild(h);
+        part.lines.forEach(function (line) {
+          var p = el("p", "part-line");
+          if (line.label) {
+            p.appendChild(el("span", "part-label", line.label));
+          }
+          var t = el("span", "part-text", line.text);
+          editable(t, function (text) {
+            line.text = text;
+          }, false);
+          p.appendChild(t);
+          box.appendChild(p);
+        });
+        parts.appendChild(box);
+      });
+      details.appendChild(parts);
+    }
+
+    if (editing) {
+      addTools(section, item, li, summary);
+    }
+    return li;
+  }
+
+  function addTools(section, item, li, summary) {
+    var tools = el("span", "row-tools");
+    var linkBtn = tool("link", item.link ? "Change link" : "Add link");
+    var imageBtn = tool("image", "Add image");
+    var deleteBtn = tool("trash", "Delete item");
+    if (item.link) {
+      linkBtn.classList.add("is-set");
+    }
+    tools.appendChild(linkBtn);
+    tools.appendChild(imageBtn);
+    tools.appendChild(deleteBtn);
+    summary.appendChild(tools);
+
+    function guard(event) {
       event.preventDefault();
-    });
-  });
+      event.stopPropagation();
+    }
 
-  // Row links: each title can carry a link, added from the page.
-  var LINK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>';
-  var rows = [];
+    // Link editor sits under the row.
+    var editor = el("div", "link-editor");
+    editor.hidden = true;
+    var input = el("input");
+    input.type = "url";
+    input.placeholder = "Paste a link";
+    input.setAttribute("aria-label", "Link for this row");
+    var saveBtn = el("button", "ghost", "Save");
+    saveBtn.type = "button";
+    var removeBtn = el("button", "ghost quiet", "Remove link");
+    removeBtn.type = "button";
+    editor.appendChild(input);
+    editor.appendChild(saveBtn);
+    editor.appendChild(removeBtn);
+    li.appendChild(editor);
+
+    linkBtn.addEventListener("click", function (event) {
+      guard(event);
+      editor.hidden = !editor.hidden;
+      if (!editor.hidden) {
+        input.value = item.link || "";
+        input.focus();
+        input.select();
+      }
+    });
+
+    function setLink(url) {
+      item.link = url;
+      render();
+      save();
+    }
+
+    saveBtn.addEventListener("click", function () {
+      var url = cleanUrl(input.value);
+      if (url === null) {
+        flash("Use a web or email link");
+        input.focus();
+        return;
+      }
+      setLink(url);
+    });
+    removeBtn.addEventListener("click", function () {
+      setLink("");
+    });
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        saveBtn.click();
+      } else if (event.key === "Escape") {
+        editor.hidden = true;
+        linkBtn.focus();
+      }
+    });
+
+    // Image upload: pick a file, shrink it, commit it, then name it.
+    var picker = el("input");
+    picker.type = "file";
+    picker.accept = "image/*";
+    picker.hidden = true;
+    li.appendChild(picker);
+    imageBtn.addEventListener("click", function (event) {
+      guard(event);
+      picker.click();
+    });
+    picker.addEventListener("change", function () {
+      var file = picker.files && picker.files[0];
+      picker.value = "";
+      if (!file) {
+        return;
+      }
+      flash("Uploading image");
+      shrink(file).then(function (dataUrl) {
+        var path = IMAGE_DIR + item.id + "-" + Date.now().toString(36) + ".jpg";
+        return putFile(path, dataUrl.split(",")[1], "Add image to " + item.title).then(function () {
+          previews[path] = dataUrl;
+          var image = {src: path, name: "", description: ""};
+          item.images = item.images || [];
+          item.images.push(image);
+          render();
+          save();
+          openLightbox(item, image);
+        });
+      }).catch(function (error) {
+        flash(error.message || "Image upload failed");
+      });
+    });
+
+    deleteBtn.addEventListener("click", function (event) {
+      guard(event);
+      if (!window.confirm('Delete "' + item.title + '"?')) {
+        return;
+      }
+      section.items.splice(section.items.indexOf(item), 1);
+      render();
+      save();
+    });
+  }
 
   // Accept bare domains, but only http, https and mailto links.
   function cleanUrl(value) {
@@ -496,129 +906,302 @@
     return /^(https?:|mailto:)/i.test(url) ? url : null;
   }
 
-  var savedLinks = read(LINKS);
+  function openLightbox(item, image) {
+    var overlay = el("div", "lightbox");
+    var img = el("img");
+    img.src = previews[image.src] || image.src;
+    img.alt = image.name || "";
+    overlay.appendChild(img);
 
-  Array.prototype.forEach.call(document.querySelectorAll("li"), function (li) {
-    var summary = li.querySelector("summary");
-    var note = li.querySelector(".note");
-    if (!summary || !note) {
-      return;
-    }
-    var key = note.getAttribute("data-key");
-    var anchor = summary.querySelector("a");
-    var row = {
-      key: key,
-      summary: summary,
-      label: summary.textContent.trim(),
-      original: anchor ? anchor.getAttribute("href") : ""
-    };
-
-    var button = document.createElement("button");
-    button.type = "button";
-    button.className = "link-btn";
-    button.innerHTML = LINK_ICON;
-
-    var editor = document.createElement("div");
-    editor.className = "link-editor";
-    editor.hidden = true;
-    editor.innerHTML = '<input type="url" placeholder="Paste a link" aria-label="Link for this row"><button type="button" class="link-save">Save</button><button type="button" class="link-remove">Remove link</button>';
-    li.appendChild(editor);
-    var input = editor.querySelector("input");
-
-    row.render = function (url) {
-      row.url = url;
-      summary.textContent = "";
-      if (url) {
-        var a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.textContent = row.label;
-        // A link inside a summary should open the link, not toggle the row.
-        a.addEventListener("click", function (event) {
-          event.stopPropagation();
-        });
-        summary.appendChild(a);
-      } else {
-        summary.appendChild(document.createTextNode(row.label));
+    function field(className, placeholder, key) {
+      var node = el("div", className, image[key] || "");
+      node.setAttribute("data-placeholder", placeholder);
+      if (editing) {
+        editable(node, function (text) {
+          image[key] = text;
+          render();
+        }, true);
       }
-      button.setAttribute("aria-label", url ? "Change link" : "Add link");
-      button.title = url ? "Change link" : "Add link";
-      summary.appendChild(button);
-    };
+      overlay.appendChild(node);
+    }
+    field("lightbox-name", "Add an image name", "name");
+    field("lightbox-caption", "Add a description", "description");
+
+    if (editing) {
+      var remove = el("button", "lightbox-remove", "Remove image");
+      remove.type = "button";
+      remove.addEventListener("click", function (event) {
+        event.stopPropagation();
+        item.images.splice(item.images.indexOf(image), 1);
+        close();
+        render();
+        save();
+      });
+      overlay.appendChild(remove);
+    }
 
     function close() {
-      editor.hidden = true;
-      button.focus();
+      if (document.activeElement && overlay.contains(document.activeElement)) {
+        document.activeElement.blur();
+      }
+      overlay.remove();
+      document.removeEventListener("keydown", onKey);
     }
+    function onKey(event) {
+      if (event.key === "Escape") {
+        close();
+      }
+    }
+    overlay.addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(overlay);
+  }
 
-    function save(url) {
-      var store = read(LINKS);
-      if (url === row.original) {
-        delete store[key];
+  function shrink(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onerror = function () {
+        reject(new Error("Could not read that file"));
+      };
+      reader.onload = function () {
+        var img = new Image();
+        img.onerror = function () {
+          reject(new Error("That file is not an image"));
+        };
+        img.onload = function () {
+          var scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+          var canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(img.width * scale));
+          canvas.height = Math.max(1, Math.round(img.height * scale));
+          var ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#030811";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg", 0.86));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ---- GitHub saving ------------------------------------------------- */
+
+  var token = "";
+  var fileSha = "";
+  var fileText = "";
+  var saveTimer = null;
+  var saving = false;
+  var pending = false;
+  var retried = false;
+  var statusEl = null;
+
+  function readToken() {
+    try {
+      return localStorage.getItem(TOKEN_KEY) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function storeToken(value) {
+    try {
+      if (value) {
+        localStorage.setItem(TOKEN_KEY, value);
       } else {
-        store[key] = url;
+        localStorage.removeItem(TOKEN_KEY);
       }
-      row.render(url);
-      editor.hidden = true;
-      flash(write(store, LINKS) ? (url ? "Link saved" : "Link removed") : "Could not save in this browser");
-      button.focus();
+    } catch (e) {}
+  }
+
+  function api(path, options) {
+    options = options || {};
+    options.headers = {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer " + token
+    };
+    if (options.body) {
+      options.headers["Content-Type"] = "application/json";
     }
+    return fetch("https://api.github.com/repos/" + REPO + path, options).then(function (res) {
+      return res.json().catch(function () {
+        return {};
+      }).then(function (body) {
+        if (!res.ok) {
+          var error = new Error(body.message || ("GitHub error " + res.status));
+          error.status = res.status;
+          throw error;
+        }
+        return body;
+      });
+    });
+  }
 
-    // Clicking the icon opens the editor without toggling the row.
-    button.addEventListener("click", function (event) {
+  function toBase64(text) {
+    var bytes = new TextEncoder().encode(text);
+    var binary = "";
+    for (var i = 0; i < bytes.length; i += 0x8000) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    }
+    return btoa(binary);
+  }
+
+  function fromBase64(b64) {
+    var binary = atob(b64.replace(/\s/g, ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new TextDecoder().decode(bytes);
+  }
+
+  function putFile(path, base64, message, sha) {
+    var body = {message: message, content: base64, branch: BRANCH};
+    if (sha) {
+      body.sha = sha;
+    }
+    return api("/contents/" + path, {method: "PUT", body: JSON.stringify(body)});
+  }
+
+  var DATA_BLOCK = new RegExp('(<script type="application/json" id="page-' + 'data">)([\\s\\S]*?)(</' + 'script>)');
+
+  function pullLatest() {
+    return api("/contents/" + FILE + "?ref=" + BRANCH).then(function (body) {
+      fileSha = body.sha;
+      fileText = fromBase64(body.content);
+      var match = fileText.match(DATA_BLOCK);
+      if (!match) {
+        throw new Error("Could not find the content block in the saved file");
+      }
+      return JSON.parse(match[2]);
+    });
+  }
+
+  function save() {
+    if (!editing) {
+      return;
+    }
+    setStatus("Unsaved changes");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flush, 900);
+  }
+
+  function flush() {
+    if (saving) {
+      pending = true;
+      return;
+    }
+    saving = true;
+    pending = false;
+    setStatus("Saving");
+    var json = "\n" + JSON.stringify(data, null, 2).replace(/</g, "\\u003c") + "\n";
+    var next = fileText.replace(DATA_BLOCK, function (all, open, body, close) {
+      return open + json + close;
+    });
+
+    putFile(FILE, toBase64(next), "Update meeting page content", fileSha).then(function (body) {
+      fileSha = body.content.sha;
+      fileText = next;
+      retried = false;
+      setStatus("Saved. Live in about a minute");
+      flash("Saved");
+    }).catch(function (error) {
+      if ((error.status === 409 || error.status === 422) && !retried) {
+        retried = true;
+        // The file changed on GitHub since it was loaded. Take its latest
+        // version as the base and write this page's content over it.
+        return pullLatest().then(function () {
+          pending = true;
+        });
+      }
+      setStatus("Not saved: " + error.message);
+      flash("Could not save");
+    }).then(function () {
+      saving = false;
+      if (pending) {
+        flush();
+      }
+    });
+  }
+
+  function setStatus(text) {
+    if (statusEl) {
+      statusEl.textContent = text;
+    }
+  }
+
+  function showEditBar() {
+    var bar = el("div", "edit-bar");
+    statusEl = el("span", "status", "Editing. Changes save to GitHub");
+    var done = el("button", "ghost quiet", "Lock");
+    done.type = "button";
+    done.addEventListener("click", function () {
+      storeToken("");
+      window.location.hash = "";
+      window.location.reload();
+    });
+    bar.appendChild(statusEl);
+    bar.appendChild(done);
+    document.body.appendChild(bar);
+  }
+
+  function showUnlock(message) {
+    var slot = document.getElementById("unlock-slot");
+    slot.textContent = "";
+    var form = el("form", "unlock");
+    form.appendChild(el("p", null, message || "Paste your GitHub token to edit this page. It stays in this browser only."));
+    var input = el("input");
+    input.type = "password";
+    input.placeholder = "GitHub token";
+    input.autocomplete = "off";
+    input.setAttribute("aria-label", "GitHub token");
+    var go = el("button", "ghost", "Unlock");
+    go.type = "submit";
+    form.appendChild(input);
+    form.appendChild(go);
+    form.addEventListener("submit", function (event) {
       event.preventDefault();
-      event.stopPropagation();
-      if (!editor.hidden) {
-        close();
-        return;
+      unlock(input.value.trim());
+    });
+    slot.appendChild(form);
+    input.focus();
+  }
+
+  function unlock(value) {
+    if (!value) {
+      return;
+    }
+    token = value;
+    api("").then(function (repo) {
+      if (!repo.permissions || !repo.permissions.push) {
+        throw new Error("That token cannot write to the SIG repo.");
       }
-      input.value = row.url || "";
-      editor.hidden = false;
-      input.focus();
-      input.select();
+      return pullLatest();
+    }).then(function (latest) {
+      storeToken(value);
+      data = latest;
+      editing = true;
+      document.body.classList.add("editing");
+      document.getElementById("unlock-slot").textContent = "";
+      showEditBar();
+      render();
+    }).catch(function (error) {
+      token = "";
+      storeToken("");
+      showUnlock(error.message === "Bad credentials" ? "That token was not accepted. Try again." : error.message);
     });
+  }
 
-    editor.querySelector(".link-save").addEventListener("click", function () {
-      var url = cleanUrl(input.value);
-      if (url === null) {
-        flash("Use a web or email link");
-        input.focus();
-        return;
-      }
-      save(url);
-    });
+  render();
 
-    editor.querySelector(".link-remove").addEventListener("click", function () {
-      save("");
-    });
-
-    input.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        editor.querySelector(".link-save").click();
-      } else if (event.key === "Escape") {
-        close();
-      }
-    });
-
-    row.render(Object.prototype.hasOwnProperty.call(savedLinks, key) ? savedLinks[key] : row.original);
-    rows.push(row);
-  });
-
-  document.getElementById("resetBtn").addEventListener("click", function () {
-    Array.prototype.forEach.call(notes, function (note) {
-      var key = note.getAttribute("data-key");
-      note.textContent = originals[key];
-      note.classList.remove("is-edited");
-    });
-    write({});
-    rows.forEach(function (row) {
-      row.render(row.original);
-    });
-    write({}, LINKS);
-    flash("Restored");
-  });
+  if (window.location.hash === "#edit") {
+    var saved = readToken();
+    if (saved) {
+      unlock(saved);
+    } else {
+      showUnlock();
+    }
+  }
 })();
 </script>
 </body>
