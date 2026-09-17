@@ -397,7 +397,9 @@
     font-size:.8125rem;
     color:var(--neutral-300);
   }
-  .edit-bar .status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .edit-bar .status{line-height:1.5;}
+  .edit-bar.is-error{border-color:#B4474B;color:var(--neutral-50);}
+  .edit-bar .ghost:disabled{opacity:.5;cursor:default;}
   .unlock{
     display:flex;
     flex-wrap:wrap;
@@ -600,6 +602,24 @@
     return b;
   }
 
+  // Read typed text back with its line breaks, ignoring CSS text-transform.
+  function textOf(node) {
+    var out = "";
+    Array.prototype.forEach.call(node.childNodes, function (child) {
+      if (child.nodeType === 3) {
+        out += child.data;
+      } else if (child.nodeName === "BR") {
+        out += "\n";
+      } else if (child.nodeType === 1) {
+        if ((child.nodeName === "DIV" || child.nodeName === "P") && out && out.slice(-1) !== "\n") {
+          out += "\n";
+        }
+        out += textOf(child);
+      }
+    });
+    return out;
+  }
+
   // Make a node editable in edit mode, calling onDone with its text on blur.
   function editable(node, onDone, singleLine) {
     if (!editing) {
@@ -632,11 +652,11 @@
       document.execCommand("insertText", false, singleLine ? text.replace(/\s+/g, " ") : text);
     });
     node.addEventListener("focus", function () {
-      node.setAttribute("data-entry", node.innerText);
+      node.setAttribute("data-entry", textOf(node));
     });
     node.addEventListener("blur", function () {
-      var text = node.innerText.replace(/\n{3,}/g, "\n\n").trim();
-      if (text === node.getAttribute("data-entry").trim()) {
+      var text = textOf(node).replace(/\n{3,}/g, "\n\n").trim();
+      if (text === (node.getAttribute("data-entry") || "").trim()) {
         return;
       }
       onDone(text);
@@ -652,10 +672,10 @@
 
   function renderHeader() {
     if (data.pageTitle == null) {
-      data.pageTitle = pageTitle.innerText.trim();
+      data.pageTitle = textOf(pageTitle).trim();
     }
     if (data.dateLine == null) {
-      data.dateLine = dateLine.innerText.trim();
+      data.dateLine = textOf(dateLine).trim();
     }
     pageTitle.textContent = data.pageTitle;
     dateLine.textContent = data.dateLine;
@@ -1027,7 +1047,11 @@
   var saving = false;
   var pending = false;
   var retried = false;
+  var dirty = false;
+  var lastError = null;
+  var waiters = [];
   var statusEl = null;
+  var barEl = null;
 
   function readToken() {
     try {
@@ -1114,9 +1138,10 @@
     if (!editing) {
       return;
     }
+    dirty = true;
     setStatus("Unsaved changes");
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(flush, 900);
+    saveTimer = setTimeout(flush, 500);
   }
 
   function flush() {
@@ -1124,8 +1149,10 @@
       pending = true;
       return;
     }
+    clearTimeout(saveTimer);
     saving = true;
     pending = false;
+    dirty = false;
     setStatus("Saving");
     var json = "\n" + JSON.stringify(data, null, 2).replace(/</g, "\\u003c") + "\n";
     var next = fileText.replace(DATA_BLOCK, function (all, open, body, close) {
@@ -1136,6 +1163,7 @@
       fileSha = body.content.sha;
       fileText = next;
       retried = false;
+      lastError = null;
       setStatus("Saved. Live in about a minute");
       flash("Saved");
     }).catch(function (error) {
@@ -1147,31 +1175,100 @@
           pending = true;
         });
       }
-      setStatus("Not saved: " + error.message);
-      flash("Could not save");
+      lastError = error;
+      dirty = true;
+      setStatus("Not saved. " + explain(error), true);
+      flash("Not saved");
     }).then(function () {
       saving = false;
       if (pending) {
         flush();
+        return;
       }
+      var done = waiters;
+      waiters = [];
+      done.forEach(function (resolve) {
+        resolve();
+      });
     });
   }
 
-  function setStatus(text) {
+  function explain(error) {
+    if (error.status === 401) {
+      return "GitHub rejected the token. Lock, then unlock with a new one.";
+    }
+    if (error.status === 403 || error.status === 404) {
+      return "This token can open the repo but not save to it. It needs Contents set to Read and write for the SIG repo.";
+    }
+    return error.message || "Check your connection and try again.";
+  }
+
+  // Finish any edit in progress and resolve once nothing is left to save.
+  function whenSaved() {
+    if (document.activeElement && document.activeElement.isContentEditable) {
+      document.activeElement.blur();
+    }
+    if (saving || pending) {
+      return new Promise(function (resolve) {
+        waiters.push(resolve);
+      });
+    }
+    if (dirty) {
+      return new Promise(function (resolve) {
+        waiters.push(resolve);
+        flush();
+      });
+    }
+    return Promise.resolve();
+  }
+
+  function setStatus(text, isError) {
     if (statusEl) {
       statusEl.textContent = text;
+      barEl.classList.toggle("is-error", !!isError);
     }
   }
 
+  window.addEventListener("beforeunload", function (event) {
+    if (editing && (dirty || saving || pending)) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
+  });
+
   function showEditBar() {
     var bar = el("div", "edit-bar");
+    barEl = bar;
     statusEl = el("span", "status", "Editing. Changes save to GitHub");
     var done = el("button", "ghost quiet", "Lock");
     done.type = "button";
+    // Lock waits for every save to land, then leaves edit mode in place so
+    // the page keeps showing the edits while GitHub Pages republishes.
+    done.addEventListener("mousedown", function (event) {
+      event.preventDefault();
+    });
     done.addEventListener("click", function () {
-      storeToken("");
-      window.location.hash = "";
-      window.location.reload();
+      done.disabled = true;
+      setStatus("Saving before locking");
+      whenSaved().then(function () {
+        if (lastError) {
+          done.disabled = false;
+          setStatus("Not saved, so the page is still unlocked. " + explain(lastError), true);
+          return;
+        }
+        storeToken("");
+        token = "";
+        editing = false;
+        document.body.classList.remove("editing");
+        [pageTitle, dateLine].forEach(function (node) {
+          node.removeAttribute("contenteditable");
+        });
+        bar.remove();
+        statusEl = null;
+        history.replaceState(null, "", window.location.pathname);
+        render();
+        flash("Locked. Edits are live in a few minutes");
+      });
     });
     bar.appendChild(statusEl);
     bar.appendChild(done);
@@ -1227,6 +1324,12 @@
   }
 
   render();
+
+  window.addEventListener("hashchange", function () {
+    if (window.location.hash === "#edit" && !editing) {
+      window.location.reload();
+    }
+  });
 
   if (window.location.hash === "#edit") {
     var saved = readToken();
