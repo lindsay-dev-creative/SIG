@@ -200,6 +200,17 @@
   .parts.no-note{margin-top:0;}
   .part{margin:0 0 1.125rem;}
   .part:last-child{margin-bottom:0;}
+
+  /* Several sub sections: each sits in its own box */
+  .parts.is-boxed .part{
+    margin:0 0 .75rem;
+    padding:1rem 1.125rem 1.125rem;
+    background:var(--navy-800);
+    border:1px solid var(--navy-700);
+  }
+  .parts.is-boxed .part:last-child{margin-bottom:0;}
+  .parts.is-boxed .part-title{margin-bottom:.5rem;}
+  @media (min-width:700px){ .parts.is-boxed .part{padding:1.25rem 1.5rem 1.375rem;} }
   .part-title{
     font-family:var(--ff-inter);
     font-weight:500;
@@ -487,7 +498,7 @@
         {
           "id": "aug31-publish",
           "static": true,
-          "title": "Wrong site published August 31",
+          "title": "Wrong Site Published August 31",
           "link": "",
           "description": "I have been working with Claude to cut down build time and it pushed the site live without my approval. I have deleted all of those files and everything is functioning the way it should now. The push also had placeholder prices of $100, I am still not sure where the placeholders came from. After going through the backend, it looks like the placeholder pricing is removed.",
           "images": []
@@ -500,7 +511,7 @@
       "items": [
         {
           "id": "lp-original-society",
-          "title": "Original Society discount",
+          "title": "Original Society Discount",
           "link": "",
           "description": "I have set up the \"Original Society\" list and the \"original\" tag in Klaviyo. Here is where each piece stands before the list goes live.",
           "images": [],
@@ -570,7 +581,7 @@
         },
         {
           "id": "lp-rsvp-templates",
-          "title": "RSVP email template review",
+          "title": "RSVP Email Template Review",
           "link": "https://www.klaviyo.com/email-template-editor/TL3Tbr",
           "description": "Walking through the RSVP templates so I can take your feedback and finalize them.",
           "images": []
@@ -583,14 +594,14 @@
       "items": [
         {
           "id": "lp-landing-review",
-          "title": "Landing page final review",
+          "title": "Landing Page Final Review",
           "link": "",
           "description": "Last look at the page together, plus a live test of the form connection.",
           "images": []
         },
         {
           "id": "lp-order-deadline",
-          "title": "Orders placed by September 25",
+          "title": "Orders Placed by September 25",
           "link": "",
           "description": "Items and print material have to be ordered by September 25 to arrive in time for the party.",
           "images": []
@@ -603,7 +614,7 @@
       "items": [
         {
           "id": "social-angel",
-          "title": "Angel's page awaiting approval",
+          "title": "Angel's Page Awaiting Approval",
           "link": "https://manage.kmail-lists.com/subscriptions/subscribe?a=SWWpGb&g=ViP9RD",
           "description": "Only Angel's subscribe page is built in Klaviyo so far. Once that one is approved I will build the Signature Society version.",
           "images": []
@@ -616,21 +627,21 @@
       "items": [
         {
           "id": "cs-materials",
-          "title": "Materials section copy",
+          "title": "Materials Section Copy",
           "link": "",
           "description": "I have added the Materials section and need to go over the copy with you.",
           "images": []
         },
         {
           "id": "cs-form",
-          "title": "Form connected to New Subscribers",
+          "title": "Form Connected to New Subscribers",
           "link": "",
           "description": "The signup form on the page is wired to the New Subscribers segment in Klaviyo.",
           "images": []
         },
         {
           "id": "cs-meta",
-          "title": "Meta title and description review",
+          "title": "Meta Title and Description Review",
           "link": "",
           "description": "This is what shows in search results and link previews. Let me know if you want any changes.",
           "images": [],
@@ -663,14 +674,14 @@
       "items": [
         {
           "id": "policy-matt",
-          "title": "Policy questions for Matt",
+          "title": "Policy Questions for Matt",
           "link": "",
           "description": "I have a set of questions that need Matt's answers before the policy copy can be finalized.",
           "images": []
         },
         {
           "id": "policy-faq",
-          "title": "FAQ copy sign off",
+          "title": "FAQ Copy Sign Off",
           "link": "",
           "description": "Is the FAQ copy good to go as written, or do you want changes?",
           "images": []
@@ -683,7 +694,7 @@
       "items": [
         {
           "id": "tx-emails",
-          "title": "Who writes the order emails",
+          "title": "Who Writes the Order Emails",
           "link": "",
           "description": "Do you want me to write the copy for the transactional emails customers receive when they place an order?",
           "images": []
@@ -950,6 +961,9 @@
 
     if (item.parts && item.parts.length) {
       var parts = el("div", "parts");
+      if (item.parts.length > 1) {
+        parts.classList.add("is-boxed");
+      }
       if (!item.description && !editing) {
         parts.classList.add("no-note");
       }
