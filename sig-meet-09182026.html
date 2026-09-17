@@ -251,6 +251,33 @@
     .part-lines .part-label{display:block;margin:0 0 .25rem;}
   }
 
+  /* Small text links under a section heading that open images */
+  .section-images{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.25rem 1.25rem;
+    margin:-.25rem 0 .5rem;
+    font-family:var(--ff-inter);
+    font-size:.8125rem;
+    line-height:1.6;
+    letter-spacing:.02em;
+  }
+  .image-link{
+    background:none;
+    border:none;
+    padding:0;
+    font:inherit;
+    color:var(--tan-400);
+    text-decoration:underline;
+    text-decoration-color:var(--tan-700);
+    text-underline-offset:.25em;
+    cursor:zoom-in;
+    transition:color var(--ease-ui),text-decoration-color var(--ease-ui);
+  }
+  .image-link:hover{color:var(--tan-300);text-decoration-color:var(--tan-300);}
+  .image-link:focus-visible{outline:2px solid var(--tan-300);outline-offset:3px;}
+
   /* Full size image view */
   .lightbox{
     position:fixed;inset:0;z-index:50;
@@ -279,6 +306,12 @@
   .lightbox-name{font-size:.875rem;line-height:1.5;letter-spacing:.02em;color:var(--tan-300);}
   .lightbox-caption{font-size:.75rem;line-height:1.7;letter-spacing:.09em;text-transform:uppercase;color:var(--neutral-300);}
   .lightbox-name:empty,.lightbox-caption:empty{display:none;}
+  /* Tall images, like full page screenshots, scroll at a readable width */
+  .lightbox.is-tall{justify-content:flex-start;overflow-y:auto;padding:1.5rem 1rem 3rem;}
+  .lightbox.is-tall img{flex:none;width:min(100%,1280px);max-width:none;height:auto;}
+  .lightbox.is-tall .lightbox-name,
+  .lightbox.is-tall .lightbox-caption,
+  .lightbox.is-tall .lightbox-remove{order:-1;}
   .lightbox-remove{
     flex:none;
     margin-top:.5rem;
@@ -668,6 +701,23 @@
       ]
     },
     {
+      "id": "homepage-review",
+      "title": "Homepage review",
+      "items": [],
+      "images": [
+        {
+          "src": "assets/meet-09182026/homepage-review-default.jpg",
+          "name": "default",
+          "description": ""
+        },
+        {
+          "src": "assets/meet-09182026/homepage-review-hover.jpg",
+          "name": "hover",
+          "description": ""
+        }
+      ]
+    },
+    {
       "id": "policy",
       "title": "Policy and FAQ copy",
       "items": [
@@ -714,7 +764,7 @@
   var FILE = "sig-meet-09182026.html";
   var IMAGE_DIR = "assets/meet-09182026/";
   var TOKEN_KEY = "sig_meet_gh_token";
-  var MAX_EDGE = 1800;
+  var MAX_EDGE = 1920;
 
   var ICONS = {
     link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>',
@@ -862,6 +912,28 @@
     data.sections.forEach(function (section) {
       var group = el("section", "group");
       group.appendChild(el("h2", null, section.title));
+      if ((section.images && section.images.length) || editing) {
+        var links = el("div", "section-images");
+        (section.images || []).forEach(function (image) {
+          var b = el("button", "image-link", image.name || "image");
+          b.type = "button";
+          b.addEventListener("click", function () {
+            openLightbox(section, image);
+          });
+          links.appendChild(b);
+        });
+        if (editing) {
+          var addImage = el("button", "add-item");
+          addImage.type = "button";
+          addImage.style.margin = "0";
+          addImage.innerHTML = ICONS.plus + "<span>Add image</span>";
+          addImage.addEventListener("click", function () {
+            uploadImage(section, section.id, section.title);
+          });
+          links.appendChild(addImage);
+        }
+        group.appendChild(links);
+      }
       var list = el("ol");
       section.items.forEach(function (item) {
         list.appendChild(renderItem(section, item));
@@ -1073,37 +1145,9 @@
       }
     });
 
-    // Image upload: pick a file, shrink it, commit it, then name it.
-    var picker = el("input");
-    picker.type = "file";
-    picker.accept = "image/*";
-    picker.hidden = true;
-    li.appendChild(picker);
     imageBtn.addEventListener("click", function (event) {
       guard(event);
-      picker.click();
-    });
-    picker.addEventListener("change", function () {
-      var file = picker.files && picker.files[0];
-      picker.value = "";
-      if (!file) {
-        return;
-      }
-      flash("Uploading image");
-      shrink(file).then(function (dataUrl) {
-        var path = IMAGE_DIR + item.id + "-" + Date.now().toString(36) + ".jpg";
-        return putFile(path, dataUrl.split(",")[1], "Add image to " + item.title).then(function () {
-          previews[path] = dataUrl;
-          var image = {src: path, name: "", description: ""};
-          item.images = item.images || [];
-          item.images.push(image);
-          render();
-          save();
-          openLightbox(item, image);
-        });
-      }).catch(function (error) {
-        flash(error.message || "Image upload failed");
-      });
+      uploadImage(item, item.id, item.title);
     });
 
     deleteBtn.addEventListener("click", function (event) {
@@ -1129,11 +1173,43 @@
     return /^(https?:|mailto:)/i.test(url) ? url : null;
   }
 
+  // Pick a file, shrink it, commit it to the repo, then open it for naming.
+  function uploadImage(owner, prefix, label) {
+    var picker = el("input");
+    picker.type = "file";
+    picker.accept = "image/*";
+    picker.addEventListener("change", function () {
+      var file = picker.files && picker.files[0];
+      if (!file) {
+        return;
+      }
+      flash("Uploading image");
+      shrink(file).then(function (dataUrl) {
+        var path = IMAGE_DIR + prefix + "-" + Date.now().toString(36) + ".jpg";
+        return putFile(path, dataUrl.split(",")[1], "Add image to " + label).then(function () {
+          previews[path] = dataUrl;
+          var image = {src: path, name: "", description: ""};
+          owner.images = owner.images || [];
+          owner.images.push(image);
+          render();
+          save();
+          openLightbox(owner, image);
+        });
+      }).catch(function (error) {
+        flash(error.message || "Image upload failed");
+      });
+    });
+    picker.click();
+  }
+
   function openLightbox(item, image) {
     var overlay = el("div", "lightbox");
     var img = el("img");
     img.src = previews[image.src] || image.src;
     img.alt = image.name || "";
+    img.addEventListener("load", function () {
+      overlay.classList.toggle("is-tall", img.naturalHeight > img.naturalWidth * 1.6);
+    });
     overlay.appendChild(img);
 
     function field(className, placeholder, key) {
@@ -1192,7 +1268,9 @@
           reject(new Error("That file is not an image"));
         };
         img.onload = function () {
-          var scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+          // Cap the width, and only cap the height far out, so full page
+          // screenshots keep a readable width.
+          var scale = Math.min(1, MAX_EDGE / img.width, 8000 / img.height);
           var canvas = document.createElement("canvas");
           canvas.width = Math.max(1, Math.round(img.width * scale));
           canvas.height = Math.max(1, Math.round(img.height * scale));
