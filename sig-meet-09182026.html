@@ -197,6 +197,7 @@
 
   /* Sub sections inside a description */
   .parts{margin:-.375rem 0 1.625rem;padding-left:.875rem;max-width:66ch;}
+  .parts.no-note{margin-top:0;}
   .part{margin:0 0 1.125rem;}
   .part:last-child{margin-bottom:0;}
   .part-title{
@@ -288,6 +289,7 @@
   body.editing .part-text:hover,body.editing .part-text:focus{border-bottom-color:var(--tan-700);}
   body.editing .item-title{outline:none;caret-color:var(--tan-300);}
   body.editing .note:empty::before{content:"Add a description";color:var(--tan-700);}
+  body.editing .part-title:empty::before{content:"Add a heading";color:var(--tan-700);}
   body.editing .lightbox-name:empty,
   body.editing .lightbox-caption:empty{display:block;border-bottom-color:var(--tan-700);}
   body.editing .lightbox-name:empty::before,
@@ -535,8 +537,23 @@
           "id": "lp-consent",
           "title": "RSVP reminder email",
           "link": "",
-          "description": "These party invitees have not signed up for emails yet. The cleanest option with no risk is not to send at all. If we do send, we take on some chance of complaints. I do not expect that to happen, but I want it on the record.",
-          "images": []
+          "description": "",
+          "images": [],
+          "parts": [
+            {
+              "title": "",
+              "lines": [
+                {
+                  "label": "Problem",
+                  "text": "These party invitees have not signed up for emails yet."
+                },
+                {
+                  "label": "Solution",
+                  "text": "The cleanest option with no risk is not to send at all. If we do send, we take on some chance of complaints. I do not expect that to happen, but I want it on the record."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "lp-rsvp-templates",
@@ -920,13 +937,19 @@
 
     if (item.parts && item.parts.length) {
       var parts = el("div", "parts");
+      if (!item.description && !editing) {
+        parts.classList.add("no-note");
+      }
       item.parts.forEach(function (part) {
         var box = el("div", "part");
-        var h = el("h3", "part-title", part.title);
-        editable(h, function (text) {
-          part.title = text;
-        }, true);
-        box.appendChild(h);
+        // A sub section can go without a heading on the public page.
+        if (part.title || editing) {
+          var h = el("h3", "part-title", part.title);
+          editable(h, function (text) {
+            part.title = text;
+          }, true);
+          box.appendChild(h);
+        }
         part.lines.forEach(function (line) {
           var p = el("p", "part-line");
           if (line.label) {
