@@ -71,6 +71,7 @@
     color:var(--neutral-50);
     margin:0 0 1.25rem;
   }
+  h1{white-space:pre-line;}
   @media (min-width:700px){ h1{font-size:3.75rem;line-height:1.22;} }
   @media (min-width:1000px){ h1{font-size:4.5625rem;line-height:1.2;} }
 
@@ -274,7 +275,12 @@
   body.editing .note,
   body.editing .part-title,
   body.editing .part-text,
-  body.editing .item-title{border-bottom:1px dashed transparent;}
+  body.editing .item-title,
+  body.editing #page-title,
+  body.editing #date-line{border-bottom:1px dashed transparent;}
+  body.editing #page-title,body.editing #date-line{outline:none;caret-color:var(--tan-300);}
+  body.editing #page-title:hover,body.editing #page-title:focus,
+  body.editing #date-line:hover,body.editing #date-line:focus{border-bottom-color:var(--tan-700);}
   body.editing .note{border-left-color:var(--navy-700);}
   body.editing .note:hover,body.editing .note:focus{border-left-color:var(--tan-400);color:var(--neutral-300);}
   body.editing .item-title:hover,body.editing .item-title:focus,
@@ -435,8 +441,8 @@
   </div>
 
   <header>
-    <h1>Website and<br>Launch Party</h1>
-    <p class="meta">Thursday, September 17</p>
+    <h1 id="page-title">Website and<br>Launch Party</h1>
+    <p class="meta" id="date-line">Thursday, September 17</p>
   </header>
 
   <div id="unlock-slot"></div>
@@ -454,6 +460,8 @@
 -->
 <script type="application/json" id="page-data">
 {
+  "pageTitle": "Website and\nLaunch Party",
+  "dateLine": "Thursday, September 17",
   "sections": [
     {
       "id": "aug31",
@@ -638,7 +646,32 @@
 
   /* ---- Rendering ----------------------------------------------------- */
 
+  // Page title and date line sit outside the list, so they are wired once.
+  var pageTitle = document.getElementById("page-title");
+  var dateLine = document.getElementById("date-line");
+
+  function renderHeader() {
+    if (data.pageTitle == null) {
+      data.pageTitle = pageTitle.innerText.trim();
+    }
+    if (data.dateLine == null) {
+      data.dateLine = dateLine.innerText.trim();
+    }
+    pageTitle.textContent = data.pageTitle;
+    dateLine.textContent = data.dateLine;
+  }
+
+  function wireHeader() {
+    editable(pageTitle, function (text) {
+      data.pageTitle = text || "Untitled";
+    }, false);
+    editable(dateLine, function (text) {
+      data.dateLine = text;
+    }, true);
+  }
+
   function render() {
+    renderHeader();
     Array.prototype.forEach.call(root.querySelectorAll("details[data-id]"), function (d) {
       if (d.open) {
         openIds[d.getAttribute("data-id")] = true;
@@ -1184,6 +1217,7 @@
       document.body.classList.add("editing");
       document.getElementById("unlock-slot").textContent = "";
       showEditBar();
+      wireHeader();
       render();
     }).catch(function (error) {
       token = "";
