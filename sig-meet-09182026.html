@@ -228,6 +228,19 @@
   }
   .part-text{outline:none;white-space:pre-line;}
 
+  /* Desktop: problem and solution side by side, top aligned */
+  @media (min-width:1000px){
+    .parts{max-width:none;padding-right:2.75rem;}
+    .part-lines{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:minmax(0,1fr);
+      align-items:start;
+      column-gap:2.5rem;
+    }
+    .part-lines .part-label{display:block;margin:0 0 .25rem;}
+  }
+
   /* Full size image view */
   .lightbox{
     position:fixed;inset:0;z-index:50;
@@ -950,6 +963,7 @@
           }, true);
           box.appendChild(h);
         }
+        var lines = el("div", "part-lines");
         part.lines.forEach(function (line) {
           var p = el("p", "part-line");
           if (line.label) {
@@ -960,8 +974,9 @@
             line.text = text;
           }, false);
           p.appendChild(t);
-          box.appendChild(p);
+          lines.appendChild(p);
         });
+        box.appendChild(lines);
         parts.appendChild(box);
       });
       details.appendChild(parts);
