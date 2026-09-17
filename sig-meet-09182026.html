@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signature Society · Website and Launch Party · Sept 17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/hqq5dii.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+<style>
+  :root{
+    --navy-900:#030811; --navy-800:#08142B; --navy-700:#192D54;
+    --tan-700:#6C5D3B; --tan-500:#A69263; --tan-400:#C3AD79; --tan-300:#E0C891;
+    --neutral-50:#FFFEF9; --neutral-100:#F0EFE7; --neutral-300:#C8C5BA; --neutral-500:#9F9C8F;
+    --btn-bg:#3F1214; --btn-text:#F6F5F4;
+
+    --ff-display:"kepler-std-display",Georgia,"Times New Roman",serif;
+    --ff-subhead:"kepler-std-subhead",Georgia,"Times New Roman",serif;
+    --ff-text:"kepler-std",Georgia,"Times New Roman",serif;
+    --ff-inter:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+    --ease-ui:160ms ease;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;}
+  body{
+    margin:0;
+    background:var(--navy-900);
+    color:var(--neutral-100);
+    font-family:var(--ff-text);
+    font-size:1.0625rem;
+    line-height:1.5;
+    letter-spacing:.005em;
+  }
+
+  .wrap{max-width:64rem;margin:0 auto;padding:2rem 1.25rem 5rem;}
+  @media (min-width:700px){ .wrap{padding:3rem 2rem 6rem;} }
+  @media (min-width:1000px){ .wrap{padding:3.5rem 3rem 7rem;} }
+
+  /* Meeting Files button */
+  .files-bar{display:flex;justify-content:flex-start;margin-bottom:3rem;}
+  .btn{
+    display:inline-block;
+    background:var(--btn-bg);
+    color:var(--btn-text);
+    text-decoration:none;
+    font-family:"kepler-std-medium-caption",Georgia,serif;
+    font-weight:500;
+    font-size:.9375rem;
+    line-height:1;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:1.15rem 2.25rem;
+    border:1px solid var(--btn-bg);
+    transition:background var(--ease-ui),border-color var(--ease-ui),color var(--ease-ui);
+  }
+  .btn:hover{background:var(--tan-400);border-color:var(--tan-400);color:var(--navy-900);}
+  .btn:focus-visible{outline:2px solid var(--tan-300);outline-offset:3px;}
+
+  /* Header */
+  header{margin-bottom:3.25rem;}
+  h1{
+    font-family:var(--ff-display);
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:2.556rem;
+    line-height:1.26;
+    color:var(--neutral-50);
+    margin:0 0 1.25rem;
+  }
+  @media (min-width:700px){ h1{font-size:3.75rem;line-height:1.22;} }
+  @media (min-width:1000px){ h1{font-size:4.5625rem;line-height:1.2;} }
+
+  .meta{
+    font-family:var(--ff-inter);
+    font-size:.9375rem;
+    line-height:1.7;
+    letter-spacing:.007em;
+    color:var(--neutral-300);
+    margin:0;
+    max-width:56ch;
+  }
+  .hint{
+    font-family:var(--ff-inter);
+    font-size:.8125rem;
+    line-height:1.6;
+    letter-spacing:.007em;
+    color:var(--neutral-500);
+    margin:.5rem 0 0;
+  }
+
+  /* Groups */
+  .group{margin-bottom:3.25rem;}
+  .group h2{
+    font-family:var(--ff-subhead);
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-size:1.419rem;
+    line-height:1.45;
+    color:var(--tan-300);
+    margin:0 0 .75rem;
+    display:flex;
+    align-items:baseline;
+    gap:1rem;
+  }
+  @media (min-width:700px){ .group h2{font-size:1.5rem;} }
+  .group h2::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--tan-700);
+  }
+
+  ol{list-style:none;margin:0;padding:0;}
+  li{border-bottom:1px solid var(--navy-700);}
+  li:last-child{border-bottom:none;}
+
+  /* Toggle */
+  details summary{
+    display:block;
+    cursor:pointer;
+    position:relative;
+    padding:1.125rem 2.75rem 1.125rem 0;
+    font-family:var(--ff-text);
+    font-size:1.0625rem;
+    line-height:1.5;
+    color:var(--neutral-100);
+    transition:color var(--ease-ui);
+    list-style:none;
+  }
+  @media (min-width:700px){ details summary{font-size:1.25rem;} }
+  details summary::-webkit-details-marker{display:none;}
+  details summary::marker{content:"";}
+  details summary:hover{color:var(--tan-300);}
+  details summary:focus-visible{outline:2px solid var(--tan-300);outline-offset:4px;}
+  details summary::after{
+    content:"+";
+    position:absolute;
+    right:.25rem;
+    top:50%;
+    transform:translateY(-50%);
+    font-family:var(--ff-inter);
+    font-size:1.125rem;
+    font-weight:400;
+    line-height:1;
+    color:var(--tan-500);
+    transition:color var(--ease-ui);
+  }
+  details[open] summary::after{content:"\2212";}
+  details summary:hover::after{color:var(--tan-300);}
+
+  details summary a{
+    color:inherit;
+    text-decoration:underline;
+    text-decoration-color:var(--tan-500);
+    text-underline-offset:.2em;
+    transition:color var(--ease-ui),text-decoration-color var(--ease-ui);
+  }
+  details summary a:hover{color:var(--tan-300);text-decoration-color:var(--tan-300);}
+  details summary a:focus-visible{outline:2px solid var(--tan-300);outline-offset:3px;}
+
+  /* Editable description */
+  .note{
+    display:block;
+    margin:0 0 1.375rem;
+    padding:.125rem 2.75rem .125rem .875rem;
+    border-left:1px solid transparent;
+    font-family:var(--ff-inter);
+    font-size:.9375rem;
+    line-height:1.7;
+    letter-spacing:.007em;
+    color:var(--neutral-500);
+    max-width:66ch;
+    caret-color:var(--tan-300);
+    outline:none;
+    transition:color var(--ease-ui),border-color var(--ease-ui);
+  }
+  .note:hover{border-left-color:var(--tan-700);}
+  .note:focus{color:var(--neutral-300);border-left-color:var(--tan-400);}
+  .note.is-edited{border-left-color:var(--tan-700);}
+
+  /* Save confirmation */
+  .toast{
+    position:fixed;
+    right:1.5rem;
+    bottom:1.5rem;
+    background:var(--navy-800);
+    border:1px solid var(--tan-700);
+    color:var(--tan-300);
+    font-family:var(--ff-inter);
+    font-size:.75rem;
+    font-weight:500;
+    letter-spacing:.033em;
+    padding:.75rem 1.25rem;
+    opacity:0;
+    transform:translateY(.5rem);
+    pointer-events:none;
+    transition:opacity var(--ease-ui),transform var(--ease-ui);
+    z-index:10;
+  }
+  .toast.is-visible{opacity:1;transform:translateY(0);}
+
+  footer{
+    margin-top:4rem;
+    padding-top:2rem;
+    border-top:1px solid var(--tan-700);
+    font-family:var(--ff-inter);
+    font-size:.8125rem;
+    line-height:1.6;
+    letter-spacing:.007em;
+    color:var(--neutral-500);
+  }
+  .reset{
+    background:none;
+    border:none;
+    padding:0;
+    margin-left:.5rem;
+    font:inherit;
+    color:var(--tan-500);
+    text-decoration:underline;
+    cursor:pointer;
+  }
+  .reset:hover{color:var(--tan-300);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="files-bar">
+    <a class="btn" href="https://docs.google.com/document/d/1SX32Tb6AYjSx0Tu6NqIQoRL638Psf1Bx2KzSPGmHw-8/edit?usp=sharing">Meeting Files</a>
+  </div>
+
+  <header>
+    <h1>Website and<br>Launch Party</h1>
+    <p class="meta">Thursday, September 17</p>
+    <p class="hint">Click any description to edit it. Changes save when you click out.</p>
+  </header>
+
+  <section class="group">
+    <h2>August 31 publish</h2>
+    <ol>
+      <li><details><summary>Wrong site published August 31</summary><span class="note" data-key="aug31-publish">I have been working with Claude to cut down build time and it pushed the site live without my approval. I have deleted all of those files and everything is functioning the way it should now.</span></details></li>
+      <li><details><summary>Placeholder prices, cause unknown</summary><span class="note" data-key="aug31-prices">The push also carried placeholder prices of $100. I am still not sure how those got in. They are gone, and nothing live carries them now.</span></details></li>
+    </ol>
+  </section>
+
+  <section class="group">
+    <h2>Launch party</h2>
+    <ol>
+      <li><details><summary>Original Society list and tag</summary><span class="note" data-key="lp-list-tag">Setting up the Klaviyo list and tag for the Original Society, a lifetime discount of 10% on the total of every order they place.</span></details></li>
+      <li><details><summary>How the 10% applies at checkout</summary><span class="note" data-key="lp-discount-mechanics">The Klaviyo tag marks who qualifies, but something still has to apply the discount. We need to choose between an automatic discount on a Shopify customer segment and a code we issue to each member.</span></details></li>
+      <li><details><summary>Discount code to be determined</summary><span class="note" data-key="lp-discount-code">We still need to land on the code itself, what it is called and how members receive it, before the list goes live.</span></details></li>
+      <li><details><summary>Emailing the current list</summary><span class="note" data-key="lp-consent">These contacts have not signed up for emails, even though Angel knows all of them. The cleanest option with no risk is not to send at all. If we do send, we take on some chance of complaints. I do not expect that to happen, but I want it on the record.</span></details></li>
+      <li><details><summary>RSVP email template review</summary><span class="note" data-key="lp-rsvp-templates">Walking through the RSVP templates so I can take your feedback and finalize them.</span></details></li>
+      <li><details><summary>Landing page final review</summary><span class="note" data-key="lp-landing-review">Last look at the page together, plus a live test of the form connection.</span></details></li>
+      <li><details><summary>Orders placed by September 25</summary><span class="note" data-key="lp-order-deadline">Items and print material have to be ordered by September 25 to arrive in time for the party.</span></details></li>
+    </ol>
+  </section>
+
+  <section class="group">
+    <h2>Social subscribe pages</h2>
+    <ol>
+      <li><details><summary><a href="https://manage.kmail-lists.com/subscriptions/subscribe?a=SWWpGb&amp;g=ViP9RD" target="_blank" rel="noopener">Angel's page awaiting approval</a></summary><span class="note" data-key="social-angel">Only Angel's subscribe page is built in Klaviyo so far. Once that one is approved I will build the Signature Society version.</span></details></li>
+    </ol>
+  </section>
+
+  <section class="group">
+    <h2>Coming soon page</h2>
+    <ol>
+      <li><details><summary>Materials section copy</summary><span class="note" data-key="cs-materials">I have added the Materials section and need to go over the copy with you.</span></details></li>
+      <li><details><summary>Form connected to New Subscribers</summary><span class="note" data-key="cs-form">The signup form on the page is wired to the New Subscribers segment in Klaviyo.</span></details></li>
+    </ol>
+  </section>
+
+  <section class="group">
+    <h2>Policy and FAQ copy</h2>
+    <ol>
+      <li><details><summary>Policy questions for Matt</summary><span class="note" data-key="policy-matt">I have a set of questions that need Matt's answers before the policy copy can be finalized.</span></details></li>
+      <li><details><summary>FAQ copy sign off</summary><span class="note" data-key="policy-faq">Is the FAQ copy good to go as written, or do you want changes?</span></details></li>
+    </ol>
+  </section>
+
+  <section class="group">
+    <h2>Transactional emails</h2>
+    <ol>
+      <li><details><summary>Who writes the order emails</summary><span class="note" data-key="tx-emails">Do you want me to write the copy for the transactional emails customers receive when they place an order?</span></details></li>
+    </ol>
+  </section>
+
+  <footer>
+    Signature Society · Launch Party, November 7, 2026
+    <button type="button" class="reset" id="resetBtn">Restore original descriptions</button>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Saved</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORE = "sig_meet_09172026_notes_v1";
+  var notes = document.querySelectorAll(".note");
+  var toast = document.getElementById("toast");
+  var toastTimer = null;
+  var originals = {};
+
+  function read() {
+    try {
+      return JSON.parse(localStorage.getItem(STORE) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function write(data) {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(data));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function flash(message) {
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove("is-visible");
+    }, 1600);
+  }
+
+  var saved = read();
+
+  Array.prototype.forEach.call(notes, function (note) {
+    var key = note.getAttribute("data-key");
+    originals[key] = note.textContent;
+
+    if (Object.prototype.hasOwnProperty.call(saved, key)) {
+      note.textContent = saved[key];
+      if (saved[key] !== originals[key]) {
+        note.classList.add("is-edited");
+      }
+    }
+
+    note.setAttribute("contenteditable", "true");
+    note.setAttribute("spellcheck", "true");
+    note.setAttribute("role", "textbox");
+    note.setAttribute("aria-multiline", "true");
+    note.setAttribute("aria-label", "Description, editable");
+
+    // Opening the toggle should not drop the caret into the text.
+    note.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+
+    note.addEventListener("focus", function () {
+      note.setAttribute("data-entry", note.textContent);
+    });
+
+    note.addEventListener("blur", function () {
+      var current = note.textContent;
+      if (current === note.getAttribute("data-entry")) {
+        return;
+      }
+      var store = read();
+      if (current === originals[key]) {
+        delete store[key];
+        note.classList.remove("is-edited");
+      } else {
+        store[key] = current;
+        note.classList.add("is-edited");
+      }
+      flash(write(store) ? "Saved" : "Could not save in this browser");
+    });
+
+    // Escape backs out of an edit without saving it.
+    note.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        note.textContent = note.getAttribute("data-entry") || originals[key];
+        note.blur();
+      }
+    });
+
+    // Keep pasted text plain so the brand styling holds.
+    note.addEventListener("paste", function (event) {
+      event.preventDefault();
+      var text = (event.clipboardData || window.clipboardData).getData("text");
+      document.execCommand("insertText", false, text);
+    });
+  });
+
+  // A link inside a summary should open the link, not toggle the row.
+  Array.prototype.forEach.call(document.querySelectorAll("summary a"), function (link) {
+    link.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    Array.prototype.forEach.call(notes, function (note) {
+      var key = note.getAttribute("data-key");
+      note.textContent = originals[key];
+      note.classList.remove("is-edited");
+    });
+    write({});
+    flash("Restored");
+  });
+})();
+</script>
+</body>
+</html>
