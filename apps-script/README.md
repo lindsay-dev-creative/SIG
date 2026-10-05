@@ -108,5 +108,16 @@ itself from its Edit agenda button. Those edits are one record of kind
 The page shows that copy when it's newer than the `savedAt` in the page
 file; Lindsay saving from `#edit` writes it back into the page file.
 
+Before anyone edits or saves, the page fetches the newest page file and the
+newest `meetagenda` record. If either is newer than the copy that person
+started from, the save is skipped and the newer copy is loaded instead, so
+nobody saves over someone else's work.
+
+**Editing the page file by hand (or with Claude Code) while this is open:**
+first fold in any `meetagenda` record that is newer than the file's
+`savedAt`, then set `savedAt` in the JSON to the current time in
+milliseconds. Without a newer `savedAt`, the page keeps showing the store
+copy and the change is hidden.
+
 A Yes point stands as written. An Add Notes point carries notes saying what
 changes; use the notes, not the point's wording, when updating copy.

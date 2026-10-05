@@ -549,6 +549,7 @@
 -->
 <script type="application/json" id="page-data">
 {
+  "savedAt": 1791168244335,
   "title": "Meeting Agenda",
   "date": "Monday, October 5, 2026",
   "links": [
@@ -1917,12 +1918,18 @@
     });
   }
 
+  var pullInFlight = null;
+
+  // Resolves when this check of the store is done, so callers can wait for the newest copy.
   function pullStore() {
-    if (!STORE_URL || pulling) {
-      return;
+    if (!STORE_URL) {
+      return Promise.resolve();
+    }
+    if (pullInFlight) {
+      return pullInFlight;
     }
     pulling = true;
-    fetch(STORE_URL + "?action=pull&since=" + since).then(function (res) {
+    pullInFlight = fetch(STORE_URL + "?action=pull&since=" + since).then(function (res) {
       return res.json();
     }).then(function (res) {
       if (!res || !res.ok) {
@@ -1973,8 +1980,10 @@
       setStoreStatus("Answers could not load. Retrying.");
     }).then(function () {
       pulling = false;
+      pullInFlight = null;
       markStoreReady();
     });
+    return pullInFlight;
   }
 
   function formatTime(ms) {
@@ -2149,22 +2158,78 @@
     return typing || unsavedNotes || dirty || saving || pending;
   }
 
+  // Two copies of the agenda can change while the page is open: the page file (Lindsay's
+  // #edit saves and Claude's edits stamp it with savedAt) and the copy people edit on the
+  // page (the store's "meetagenda" record, stamped at). The newest one is always shown, and
+  // an edit is only saved if it was made on that newest copy.
+
+  var editFromAt = latestAt();   // the version the open editor started from
+
+  function latestDoc() {
+    return overlay && overlayAt > (base.savedAt || 0) ? overlay : base;
+  }
+
+  function latestAt() {
+    return Math.max(base.savedAt || 0, overlay ? overlayAt : 0);
+  }
+
+  // The page file as it is on the site right now.
+  function checkFreshFile() {
+    return fetch(location.pathname + "?fresh=" + Date.now(), {cache: "no-store"}).then(function (res) {
+      return res.ok ? res.text() : "";
+    }).then(function (html) {
+      var match = html.match(DATA_BLOCK);
+      if (!match) {
+        return;
+      }
+      var fresh = normalizeDoc(JSON.parse(match[2]));
+      if ((fresh.savedAt || 0) > (base.savedAt || 0)) {
+        base = fresh;
+        pendingApply = true;
+      }
+    }).catch(function () {});
+  }
+
+  function syncNow() {
+    return Promise.all([checkFreshFile(), pullStore()]);
+  }
+
   function applyLatestAgenda() {
-    if (!overlay || overlayAt <= (base.savedAt || 0)) {
-      pendingApply = false;
-      return;
-    }
     if (busyTyping()) {
       pendingApply = true;   // try again on the next check, so nobody's typing is wiped out
       return;
     }
     pendingApply = false;
-    if (JSON.stringify(overlay) === JSON.stringify(data) && showingOverlay) {
+    var latest = latestDoc();
+    editFromAt = latestAt();
+    if (JSON.stringify(latest) === JSON.stringify(data)) {
       return;
     }
-    data = copyDoc(overlay);
-    showingOverlay = true;
+    data = copyDoc(latest);
+    showingOverlay = latest === overlay;
     render();
+  }
+
+  // Called just before a save: if a newer copy appeared since this editor started, load it
+  // instead of saving over it. Only this person's last change is lost, never anyone else's.
+  function staleEdit() {
+    if (latestAt() <= editFromAt) {
+      return false;
+    }
+    saving = false;
+    pending = false;
+    dirty = false;
+    data = copyDoc(latestDoc());
+    showingOverlay = latestDoc() === overlay;
+    editFromAt = latestAt();
+    undoStack = [];
+    updateUndo();
+    render();
+    setStatus("Someone else just changed the agenda. Your last change wasn't saved, so please make it again.", true);
+    var done = waiters;
+    waiters = [];
+    done.forEach(function (resolve) { resolve(); });
+    return true;
   }
 
   function startOpenEdit() {
@@ -2173,12 +2238,28 @@
       render();
       return;
     }
-    editMode = "store";
-    editing = true;
-    undoStack = [];
-    document.body.classList.add("editing");
-    showEditBar();
-    render();
+    var button = document.getElementById("openEdit");
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Loading the latest agenda…";
+    }
+    syncNow().then(function () {
+      if (!editingOpen()) {
+        flash("Editing closed at " + EDIT_UNTIL_LABEL + ".");
+        render();
+        return;
+      }
+      data = copyDoc(latestDoc());
+      showingOverlay = latestDoc() === overlay;
+      editFromAt = latestAt();
+      pendingApply = false;
+      editMode = "store";
+      editing = true;
+      undoStack = [];
+      document.body.classList.add("editing");
+      showEditBar();
+      render();
+    });
   }
 
   function stopEditing(message) {
@@ -2226,11 +2307,21 @@
     pending = false;
     dirty = false;
     setStatus("Saving");
-    var at = Date.now();
-    storeCall({action: "put", kind: AGENDA_KIND, id: MEETING, actor: myName,
-      payload: {meeting: MEETING, doc: doc, at: at, by: myName}}).then(function () {
+    var at = 0;
+    syncNow().then(function () {
+      if (staleEdit()) {
+        return "stale";
+      }
+      at = Date.now();
+      return storeCall({action: "put", kind: AGENDA_KIND, id: MEETING, actor: myName,
+        payload: {meeting: MEETING, doc: doc, at: at, by: myName}});
+    }).then(function (result) {
+      if (result === "stale") {
+        return "stale";
+      }
       overlay = normalizeDoc(doc);
       overlayAt = at;
+      editFromAt = at;
       showingOverlay = true;
       lastError = null;
       setStatus("Saved. Everyone sees this now");
@@ -2238,7 +2329,10 @@
       dirty = true;
       lastError = {message: "Not saved. Check your connection, then try again."};
       setStatus(lastError.message, true);
-    }).then(function () {
+    }).then(function (result) {
+      if (result === "stale") {
+        return;   // staleEdit already settled everything
+      }
       saving = false;
       if (pending) {
         flush();
@@ -2247,6 +2341,18 @@
       settle();
     });
   }
+
+  // People just viewing get a newer page file within a minute, without reloading.
+  setInterval(function () {
+    if (document.visibilityState !== "visible" || editing) {
+      return;
+    }
+    checkFreshFile().then(function () {
+      if (pendingApply) {
+        applyLatestAgenda();
+      }
+    });
+  }, 60000);
 
   // At the deadline: save what's waiting, close the editor, and remove the Edit agenda button.
   setInterval(function () {
@@ -2986,6 +3092,15 @@
     pending = false;
     dirty = false;
     setStatus("Saving");
+    syncNow().then(function () {
+      if (STORE_URL && staleEdit()) {
+        return;
+      }
+      flushGithub();
+    });
+  }
+
+  function flushGithub() {
     data.savedAt = Date.now();   // newer than any open edit, so this copy is the one shown
     var json = "\n" + JSON.stringify(data, null, 2).replace(/</g, "\\u003c") + "\n";
     var next = fileText.replace(DATA_BLOCK, function (all, open, body, close) {
@@ -2996,6 +3111,7 @@
       fileSha = body.content.sha;
       fileText = next;
       base = copyDoc(data);
+      editFromAt = data.savedAt;
       showingOverlay = false;
       retried = false;
       lastError = null;
@@ -3171,7 +3287,12 @@
         writeLocal(NAME_KEY, myName);
       }
       // Start from the newest copy, so saving writes everyone's open edits into this file.
-      data = overlay && overlayAt > (latest.savedAt || 0) ? copyDoc(overlay) : latest;
+      if ((latest.savedAt || 0) > (base.savedAt || 0)) {
+        base = latest;
+      }
+      data = copyDoc(latestDoc());
+      showingOverlay = latestDoc() === overlay;
+      editFromAt = latestAt();
       editMode = "github";
       editing = true;
       undoStack = [];
