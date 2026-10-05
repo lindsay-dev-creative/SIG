@@ -1296,7 +1296,6 @@
   var OWNER_NAME = "Lindsay";
   var CONFIRM_KIND = "meetconfirm";
   var IMAGE_KIND = "meetimage";
-  var OPEN_KEY = "sig_meet_open_" + MEETING;
 
   var ICONS = {
     image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><circle cx="9" cy="10" r="1.5"/><path d="M4.5 16.5l4.2-4.2 3.3 3.3 2.8-2.4 4.7 4.3"/></svg>',
@@ -1316,7 +1315,9 @@
   var editing = false;
   var undoStack = [];
   var previews = {};   // image path -> local data URL, until Pages publishes the file
-  var open = readOpen();
+  // Which sections and items are open. Every visit starts with everything closed;
+  // this only keeps the page steady while it's open (for example after Lock).
+  var open = {sections: {}, items: {}};
 
   function flash(message) {
     toast.textContent = message;
@@ -1386,16 +1387,6 @@
       undoStack.shift();
     }
     updateUndo();
-  }
-
-  // Which sections and items this viewer has open. A convenience, kept per browser.
-  function readOpen() {
-    var saved = readLocal(OPEN_KEY, {});
-    return {sections: saved.sections || {}, items: saved.items || {}};
-  }
-
-  function saveOpen() {
-    writeLocal(OPEN_KEY, open);
   }
 
   /* ---- Markup -------------------------------------------------------- */
@@ -1768,7 +1759,6 @@
     if (head && head.getAttribute("aria-expanded") !== "true") {
       open.items[itemId] = true;
       setExpanded(head, document.getElementById(head.getAttribute("aria-controls")), true);
-      saveOpen();
     }
   }
 
@@ -1781,7 +1771,6 @@
       var sid = secHead.closest(".group").getAttribute("data-sec");
       open.sections[sid] = secHead.getAttribute("aria-expanded") !== "true";
       setExpanded(secHead, document.getElementById(secHead.getAttribute("aria-controls")), open.sections[sid]);
-      saveOpen();
       return;
     }
     var imageIcon = event.target.closest(".image-icon");
@@ -1805,7 +1794,6 @@
         delete open.items[iid];
       }
       setExpanded(itemHead, document.getElementById(itemHead.getAttribute("aria-controls")), nowOpen);
-      saveOpen();
       return;
     }
     var pill = event.target.closest(".attachment-pill");
