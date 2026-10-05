@@ -862,7 +862,7 @@
 
   /* ---- Shared notes -------------------------------------------------- */
   // The project store's /exec URL. Until it is filled in, the page shows no notes.
-  var STORE_URL = "";
+  var STORE_URL = "https://script.google.com/macros/s/AKfycbxEMWabX93Ftnlut3ZmCOpWpLDK1GTCp685o6dX9usEaSb_GlhqsZxqxubwqU_31W3aMg/exec";
   var MEETING = "10052026";
   var NOTE_KIND = "meetnote";
   var POLL_MS = 6000;
@@ -1389,6 +1389,7 @@
   var editingNote = null;    // id of the note open in an inline editor
   var armedDelete = null;
   var myName = readLocal(NAME_KEY, "") || "";
+  var people = [];           // names from the store's People tab, offered as suggestions
   var mine = readLocal(MINE_KEY, []);
 
   function notesFor(itemId) {
@@ -1443,6 +1444,10 @@
         throw new Error("pull failed");
       }
       since = res.now || since;
+      if (res.people && res.people.join() !== people.join()) {
+        people = res.people;
+        fillPeople();
+      }
       var touched = {};
       (res.records || []).forEach(function (rec) {
         var p = rec.payload || {};
@@ -1534,10 +1539,26 @@
       input.type = "text";
       input.id = "note-name-" + itemId;
       input.placeholder = "Your name";
-      input.autocomplete = "name";
+      input.autocomplete = "off";
+      input.setAttribute("list", "note-people");
       input.setAttribute("aria-label", "Your name");
       who.appendChild(input);
     }
+  }
+
+  function fillPeople() {
+    var list = document.getElementById("note-people");
+    if (!list) {
+      list = el("datalist");
+      list.id = "note-people";
+      document.body.appendChild(list);
+    }
+    list.textContent = "";
+    people.forEach(function (name) {
+      var option = el("option");
+      option.value = name;
+      list.appendChild(option);
+    });
   }
 
   function refreshItemNotes(itemId) {
