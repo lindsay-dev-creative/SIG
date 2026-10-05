@@ -89,13 +89,9 @@
   h1{font-family:var(--ff-display);font-size:clamp(2.6rem,8vw,4.294rem);line-height:1.2;color:var(--text-default);}
   h6{font-family:var(--ff-subhead);font-size:1.412rem;line-height:1.4;color:var(--text-default);margin:0;}
 
-  /* Toolbar above the sections */
-  .agenda-tools{
-    display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.5rem 1rem;
-    margin:0 0 .75rem;
-    font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);
-  }
-  .notes-status[data-state="error"]{color:var(--danger);}
+  /* Shown above the sections only when notes can't load */
+  .notes-status{margin:0 0 .75rem;font-family:var(--ff-inter);font-size:.75rem;color:var(--danger);}
+  .notes-status:empty{margin:0;}
 
   .link-btn{
     -webkit-appearance:none;appearance:none;
@@ -469,7 +465,7 @@
   .editing .wrap{padding-bottom:9rem;}
 
   @media print{
-    .edit-bar,.unlock,.toast,.caret,.agenda-tools,.note-form{display:none !important;}
+    .edit-bar,.unlock,.toast,.caret,.notes-status,.note-form{display:none !important;}
     .sec-body[hidden],.item-body[hidden]{display:block !important;}
   }
 </style>
@@ -1409,8 +1405,7 @@
     }).join("");
     return '<div class="files-bar">' + links + "</div>" +
       "<header><h1>" + esc(d.title) + "</h1><h6>" + esc(d.date) + "</h6></header>" +
-      '<div class="agenda-tools"><button type="button" class="link-btn" id="toggleAll"></button>' +
-        '<span class="notes-status" id="notesStatus" aria-live="polite"></span></div>' +
+      '<p class="notes-status" id="notesStatus" role="status"></p>' +
       '<main id="agenda">' + d.sections.map(sectionMarkup).join("") + "</main>";
   }
 
@@ -1576,39 +1571,8 @@
     body.hidden = !isOpen;
   }
 
-  function syncToggleAll() {
-    var btn = document.getElementById("toggleAll");
-    if (!btn) {
-      return;
-    }
-    var allOpen = data.sections.every(function (s) { return open.sections[s.id]; });
-    btn.textContent = allOpen ? "Collapse all" : "Expand all sections";
-  }
-
-  function toggleAll() {
-    var allOpen = data.sections.every(function (s) { return open.sections[s.id]; });
-    app.querySelectorAll(".group").forEach(function (group) {
-      var id = group.getAttribute("data-sec");
-      var head = group.querySelector(".sec-head");
-      open.sections[id] = !allOpen;
-      setExpanded(head, document.getElementById(head.getAttribute("aria-controls")), !allOpen);
-    });
-    if (allOpen) {
-      open.items = {};
-      app.querySelectorAll(".item-head").forEach(function (head) {
-        setExpanded(head, document.getElementById(head.getAttribute("aria-controls")), false);
-      });
-    }
-    saveOpen();
-    syncToggleAll();
-  }
-
   app.addEventListener("click", function (event) {
     if (editing) {
-      return;
-    }
-    if (event.target.closest("#toggleAll")) {
-      toggleAll();
       return;
     }
     var secHead = event.target.closest(".sec-head");
@@ -1617,7 +1581,6 @@
       open.sections[sid] = secHead.getAttribute("aria-expanded") !== "true";
       setExpanded(secHead, document.getElementById(secHead.getAttribute("aria-controls")), open.sections[sid]);
       saveOpen();
-      syncToggleAll();
       return;
     }
     var itemHead = event.target.closest(".item-head");
@@ -2429,7 +2392,6 @@
     editingNote = null;
     points = {};
     app.innerHTML = readMarkup(data);
-    syncToggleAll();
     if (STORE_URL) {
       refreshAllNotes();
     }
