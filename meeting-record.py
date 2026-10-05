@@ -15,6 +15,9 @@ The record lists every section, item and point in agenda order:
     - [ ] point   Confirm: No, with its notes indented underneath
     - [ ] point   not answered
 
+Images added to an item are listed under it with their title, description
+and a Google Drive link.
+
 A Yes means the point stands as written, so it can go into the copy as is.
 A No means it doesn't, and the notes say what changes; use the notes, not
 the point's wording, when updating copy. Notes typed under a point that was
@@ -86,6 +89,18 @@ def answer_lines(text, c, prefix=""):
     return lines
 
 
+def image_lines(lst, with_item=False):
+    out = []
+    for i in lst:
+        where = "%s / %s: " % (i.get("section", ""), i.get("itemTitle", "")) if with_item else ""
+        line = "- %s%s" % (where, i.get("title") or "Untitled image")
+        if i.get("description"):
+            line += ": " + i["description"].replace("\n", " ")
+        line += "  (https://drive.google.com/file/d/%s/view)" % i.get("driveId", "")
+        out.append(line)
+    return out
+
+
 def points_of(details, info=False):
     """The confirmable points of an item, in order, as the page builds them.
     A reference item ("info") has no confirmable points: every line is context."""
@@ -129,6 +144,13 @@ def main():
     for lst in notes.values():
         lst.sort(key=lambda n: n.get("at") or 0)
     confirms = {r["id"]: r["payload"] for r in records if r["kind"] == "meetconfirm"}
+    images = {}
+    for r in records:
+        if r["kind"] == "meetimage" and not r.get("deleted"):
+            images.setdefault(r["payload"].get("item"), []).append(r["payload"])
+    for lst in images.values():
+        lst.sort(key=lambda i: i.get("at") or 0)
+    shown_images = set()
 
     used = set()
     out = ["# %s · %s" % (agenda.get("title", "Meeting"), agenda.get("date", "")), ""]
@@ -157,6 +179,11 @@ def main():
                 key = item["id"] + "~" + text_key(text)
                 used.add(key)
                 out += answer_lines(text, confirms.get(key))
+            item_images = images.get(item["id"], [])
+            if item_images:
+                shown_images.add(item["id"])
+                out += ["", "Images:"]
+                out += image_lines(item_images)
             # Item-level notes from before the Confirm buttons, if any were left.
             item_notes = notes.get(item["id"], [])
             if item_notes:
@@ -172,6 +199,11 @@ def main():
                 "These were answered, then the wording on the page changed. This is the wording that was answered."]
         for c in orphans:
             out += answer_lines(c.get("text", ""), c, "%s / %s: " % (c.get("section", ""), c.get("itemTitle", "")))
+
+    stray = [i for k, lst in images.items() if k not in shown_images for i in lst]
+    if stray:
+        out += ["", "## Images on items no longer in the agenda", ""]
+        out += image_lines(stray, with_item=True)
 
     text = "\n".join(out) + "\n"
     if args.out:

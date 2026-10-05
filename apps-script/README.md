@@ -96,5 +96,10 @@ To get the whole meeting as one Markdown file, from the repo root:
 python3 meeting-record.py sig-meet-10052026.html -o meet-10052026-record.md
 ```
 
+Images added from an item's image icon are records of kind `meetimage`
+(the Drive file id, title and description). The files go to this store's
+Drive folder. Removing an image soft-deletes its record; the file stays in
+the folder.
+
 A Yes point stands as written. A No point carries notes saying what
 changes; use the notes, not the point's wording, when updating copy.

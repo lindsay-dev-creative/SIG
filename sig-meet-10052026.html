@@ -168,6 +168,76 @@
   .item-head:hover .item{color:var(--text-default);}
   .item-body{padding:.25rem 0 .5rem;}
 
+  /* Item row: title (opens the item), image icon, arrow */
+  .item-row{display:flex;align-items:center;gap:.5rem;}
+  .item-row .item-head{flex:1;min-width:0;}
+  .item-caret{cursor:pointer;}
+  .item-row.is-open .item-caret svg{transform:rotate(180deg);}
+  .image-icon{
+    -webkit-appearance:none;appearance:none;
+    display:flex;align-items:center;justify-content:center;flex:none;
+    width:28px;height:28px;padding:0;
+    background:none;border:none;
+    color:var(--icon-muted);line-height:0;cursor:pointer;
+    transition:color var(--ease-ui);
+  }
+  .image-icon svg{display:block;width:17px;height:17px;}
+  .image-icon:hover{color:var(--color5-300);}
+  .image-icon.has-images{color:var(--color5-500);}
+  .image-icon:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
+
+  /* Image thumbnails inside an open item */
+  .item-images{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem;}
+  .item-images:empty{display:none;}
+  .thumb-card{margin:0;width:120px;}
+  .thumb-card.is-uploading{opacity:.55;}
+  .thumb-open{
+    display:block;width:120px;height:120px;padding:0;
+    background:var(--color1-900);
+    border:1px solid var(--color5-700);
+    overflow:hidden;cursor:zoom-in;
+    transition:border-color var(--ease-ui);
+  }
+  .thumb-open:hover{border-color:var(--color5-300);}
+  .thumb-open:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
+  .thumb-open img{display:block;width:100%;height:100%;object-fit:cover;}
+  .thumb-card figcaption{
+    margin-top:.35rem;
+    font-family:var(--ff-inter);font-size:.75rem;line-height:1.4;
+    color:var(--neutral-300);
+    overflow-wrap:anywhere;
+  }
+
+  /* Full-size image view with its title, description and Remove */
+  .image-view img{max-height:58vh;}
+  .image-view-fields{
+    display:flex;flex-direction:column;gap:.5rem;
+    width:min(560px,100%);
+    cursor:auto;
+    font-family:var(--ff-inter);
+  }
+  .image-view-fields label{
+    font-size:.6875rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .image-view-fields input,.image-view-fields textarea{
+    width:100%;
+    background:var(--color1-900);
+    border:1px solid var(--neutral-800);
+    color:var(--neutral-100);
+    font-family:var(--ff-inter);font-size:.9375rem;line-height:1.5;
+    padding:.55rem .7rem;
+    transition:border-color var(--ease-ui);
+  }
+  .image-view-fields textarea{min-height:5.5rem;resize:vertical;}
+  .image-view-fields input:focus,.image-view-fields textarea:focus{outline:none;border-color:var(--color5-400);}
+  .image-view-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;}
+  .image-view-status{font-size:.75rem;color:var(--neutral-500);}
+  .image-view-status[data-state="error"]{color:var(--danger);}
+  .image-view-actions{display:flex;gap:.5rem;}
+  .ghost.is-warning{border-color:var(--danger);color:var(--danger);}
+  .ghost.is-warning:hover{background:var(--danger);color:var(--color1-900);}
+
   .item-note{
     margin:.6rem 0 0;
     font-family:var(--ff-sm);font-size:.8125rem;line-height:1.5;letter-spacing:.02em;
@@ -189,7 +259,7 @@
   .item-details ul li::marker{color:var(--color5-500);}
 
   /* Confirm: Yes / Confirm: No on each point, and the Notes box a No opens */
-  .confirm-pair{display:inline-flex;gap:.35rem;margin-left:.5rem;vertical-align:baseline;white-space:nowrap;}
+  .confirm-pair{display:flex;flex-wrap:wrap;gap:.35rem;margin:.4rem 0 0;}
   .confirm-pair:empty{display:none;}
   .confirm-btn{
     -webkit-appearance:none;appearance:none;
@@ -458,8 +528,12 @@
   apps-script/sig-project-store.gs) as records of kind "meetconfirm": one
   per point, holding the point's exact text, the answer, the notes, when,
   and every change. Anyone on the page can answer; no name is asked for.
-  Keep item ids stable. meeting-record.py turns the agenda and the
-  answers into a Markdown record of the meeting.
+  Images added from an item's image icon are kept the same way, as
+  records of kind "meetimage" (Drive id, title, description), with the
+  files in the store's Google Drive folder.
+
+  Keep item ids stable. meeting-record.py turns the agenda, the answers
+  and the images into a Markdown record of the meeting.
 -->
 <script type="application/json" id="page-data">
 {
@@ -493,14 +567,6 @@
           "text": "THE HEIRLOOM™ public show, October 15",
           "note": "",
           "details": "Confirm whether the tentative October 15 public-show timing is approved or remains an internal planning target.",
-          "links": [],
-          "images": []
-        },
-        {
-          "id": "release-sequence",
-          "text": "When each product can be shown",
-          "note": "",
-          "details": "Matt: when is each product (THE CONCIERGE™, THE SIGNATURE EDIT™, THE HEIRLOOM™) cleared to be shown publicly, and in what order? Lindsay won't publish any product's page, photos or details before its date.",
           "links": [],
           "images": []
         },
@@ -554,7 +620,7 @@
           "id": "brush-assortment",
           "text": "THE MRBL ATELIER BRUSH™",
           "note": "",
-          "details": "- Launch variants: Calacatta Viola, Rosso Levanto, and Verde Alpi.\n- The brush isn't on the SKU list yet.\n- What is the retail price?",
+          "details": "- The brush isn't on the SKU list yet.\n- What is the retail price?",
           "links": [],
           "images": []
         },
@@ -1100,6 +1166,7 @@
   var NAME_KEY = "sig_meet_name";
   var OWNER_NAME = "Lindsay";
   var CONFIRM_KIND = "meetconfirm";
+  var IMAGE_KIND = "meetimage";
   var OPEN_KEY = "sig_meet_open_" + MEETING;
 
   var ICONS = {
@@ -1356,15 +1423,21 @@
       return '<button type="button" class="attachment-pill" data-gi="' + gi + '" data-ii="' + ii + '" data-img="' + k + '" title="View full size">' + esc(img.name || "Image") + "</button>";
     }).join("");
     var attach = (links || pills) ? '<div class="attach">' + links + pills + "</div>" : "";
-    var body = note + details + attach;
+    var gallery = STORE_URL ? '<div class="item-images" data-images="' + id + '">' + imagesMarkup(item.id) + "</div>" : "";
+    var body = note + details + attach + gallery;
     if (!body) {
       return '<li data-item="' + id + '"><div class="item-head"><span class="item">' + esc(item.text) + "</span></div></li>";
     }
+    var icon = STORE_URL ? '<button type="button" class="image-icon' + (imagesFor(item.id).length ? " has-images" : "") + '"' +
+      ' data-image-item="' + id + '" title="Add images" aria-label="Add images">' + ICONS.image + "</button>" : "";
     return '<li data-item="' + id + '">' +
-      '<button type="button" class="item-head" aria-expanded="' + isOpen + '" aria-controls="ib-' + id + '">' +
-        '<span class="item">' + esc(item.text) + "</span>" +
-        '<span class="caret">' + ICONS.caret + "</span>" +
-      "</button>" +
+      '<div class="item-row' + (isOpen ? " is-open" : "") + '">' +
+        '<button type="button" class="item-head" aria-expanded="' + isOpen + '" aria-controls="ib-' + id + '">' +
+          '<span class="item">' + esc(item.text) + "</span>" +
+        "</button>" +
+        icon +
+        '<span class="caret item-caret" aria-hidden="true">' + ICONS.caret + "</span>" +
+      "</div>" +
       '<div class="item-body" id="ib-' + id + '"' + (isOpen ? "" : " hidden") + ">" + body + "</div>" +
     "</li>";
   }
@@ -1556,6 +1629,18 @@
   function setExpanded(button, body, isOpen) {
     button.setAttribute("aria-expanded", isOpen ? "true" : "false");
     body.hidden = !isOpen;
+    if (button.parentNode.classList.contains("item-row")) {
+      button.parentNode.classList.toggle("is-open", isOpen);
+    }
+  }
+
+  function openItem(itemId) {
+    var head = app.querySelector('[data-item="' + itemId + '"] .item-head');
+    if (head && head.getAttribute("aria-expanded") !== "true") {
+      open.items[itemId] = true;
+      setExpanded(head, document.getElementById(head.getAttribute("aria-controls")), true);
+      saveOpen();
+    }
   }
 
   app.addEventListener("click", function (event) {
@@ -1570,7 +1655,18 @@
       saveOpen();
       return;
     }
-    var itemHead = event.target.closest(".item-head");
+    var imageIcon = event.target.closest(".image-icon");
+    if (imageIcon) {
+      addImages(imageIcon.getAttribute("data-image-item"));
+      return;
+    }
+    var thumb = event.target.closest(".thumb-open");
+    if (thumb) {
+      openImageView(thumb.getAttribute("data-image-id"));
+      return;
+    }
+    var caret = event.target.closest(".item-caret");
+    var itemHead = caret ? caret.parentNode.querySelector(".item-head") : event.target.closest(".item-head");
     if (itemHead && itemHead.tagName === "BUTTON") {
       var iid = itemHead.closest("li").getAttribute("data-item");
       var nowOpen = itemHead.getAttribute("aria-expanded") !== "true";
@@ -1657,9 +1753,22 @@
         throw new Error("pull failed");
       }
       since = res.now || since;
+      var touchedImages = {};
       (res.records || []).forEach(function (rec) {
         var p = rec.payload || {};
-        if (rec.kind !== CONFIRM_KIND || p.meeting !== MEETING) {
+        if (p.meeting !== MEETING) {
+          return;
+        }
+        if (rec.kind === IMAGE_KIND) {
+          if (rec.deleted) {
+            delete images[rec.id];
+          } else if (viewing !== rec.id) {
+            images[rec.id] = Object.assign({id: rec.id}, p);
+          }
+          touchedImages[p.item] = true;
+          return;
+        }
+        if (rec.kind !== CONFIRM_KIND) {
           return;
         }
         // Never replace notes someone is typing here with an older copy from the store.
@@ -1670,6 +1779,7 @@
         confirms[rec.id] = p;
         refreshPoint(rec.id);
       });
+      Object.keys(touchedImages).forEach(renderImages);
       setStoreStatus("");
     }).catch(function () {
       setStoreStatus("Answers could not load. Retrying.");
@@ -1834,6 +1944,259 @@
       event.returnValue = "";
     }
   });
+
+  /* ---- Images on items ---------------------------------------------- */
+  // Anyone can add images to an item from the image icon on its row. Files go to the
+  // project store's Google Drive folder; each image is one "meetimage" record holding
+  // its Drive id, title and description. Removing one takes it off the page and out of
+  // the record; the file itself stays in the Drive folder.
+
+  var images = {};           // image id -> record
+  var imagePreviews = {};    // image id -> local copy, shown until Drive serves the file
+  var viewing = null;        // id of the image open full size
+
+  function imagesFor(itemId) {
+    return Object.keys(images).map(function (k) { return images[k]; })
+      .filter(function (r) { return r.item === itemId; })
+      .sort(function (a, b) { return a.at - b.at; });
+  }
+
+  function imageUrl(rec, size) {
+    return imagePreviews[rec.id] || "https://drive.google.com/thumbnail?id=" + encodeURIComponent(rec.driveId || "") + "&sz=" + size;
+  }
+
+  // Drive sometimes refuses its thumbnail link for a fresh file; this address serves the same image.
+  document.addEventListener("error", function (event) {
+    var img = event.target;
+    if (img.tagName === "IMG" && img.getAttribute("data-drive") && !img.getAttribute("data-fallback")) {
+      img.setAttribute("data-fallback", "1");
+      img.src = "https://lh3.googleusercontent.com/d/" + encodeURIComponent(img.getAttribute("data-drive"));
+    }
+  }, true);
+
+  function imagesMarkup(itemId) {
+    return imagesFor(itemId).map(function (rec) {
+      return '<figure class="thumb-card' + (rec.pending ? " is-uploading" : "") + '">' +
+        '<button type="button" class="thumb-open" data-image-id="' + esc(rec.id) + '" title="View full size">' +
+          '<img src="' + esc(imageUrl(rec, "w400")) + '" data-drive="' + esc(rec.driveId || "") + '" alt="' + esc(rec.title || "") + '" loading="lazy">' +
+        "</button>" +
+        "<figcaption>" + esc(rec.pending ? "Uploading…" : rec.title || "") + "</figcaption>" +
+      "</figure>";
+    }).join("");
+  }
+
+  function renderImages(itemId) {
+    var box = app.querySelector('[data-images="' + itemId + '"]');
+    if (box) {
+      box.innerHTML = imagesMarkup(itemId);
+    }
+    var icon = app.querySelector('[data-image-item="' + itemId + '"]');
+    if (icon) {
+      icon.classList.toggle("has-images", imagesFor(itemId).length > 0);
+    }
+  }
+
+  function itemContext(itemId) {
+    for (var g = 0; g < data.sections.length; g++) {
+      for (var i = 0; i < data.sections[g].items.length; i++) {
+        if (data.sections[g].items[i].id === itemId) {
+          return {itemTitle: data.sections[g].items[i].text, section: data.sections[g].title};
+        }
+      }
+    }
+    return {itemTitle: "", section: ""};
+  }
+
+  function putImage(rec) {
+    return storeCall({action: "put", kind: IMAGE_KIND, id: rec.id, actor: myName, payload: {
+      meeting: MEETING, item: rec.item, itemTitle: rec.itemTitle, section: rec.section,
+      driveId: rec.driveId, title: rec.title || "", description: rec.description || "", at: rec.at
+    }});
+  }
+
+  function addImages(itemId) {
+    var picker = el("input");
+    picker.type = "file";
+    picker.accept = "image/*";
+    picker.multiple = true;
+    picker.addEventListener("change", function () {
+      var files = Array.prototype.slice.call(picker.files || []);
+      if (!files.length) {
+        return;
+      }
+      openItem(itemId);
+      var shown = false;
+      files.reduce(function (chain, file) {
+        return chain.then(function () {
+          return uploadImage(itemId, file).then(function (rec) {
+            // The first new image opens full size, ready for its title and description.
+            if (!shown) {
+              shown = true;
+              openImageView(rec.id);
+            }
+          });
+        });
+      }, Promise.resolve()).catch(function (error) {
+        flash(error.message || "Image upload failed");
+      });
+    });
+    picker.click();
+  }
+
+  function uploadImage(itemId, file) {
+    var ctx = itemContext(itemId);
+    return shrink(file).then(function (dataUrl) {
+      var rec = {
+        id: uid("img"), item: itemId, itemTitle: ctx.itemTitle, section: ctx.section,
+        title: file.name.replace(/\.[^.]+$/, ""), description: "", at: Date.now(), pending: true
+      };
+      images[rec.id] = rec;
+      imagePreviews[rec.id] = dataUrl;
+      renderImages(itemId);
+      return storeCall({
+        action: "upload", dataBase64: dataUrl.split(",")[1], mime: "image/jpeg",
+        name: "meet-" + MEETING + "-" + rec.id + ".jpg"
+      }).then(function (res) {
+        rec.driveId = res.driveId;
+        return putImage(rec);
+      }).then(function () {
+        delete rec.pending;
+        renderImages(itemId);
+        return rec;
+      }).catch(function () {
+        delete images[rec.id];
+        renderImages(itemId);
+        throw new Error("Image upload failed. Check your connection, then try again.");
+      });
+    });
+  }
+
+  function openImageView(id) {
+    var rec = images[id];
+    if (!rec) {
+      return;
+    }
+    viewing = id;
+    var overlay = el("div", "lightbox image-view");
+    var img = el("img");
+    img.src = imageUrl(rec, "w2000");
+    img.setAttribute("data-drive", rec.driveId || "");
+    img.alt = rec.title || "";
+    overlay.appendChild(img);
+
+    var panel = el("div", "image-view-fields");
+    panel.addEventListener("click", function (event) { event.stopPropagation(); });
+    var titleLabel = el("label", null, "Title");
+    titleLabel.setAttribute("for", "iv-title");
+    var title = el("input");
+    title.type = "text";
+    title.id = "iv-title";
+    title.value = rec.title || "";
+    title.autocomplete = "off";
+    var descLabel = el("label", null, "Description");
+    descLabel.setAttribute("for", "iv-desc");
+    var desc = el("textarea");
+    desc.id = "iv-desc";
+    desc.value = rec.description || "";
+    var row = el("div", "image-view-row");
+    var status = el("span", "image-view-status");
+    status.setAttribute("aria-live", "polite");
+    var actions = el("div", "image-view-actions");
+    var removeBtn = el("button", "ghost small", "Remove image");
+    removeBtn.type = "button";
+    var closeBtn = el("button", "ghost small", "Done");
+    closeBtn.type = "button";
+    actions.appendChild(removeBtn);
+    actions.appendChild(closeBtn);
+    row.appendChild(status);
+    row.appendChild(actions);
+    [titleLabel, title, descLabel, desc, row].forEach(function (n) { panel.appendChild(n); });
+    overlay.appendChild(panel);
+
+    var timer = null;
+    var dirty = false;
+    function setStatus(text, isError) {
+      status.textContent = text;
+      status.setAttribute("data-state", isError ? "error" : "");
+    }
+    function saveLabels() {
+      clearTimeout(timer);
+      if (!dirty || !images[id]) {
+        return;
+      }
+      rec.title = title.value.trim();
+      rec.description = desc.value.trim();
+      renderImages(rec.item);
+      if (rec.pending) {
+        return;   // the upload saves these values when it finishes
+      }
+      dirty = false;
+      setStatus("Saving");
+      putImage(rec).then(function () {
+        setStatus("Saved");
+      }).catch(function () {
+        dirty = true;
+        setStatus("Not saved. Check your connection, then type again to retry.", true);
+      });
+    }
+    function onType() {
+      dirty = true;
+      setStatus("");
+      clearTimeout(timer);
+      timer = setTimeout(saveLabels, 800);
+    }
+    title.addEventListener("input", onType);
+    desc.addEventListener("input", onType);
+    title.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        desc.focus();
+      }
+    });
+
+    var armed = null;
+    removeBtn.addEventListener("click", function () {
+      if (!armed) {
+        removeBtn.textContent = "Remove? Click again";
+        removeBtn.classList.add("is-warning");
+        armed = setTimeout(function () {
+          armed = null;
+          removeBtn.textContent = "Remove image";
+          removeBtn.classList.remove("is-warning");
+        }, 4000);
+        return;
+      }
+      clearTimeout(armed);
+      dirty = false;
+      delete images[id];
+      close();
+      renderImages(rec.item);
+      storeCall({action: "del", kind: IMAGE_KIND, id: id, actor: myName, payload: {meeting: MEETING, item: rec.item}})
+        .catch(function () {
+          images[id] = rec;
+          renderImages(rec.item);
+          flash("The image was not removed. Check your connection, then try again.");
+        });
+    });
+
+    function close() {
+      saveLabels();
+      viewing = null;
+      overlay.remove();
+      document.removeEventListener("keydown", onKey);
+    }
+    function onKey(event) {
+      if (event.key === "Escape") {
+        close();
+      }
+    }
+    closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(overlay);
+    title.focus();
+    title.select();
+  }
 
   /* ---- Edit view ----------------------------------------------------- */
 
