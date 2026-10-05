@@ -81,13 +81,14 @@ scripts something against it.
 
 ## Meeting agenda pages
 
-`sig-meet-10052026.html` uses this same store for two kinds of record,
-both tied to the meeting by `payload.meeting` (for example `"10052026"`):
-
-| Kind | One record per | Written by |
-| --- | --- | --- |
-| `meetnote` | note left under an agenda item | anyone on the page |
-| `meetconfirm` | agenda bullet marked Confirmed, with its exact wording, who, when, and every confirm and undo in `history` | anyone on the page; no name is asked for, and it's recorded when the browser already has one |
+`sig-meet-10052026.html` uses this same store for its answers. Every point
+on the page has Confirm: Yes and Confirm: No buttons, and a No opens a Notes
+box. Each point is one record of kind `meetconfirm`, tied to the meeting by
+`payload.meeting` (for example `"10052026"`), holding the point's exact
+wording, `answer` (`"yes"`, `"no"` or `null`), `notes`, when, and every change
+in `history`. Anyone on the page can answer; no name is asked for, and one is
+recorded only when the browser already has it (browsers that unlocked edit
+mode sign as Lindsay).
 
 To get the whole meeting as one Markdown file, from the repo root:
 
@@ -95,6 +96,5 @@ To get the whole meeting as one Markdown file, from the repo root:
 python3 meeting-record.py sig-meet-10052026.html -o meet-10052026-record.md
 ```
 
-Each point is listed as `[x]` (confirmed, by whom and when) or `[ ]`, and
-each item carries its notes, which is where the answers are. Read a
-confirmed point together with its item's notes before changing any copy.
+A Yes point stands as written. A No point carries notes saying what
+changes; use the notes, not the point's wording, when updating copy.

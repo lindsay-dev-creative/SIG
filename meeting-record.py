@@ -1,22 +1,28 @@
 #!/usr/bin/env python3
 """
-Turn a meeting agenda page and its shared notes into one Markdown record.
+Turn a meeting agenda page and its answers into one Markdown record.
 
     python3 meeting-record.py sig-meet-10052026.html
     python3 meeting-record.py sig-meet-10052026.html -o records/meet-10052026.md
 
-The agenda comes from the page's JSON block. Notes and confirmations come
-from the shared project store (the STORE_URL written in the page), where
-anyone on the page adds notes and marks points Confirmed.
+The agenda comes from the page's JSON block. Answers come from the shared
+project store (the STORE_URL written in the page): every point on the page
+has Confirm: Yes and Confirm: No buttons, and a No opens a Notes box.
 
-The record lists every section, item and point in agenda order. Each point
-says whether it was confirmed, by whom and when, and each item carries the
-notes left under it. Those notes are where the answers are, so read a
-confirmed point together with its item's notes before changing any copy.
+The record lists every section, item and point in agenda order:
 
-Confirmations are tied to a point's exact wording. If a point was reworded
-after it was confirmed, its confirmation is listed at the end under
-"Confirmed points no longer in the agenda", with the wording it confirmed.
+    - [x] point   Confirm: Yes
+    - [ ] point   Confirm: No, with its notes indented underneath
+    - [ ] point   not answered
+
+A Yes means the point stands as written, so it can go into the copy as is.
+A No means it doesn't, and the notes say what changes; use the notes, not
+the point's wording, when updating copy. Notes typed under a point that was
+later switched back to Yes are kept and shown too.
+
+Answers are tied to a point's exact wording. If a point was reworded after
+it was answered, its answer is listed at the end under "Answered points no
+longer in the agenda", with the wording that was answered.
 """
 
 import argparse
@@ -53,8 +59,31 @@ def when(ms):
 
 
 def by_whom(c):
-    # Confirming asks for no name, so one is recorded only when the browser had it.
+    # Answering asks for no name, so one is recorded only when the browser had it.
     return " by " + c["by"] if c.get("by") else ""
+
+
+def answer_of(c):
+    # "yes", "no" or None. Records from the earlier single Confirmed button count as yes.
+    if not c:
+        return None
+    if "answer" in c:
+        return c["answer"]
+    return "yes" if c.get("confirmed") else None
+
+
+def answer_lines(text, c, prefix=""):
+    answer = answer_of(c)
+    notes = (c or {}).get("notes", "").strip()
+    if answer == "yes":
+        lines = ["- [x] %s%s  (Confirm: Yes%s, %s)" % (prefix, text, by_whom(c), when(c.get("at")))]
+    elif answer == "no":
+        lines = ["- [ ] %s%s  (Confirm: No%s, %s)" % (prefix, text, by_whom(c), when(c.get("at")))]
+    else:
+        lines = ["- [ ] %s%s" % (prefix, text)]
+    if notes:
+        lines.append("  Notes: " + notes.replace("\n", "\n  "))
+    return lines
 
 
 def points_of(details, info=False):
@@ -103,7 +132,7 @@ def main():
 
     used = set()
     out = ["# %s · %s" % (agenda.get("title", "Meeting"), agenda.get("date", "")), ""]
-    out.append("Record generated %s from the shared notes store. [x] marks a confirmed point." %
+    out.append("Record generated %s from the shared store. [x] is Confirm: Yes; Confirm: No points carry their notes." %
                datetime.datetime.now().strftime("%b %-d, %Y %-I:%M %p"))
     for sec in agenda.get("sections", []):
         out += ["", "## " + sec.get("title", "")]
@@ -119,12 +148,9 @@ def main():
                     out.append(("- " if info else "") + text)
                     continue
                 key = item["id"] + "~" + text_key(text)
-                c = confirms.get(key)
                 used.add(key)
-                if c and c.get("confirmed"):
-                    out.append("- [x] %s  (confirmed%s, %s)" % (text, by_whom(c), when(c.get("at"))))
-                else:
-                    out.append("- [ ] " + text)
+                out += answer_lines(text, confirms.get(key))
+            # Item-level notes from before the Confirm buttons, if any were left.
             item_notes = notes.get(item["id"], [])
             if item_notes:
                 out += ["", "Notes:"]
@@ -133,13 +159,12 @@ def main():
                     edited = " (edited)" if n.get("editedAt") else ""
                     out.append("- %s, %s%s: %s" % (n.get("name") or "Someone", when(n.get("at")), edited, body))
 
-    orphans = [c for k, c in confirms.items() if k not in used and c.get("confirmed")]
+    orphans = [c for k, c in confirms.items() if k not in used and (answer_of(c) or (c.get("notes") or "").strip())]
     if orphans:
-        out += ["", "## Confirmed points no longer in the agenda", "",
-                "These were confirmed, then the wording on the page changed. This is the wording that was confirmed."]
+        out += ["", "## Answered points no longer in the agenda", "",
+                "These were answered, then the wording on the page changed. This is the wording that was answered."]
         for c in orphans:
-            out.append("- [x] %s / %s: %s  (confirmed%s, %s)" % (
-                c.get("section", ""), c.get("itemTitle", ""), c.get("text", ""), by_whom(c), when(c.get("at"))))
+            out += answer_lines(c.get("text", ""), c, "%s / %s: " % (c.get("section", ""), c.get("itemTitle", "")))
 
     text = "\n".join(out) + "\n"
     if args.out:

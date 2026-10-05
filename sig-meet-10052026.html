@@ -89,7 +89,7 @@
   h1{font-family:var(--ff-display);font-size:clamp(2.6rem,8vw,4.294rem);line-height:1.2;color:var(--text-default);}
   h6{font-family:var(--ff-subhead);font-size:1.412rem;line-height:1.4;color:var(--text-default);margin:0;}
 
-  /* Shown above the sections only when notes can't load */
+  /* Shown above the sections only when answers can't load */
   .notes-status{margin:0 0 .75rem;font-family:var(--ff-inter);font-size:.75rem;color:var(--danger);}
   .notes-status:empty{margin:0;}
 
@@ -166,13 +166,6 @@
   .item-head:focus-visible{outline:2px solid var(--color5-300);outline-offset:4px;}
   .item{display:block;flex:1;min-width:0;color:var(--text-neutral-light);font-size:1.118rem;overflow-wrap:anywhere;transition:color var(--ease-ui);}
   .item-head:hover .item{color:var(--text-default);}
-  .note-count{
-    flex:none;align-self:center;
-    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;line-height:1.4;
-    color:var(--color5-300);
-    border:1px solid var(--color5-700);border-radius:999px;
-    padding:.05rem .5rem;
-  }
   .item-body{padding:.25rem 0 .5rem;}
 
   .item-note{
@@ -195,9 +188,9 @@
   .item-details ul li + li{margin-top:.5rem;}
   .item-details ul li::marker{color:var(--color5-500);}
 
-  /* Confirmed points */
-  .confirm-slot{display:inline-flex;vertical-align:baseline;margin-left:.5rem;}
-  .confirm-slot:empty{display:none;}
+  /* Confirm: Yes / Confirm: No on each point, and the Notes box a No opens */
+  .confirm-pair{display:inline-flex;gap:.35rem;margin-left:.5rem;vertical-align:baseline;white-space:nowrap;}
+  .confirm-pair:empty{display:none;}
   .confirm-btn{
     -webkit-appearance:none;appearance:none;
     background:none;
@@ -205,18 +198,32 @@
     padding:.05rem .55rem;
     font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.03em;line-height:1.45;
     color:var(--neutral-500);
-    white-space:nowrap;
     cursor:pointer;
     transition:color var(--ease-ui),border-color var(--ease-ui),background var(--ease-ui);
   }
   .confirm-btn:hover{color:var(--color5-300);border-color:var(--color5-300);}
   .confirm-btn:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
-  .confirm-btn.is-on{background:var(--color5-700);border-color:var(--color5-700);color:var(--color5-50);}
-  .confirm-tag{
-    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.03em;line-height:1.45;
-    color:var(--color5-300);
-    white-space:nowrap;
+  .confirm-btn.is-yes.is-on{background:var(--color5-700);border-color:var(--color5-700);color:var(--color5-50);}
+  .confirm-btn.is-no.is-on{background:var(--color3-700);border-color:var(--color3-700);color:var(--neutral-50);}
+  .point-notes{margin:.65rem 0 .25rem;max-width:620px;}
+  .point-notes-label{
+    display:block;margin:0 0 .35rem;
+    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--text-muted);
   }
+  .point-notes-input{
+    display:block;width:100%;
+    min-height:8rem;resize:vertical;
+    background:var(--color1-900);
+    border:1px solid var(--neutral-800);
+    color:var(--neutral-100);
+    font-family:var(--ff-inter);font-size:.9375rem;line-height:1.55;
+    padding:.7rem .8rem;
+    transition:border-color var(--ease-ui);
+  }
+  .point-notes-input:focus{outline:none;border-color:var(--color5-400);}
+  .point-notes-status{display:block;min-height:1.1em;margin-top:.3rem;font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);}
+  .point-notes-status[data-state="error"]{color:var(--danger);}
 
   /* Attachments */
   .attach{display:flex;flex-wrap:wrap;align-items:center;gap:.625rem;margin-top:.75rem;}
@@ -243,58 +250,6 @@
   }
   .attachment-pill:hover{color:var(--color5-300);}
   .attachment-pill:focus-visible{outline:2px solid var(--color5-300);outline-offset:3px;}
-
-  /* Shared notes: set in Inter so live answers read apart from the agenda */
-  .notes{margin-top:1.25rem;max-width:620px;}
-  .notes-label{
-    margin:0 0 .6rem;
-    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
-    color:var(--text-muted);
-  }
-  .note-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.85rem;}
-  .note-list:not(:empty){margin-bottom:.9rem;}
-  .note-entry{border-left:2px solid var(--color5-700);padding:.1rem 0 .1rem .75rem;}
-  .note-entry.is-pending{opacity:.6;}
-  .note-meta{
-    display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .6rem;
-    font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);
-  }
-  .note-meta b{font-weight:500;color:var(--color5-300);}
-  .note-text{
-    margin-top:.2rem;
-    font-family:var(--ff-inter);font-size:.9375rem;line-height:1.55;
-    color:var(--neutral-100);
-    white-space:pre-wrap;overflow-wrap:anywhere;
-  }
-  .note-form{display:flex;flex-direction:column;gap:.5rem;}
-  .note-input{
-    width:100%;
-    min-height:3.1rem;
-    resize:vertical;
-    background:var(--color1-900);
-    border:1px solid var(--neutral-800);
-    color:var(--neutral-100);
-    font-family:var(--ff-inter);font-size:.9375rem;line-height:1.5;
-    padding:.6rem .75rem;
-    transition:border-color var(--ease-ui);
-  }
-  .note-input::placeholder{color:var(--neutral-500);}
-  .note-input:focus{outline:none;border-color:var(--color5-400);}
-  .note-form-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;}
-  .note-who{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .5rem;font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);}
-  .note-who b{font-weight:500;color:var(--color5-300);}
-  .note-name{
-    width:12rem;max-width:100%;
-    background:var(--color1-900);
-    border:1px solid var(--neutral-800);
-    color:var(--neutral-100);
-    font-family:var(--ff-inter);font-size:.8125rem;
-    padding:.45rem .6rem;
-  }
-  .note-name::placeholder{color:var(--neutral-500);}
-  .note-name:focus{outline:none;border-color:var(--color5-400);}
-  .note-error{margin:0;font-family:var(--ff-inter);font-size:.75rem;color:var(--danger);}
-  .note-error:empty{display:none;}
 
   .ghost{
     background:none;
@@ -465,7 +420,7 @@
   .editing .wrap{padding-bottom:9rem;}
 
   @media print{
-    .edit-bar,.unlock,.toast,.caret,.notes-status,.note-form{display:none !important;}
+    .edit-bar,.unlock,.toast,.caret,.notes-status,.confirm-btn:not(.is-on){display:none !important;}
     .sec-body[hidden],.item-body[hidden]{display:block !important;}
   }
 </style>
@@ -484,17 +439,14 @@
   with #edit and unlock with a GitHub token) rewrites this block and
   commits the file back to lindsay-dev-creative/SIG.
 
-  Meeting notes do NOT live here. Anyone viewing the page can add them,
-  and they are kept in the shared project store (STORE_URL below, the
-  Apps Script in apps-script/sig-project-store.gs) as records of kind
-  "meetnote", tied to an item by its id. Keep item ids stable.
-
-  Confirmations are kept the same way, as records of kind "meetconfirm":
-  one per bullet, holding the bullet's exact text, who confirmed it, when,
-  and every confirm and undo. Anyone on the page can confirm a point; no
-  name is asked for, and it's recorded only if that browser already has one.
-  meeting-record.py turns notes and
-  confirmations into a Markdown record of the meeting.
+  Answers do NOT live here. Each point gets Confirm: Yes and Confirm: No
+  buttons, and a No opens a Notes box. Answers and notes are kept in the
+  shared project store (STORE_URL below, the Apps Script in
+  apps-script/sig-project-store.gs) as records of kind "meetconfirm": one
+  per point, holding the point's exact text, the answer, the notes, when,
+  and every change. Anyone on the page can answer; no name is asked for.
+  Keep item ids stable. meeting-record.py turns the agenda and the
+  answers into a Markdown record of the meeting.
 -->
 <script type="application/json" id="page-data">
 {
@@ -1126,16 +1078,15 @@
   var TOKEN_KEY = "sig_meet_gh_token";   /* shared with the other meeting pages */
   var MAX_EDGE = 1920;
 
-  /* ---- Shared notes -------------------------------------------------- */
-  // The project store's /exec URL. Until it is filled in, the page shows no notes.
+  /* ---- Shared store -------------------------------------------------- */
+  // The project store's /exec URL, where Confirm: Yes / No answers and their notes are kept.
+  // Until it is filled in, the page shows no Confirm buttons.
   var STORE_URL = "https://script.google.com/macros/s/AKfycbxEMWabX93Ftnlut3ZmCOpWpLDK1GTCp685o6dX9usEaSb_GlhqsZxqxubwqU_31W3aMg/exec";
   var MEETING = "10052026";
-  var NOTE_KIND = "meetnote";
   var POLL_MS = 6000;
   var NAME_KEY = "sig_meet_name";
   var OWNER_NAME = "Lindsay";
   var CONFIRM_KIND = "meetconfirm";
-  var MINE_KEY = "sig_meet_my_notes";
   var OPEN_KEY = "sig_meet_open_" + MEETING;
 
   var ICONS = {
@@ -1286,15 +1237,27 @@
     return h.toString(36);
   }
 
-  // One point that can be confirmed: the text plus a slot for its button or tag.
+  // One point that can be answered: its text, the Confirm: Yes and Confirm: No buttons,
+  // and the Notes box that opens when the answer is No.
   function pointMarkup(ctx, text) {
     var key = ctx.item + "~" + textKey(text);
     points[key] = {item: ctx.item, itemTitle: ctx.itemTitle, section: ctx.section, text: text};
-    return esc(text) + '<span class="confirm-slot" data-confirm="' + esc(key) + '">' + confirmInner(key) + "</span>";
+    if (!STORE_URL) {
+      return esc(text);
+    }
+    var k = esc(key);
+    var c = confirms[key];
+    return esc(text) +
+      '<span class="confirm-pair" data-confirm="' + k + '">' + confirmButtons(key) + "</span>" +
+      '<div class="point-notes" data-notes="' + k + '"' + (c && answerOf(c) === "no" ? "" : " hidden") + ">" +
+        '<label class="point-notes-label" for="pn-' + k + '">Notes</label>' +
+        '<textarea class="point-notes-input" id="pn-' + k + '" rows="5">' + esc((c && c.notes) || "") + "</textarea>" +
+        '<span class="point-notes-status" data-notes-status="' + k + '" aria-live="polite"></span>' +
+      "</div>";
   }
 
   // Lines starting with "- " become a bulleted list; everything else is a paragraph.
-  // Each bullet can be confirmed. An item with no bullets can be confirmed line by line.
+  // Each bullet can be answered. An item with no bullets can be answered line by line.
   function detailsMarkup(text, ctx) {
     var lines = text.split("\n");
     var hasBullets = lines.some(function (line) { return BULLET.test(line); });
@@ -1313,8 +1276,13 @@
         return;
       }
       flushList();
-      if (line.trim()) {
-        out += "<p>" + (hasBullets || ctx.info ? esc(line) : pointMarkup(ctx, line.trim())) + "</p>";
+      if (!line.trim()) {
+        return;
+      }
+      if (hasBullets || ctx.info) {
+        out += "<p>" + esc(line) + "</p>";
+      } else {
+        out += '<div class="point">' + pointMarkup(ctx, line.trim()) + "</div>";
       }
     });
     flushList();
@@ -1332,9 +1300,7 @@
   }
 
   function sectionMeta(sec) {
-    var items = sec.items.filter(function (i) { return !isBlank(i); });
-    var n = items.reduce(function (sum, i) { return sum + notesFor(i.id).length; }, 0);
-    return plural(items.length, "item") + (n ? " · " + plural(n, "note") : "");
+    return plural(sec.items.filter(function (i) { return !isBlank(i); }).length, "item");
   }
 
   function rowMarkup(item, gi, ii) {
@@ -1352,34 +1318,17 @@
       return '<button type="button" class="attachment-pill" data-gi="' + gi + '" data-ii="' + ii + '" data-img="' + k + '" title="View full size">' + esc(img.name || "Image") + "</button>";
     }).join("");
     var attach = (links || pills) ? '<div class="attach">' + links + pills + "</div>" : "";
-    var notes = STORE_URL ? notesBlock(item.id) : "";
-    var body = note + details + attach + notes;
-    var count = notesFor(item.id).length;
+    var body = note + details + attach;
     if (!body) {
       return '<li data-item="' + id + '"><div class="item-head"><span class="item">' + esc(item.text) + "</span></div></li>";
     }
     return '<li data-item="' + id + '">' +
       '<button type="button" class="item-head" aria-expanded="' + isOpen + '" aria-controls="ib-' + id + '">' +
         '<span class="item">' + esc(item.text) + "</span>" +
-        '<span class="note-count" data-count="' + id + '" title="Notes"' + (count ? "" : " hidden") + ">" + count + "</span>" +
         '<span class="caret">' + ICONS.caret + "</span>" +
       "</button>" +
       '<div class="item-body" id="ib-' + id + '"' + (isOpen ? "" : " hidden") + ">" + body + "</div>" +
     "</li>";
-  }
-
-  function notesBlock(itemId) {
-    var id = esc(itemId);
-    return '<div class="notes">' +
-      '<p class="notes-label">Notes</p>' +
-      '<ul class="note-list" data-list="' + id + '"></ul>' +
-      '<form class="note-form" data-form="' + id + '">' +
-        '<textarea class="note-input" id="note-in-' + id + '" rows="2" placeholder="Add a note or an answer" aria-label="Add a note"></textarea>' +
-        '<div class="note-form-row"><span class="note-who" data-who="' + id + '"></span>' +
-        '<button type="submit" class="ghost small">Add note</button></div>' +
-        '<p class="note-error" data-error="' + id + '" role="alert"></p>' +
-      "</form>" +
-    "</div>";
   }
 
   function sectionMarkup(sec, gi) {
@@ -1606,75 +1555,27 @@
     }
     var confirmBtn = event.target.closest(".confirm-btn");
     if (confirmBtn) {
-      toggleConfirm(confirmBtn.parentNode.getAttribute("data-confirm"));
+      setAnswer(confirmBtn.parentNode.getAttribute("data-confirm"), confirmBtn.getAttribute("data-answer"));
+    }
+  });
+
+  app.addEventListener("input", function (event) {
+    if (editing || !event.target.classList.contains("point-notes-input")) {
       return;
     }
-    var act = event.target.closest("[data-act]");
-    if (act) {
-      noteAction(act);
-    }
+    notesInput(event.target.closest(".point-notes").getAttribute("data-notes"), event.target);
   });
 
-  app.addEventListener("submit", function (event) {
-    var form = event.target.closest(".note-form");
-    if (!form || editing) {
-      return;
-    }
-    event.preventDefault();
-    submitNote(form.getAttribute("data-form"));
-  });
+  /* ---- Shared store -------------------------------------------------- */
 
-  app.addEventListener("keydown", function (event) {
-    // Cmd or Ctrl + Enter adds the note; plain Enter starts a new line.
-    if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && event.target.classList.contains("note-input")) {
-      event.preventDefault();
-      var form = event.target.closest(".note-form");
-      if (form) {
-        submitNote(form.getAttribute("data-form"));
-      }
-    }
-    if (event.key === "Enter" && event.target.classList.contains("note-name")) {
-      event.preventDefault();
-      var f = event.target.closest(".note-form");
-      if (f) {
-        submitNote(f.getAttribute("data-form"));
-      }
-    }
-  });
-
-  /* ---- Shared notes -------------------------------------------------- */
-
-  var notes = {};            // note id -> note
   var since = 0;
   var pulling = false;
-  var editingNote = null;    // id of the note open in an inline editor
-  var armedDelete = null;
-  var myName = readLocal(NAME_KEY, "") || "";
-  var people = [];           // names from the store's People tab, offered as suggestions
-  var mine = readLocal(MINE_KEY, []);
+  var myName = readLocal(NAME_KEY, "") || "";   // never asked for; set in browsers that unlock edit mode
 
-  function notesFor(itemId) {
-    return Object.keys(notes).map(function (k) { return notes[k]; })
-      .filter(function (n) { return n.item === itemId; })
-      .sort(function (a, b) { return a.at - b.at; });
-  }
-
-  function isMine(id) {
-    return mine.indexOf(id) !== -1;
-  }
-
-  function markMine(id) {
-    if (!isMine(id)) {
-      mine.push(id);
-      writeLocal(MINE_KEY, mine);
-    }
-  }
-
-  function setNotesStatus(text, isError) {
+  function setStoreStatus(text) {
     var s = document.getElementById("notesStatus");
     if (s) {
       s.textContent = text;
-      s.setAttribute("data-state", isError ? "error" : "");
     }
   }
 
@@ -1687,13 +1588,13 @@
       return res.json();
     }).then(function (res) {
       if (!res || !res.ok) {
-        throw new Error((res && res.error) || "The notes store did not answer");
+        throw new Error((res && res.error) || "The store did not answer");
       }
       return res;
     });
   }
 
-  function pullNotes() {
+  function pullStore() {
     if (!STORE_URL || pulling) {
       return;
     }
@@ -1705,35 +1606,22 @@
         throw new Error("pull failed");
       }
       since = res.now || since;
-      if (res.people && res.people.join() !== people.join()) {
-        people = res.people;
-        fillPeople();
-      }
-      var touched = {};
       (res.records || []).forEach(function (rec) {
         var p = rec.payload || {};
-        if (p.meeting !== MEETING) {
+        if (rec.kind !== CONFIRM_KIND || p.meeting !== MEETING) {
           return;
         }
-        if (rec.kind === CONFIRM_KIND) {
-          confirms[rec.id] = p;
-          refreshConfirm(rec.id);
-          return;
+        // Never replace notes someone is typing here with an older copy from the store.
+        var box = document.getElementById("pn-" + rec.id);
+        if (notesPending[rec.id] || (box && box === document.activeElement)) {
+          p.notes = box ? box.value : (confirms[rec.id] || {}).notes;
         }
-        if (rec.kind !== NOTE_KIND) {
-          return;
-        }
-        if (rec.deleted) {
-          delete notes[rec.id];
-        } else {
-          notes[rec.id] = {id: rec.id, item: p.item, text: p.text || "", name: p.name || "", at: p.at || rec.updatedAt, editedAt: p.editedAt || 0};
-        }
-        touched[p.item] = true;
+        confirms[rec.id] = p;
+        refreshPoint(rec.id);
       });
-      Object.keys(touched).forEach(refreshItemNotes);
-      setNotesStatus("");
+      setStoreStatus("");
     }).catch(function () {
-      setNotesStatus("Notes could not load. Retrying.", true);
+      setStoreStatus("Answers could not load. Retrying.");
     }).then(function () {
       pulling = false;
     });
@@ -1748,306 +1636,135 @@
     return d.toLocaleDateString([], {month: "short", day: "numeric"}) + ", " + time;
   }
 
-  function noteEntry(n) {
-    var li = el("li", "note-entry" + (n.pending ? " is-pending" : ""));
-    li.setAttribute("data-note", n.id);
-    var meta = el("div", "note-meta");
-    meta.appendChild(el("b", null, n.name || "Someone"));
-    meta.appendChild(el("span", null, formatTime(n.at) + (n.editedAt ? " · edited" : "")));
-    if (isMine(n.id) && !n.pending) {
-      var edit = el("button", "link-btn", "Edit");
-      edit.type = "button";
-      edit.setAttribute("data-act", "edit");
-      var del = el("button", "link-btn", "Delete");
-      del.type = "button";
-      del.setAttribute("data-act", "delete");
-      meta.appendChild(edit);
-      meta.appendChild(del);
-    }
-    li.appendChild(meta);
+  /* ---- Confirm: Yes / Confirm: No ------------------------------------ */
 
-    if (editingNote === n.id) {
-      var box = el("div", "note-form");
-      var area = el("textarea", "note-input");
-      area.id = "note-edit-" + n.id;
-      area.value = n.text;
-      area.setAttribute("aria-label", "Edit note");
-      var row = el("div", "note-form-row");
-      var cancel = el("button", "ghost quiet small", "Cancel");
-      cancel.type = "button";
-      cancel.setAttribute("data-act", "cancel");
-      var saveBtn = el("button", "ghost small", "Save");
-      saveBtn.type = "button";
-      saveBtn.setAttribute("data-act", "save");
-      row.appendChild(cancel);
-      row.appendChild(saveBtn);
-      box.appendChild(area);
-      box.appendChild(row);
-      li.appendChild(box);
-    } else {
-      li.appendChild(el("div", "note-text", n.text));
+  var points = {};           // answer key -> the point's text and where it sits
+  var confirms = {};         // answer key -> latest record: answer, notes, and every change in history
+  var notesTimers = {};
+  var notesPending = {};     // answer key -> notes typed here but not saved yet
+
+  // "yes", "no" or null. Records from the earlier single Confirmed button count as yes.
+  function answerOf(c) {
+    if (!c) {
+      return null;
     }
-    return li;
+    if (c.answer !== undefined) {
+      return c.answer;
+    }
+    return c.confirmed ? "yes" : null;
   }
 
-  function renderWho(itemId) {
-    var who = app.querySelector('[data-who="' + itemId + '"]');
-    if (!who) {
-      return;
-    }
-    who.textContent = "";
-    if (myName) {
-      who.appendChild(document.createTextNode("Adding as "));
-      who.appendChild(el("b", null, myName));
-      var change = el("button", "link-btn", "Change");
-      change.type = "button";
-      change.setAttribute("data-act", "rename");
-      who.appendChild(change);
-    } else {
-      var input = el("input", "note-name");
-      input.type = "text";
-      input.id = "note-name-" + itemId;
-      input.placeholder = "Your name";
-      input.autocomplete = "off";
-      input.setAttribute("list", "note-people");
-      input.setAttribute("aria-label", "Your name");
-      who.appendChild(input);
-    }
+  function answerTitle(c, answer) {
+    return (answer === "yes" ? "Confirmed" : "Marked No") + (c.by ? " by " + c.by : "") + ", " + formatTime(c.at) + ". Click again to clear.";
   }
 
-  /* ---- Confirmed points --------------------------------------------- */
-
-  var points = {};           // confirm key -> the point's text and where it sits
-  var confirms = {};         // confirm key -> latest record, with its full history
-
-  function confirmTitle(c) {
-    return "Confirmed" + (c.by ? " by " + c.by : "") + ", " + formatTime(c.at);
-  }
-
-  function confirmInner(key) {
+  function confirmButtons(key) {
     var c = confirms[key];
-    var on = !!(c && c.confirmed);
-    if (!STORE_URL) {
-      return "";
+    var answer = answerOf(c);
+    function button(value, label) {
+      var on = answer === value;
+      return '<button type="button" class="confirm-btn is-' + value + (on ? " is-on" : "") + '" data-answer="' + value + '"' +
+        ' aria-pressed="' + on + '"' + (on ? ' title="' + esc(answerTitle(c, value)) + '"' : "") + ">" + label + "</button>";
     }
-    return '<button type="button" class="confirm-btn' + (on ? " is-on" : "") + '" aria-pressed="' + on + '"' +
-      (on ? ' title="' + esc(confirmTitle(c)) + '. Click to undo."' : ' title="Mark this point confirmed"') + ">" +
-      (on ? "✓ Confirmed" : "Confirmed") + "</button>";
+    return button("yes", "Confirm: Yes") + button("no", "Confirm: No");
   }
 
-  function refreshConfirm(key) {
-    app.querySelectorAll('[data-confirm="' + key + '"]').forEach(function (slot) {
-      slot.innerHTML = confirmInner(key);
-    });
+  function refreshPoint(key) {
+    var pair = app.querySelector('[data-confirm="' + key + '"]');
+    if (pair) {
+      pair.innerHTML = confirmButtons(key);
+    }
+    var wrap = app.querySelector('[data-notes="' + key + '"]');
+    if (wrap) {
+      wrap.hidden = answerOf(confirms[key]) !== "no";
+      var box = document.getElementById("pn-" + key);
+      if (box && box !== document.activeElement && !notesPending[key]) {
+        box.value = (confirms[key] && confirms[key].notes) || "";
+      }
+    }
   }
 
-  function toggleConfirm(key) {
+  function setNotesStatus(key, text, isError) {
+    var status = app.querySelector('[data-notes-status="' + key + '"]');
+    if (status) {
+      status.textContent = text;
+      status.setAttribute("data-state", isError ? "error" : "");
+    }
+  }
+
+  function putAnswer(key, record) {
+    return storeCall({action: "put", kind: CONFIRM_KIND, id: key, actor: myName, payload: record});
+  }
+
+  // Clicking Yes or No sets that answer; clicking the highlighted one again clears it.
+  // Notes are kept either way, and history records every change.
+  function setAnswer(key, value) {
     var point = points[key];
     if (!point || !STORE_URL) {
       return;
     }
     var prev = confirms[key];
-    var on = !(prev && prev.confirmed);
-    var by = myName;   // signed only when this browser already has a name; never asked for
+    var answer = answerOf(prev) === value ? null : value;
     var at = Date.now();
+    var box = document.getElementById("pn-" + key);
     var history = prev && prev.history ? prev.history.slice() : [];
-    history.push({confirmed: on, by: by, at: at});
+    history.push({answer: answer, by: myName, at: at});
     var next = {
-      meeting: MEETING, item: point.item, itemTitle: point.itemTitle, section: point.section,
-      text: point.text, confirmed: on, by: by, at: at, history: history
+      meeting: MEETING, item: point.item, itemTitle: point.itemTitle, section: point.section, text: point.text,
+      answer: answer, notes: box ? box.value : ((prev && prev.notes) || ""), by: myName, at: at, history: history
     };
     confirms[key] = next;
-    refreshConfirm(key);
-    storeCall({action: "put", kind: CONFIRM_KIND, id: key, actor: by, payload: next}).catch(function () {
+    notesPending[key] = false;
+    clearTimeout(notesTimers[key]);
+    refreshPoint(key);
+    if (answer === "no" && box) {
+      box.focus();
+    }
+    putAnswer(key, next).catch(function () {
       if (prev) {
         confirms[key] = prev;
       } else {
         delete confirms[key];
       }
-      refreshConfirm(key);
+      refreshPoint(key);
       flash("Not saved. Check your connection, then try again.");
     });
   }
 
-  function fillPeople() {
-    var list = document.getElementById("note-people");
-    if (!list) {
-      list = el("datalist");
-      list.id = "note-people";
-      document.body.appendChild(list);
-    }
-    list.textContent = "";
-    people.forEach(function (name) {
-      var option = el("option");
-      option.value = name;
-      list.appendChild(option);
-    });
+  // Notes save on their own a moment after typing stops.
+  function notesInput(key, box) {
+    notesPending[key] = true;
+    setNotesStatus(key, "");
+    clearTimeout(notesTimers[key]);
+    notesTimers[key] = setTimeout(function () { saveNotes(key, box); }, 900);
   }
 
-  function refreshItemNotes(itemId) {
-    var list = app.querySelector('[data-list="' + itemId + '"]');
-    if (list && !(editingNote && notes[editingNote] && notes[editingNote].item === itemId)) {
-      list.textContent = "";
-      notesFor(itemId).forEach(function (n) { list.appendChild(noteEntry(n)); });
-    }
-    var count = notesFor(itemId).length;
-    var badge = app.querySelector('[data-count="' + itemId + '"]');
-    if (badge) {
-      badge.textContent = count;
-      badge.hidden = !count;
-    }
-    data.sections.forEach(function (sec) {
-      var has = sec.items.some(function (i) { return i.id === itemId; });
-      var meta = has && app.querySelector('[data-meta="' + sec.id + '"]');
-      if (meta) {
-        meta.textContent = sectionMeta(sec);
-      }
-    });
-  }
-
-  function refreshAllNotes() {
-    data.sections.forEach(function (sec) {
-      sec.items.forEach(function (item) {
-        refreshItemNotes(item.id);
-        renderWho(item.id);
-      });
-    });
-  }
-
-  function showNoteError(itemId, text) {
-    var e = app.querySelector('[data-error="' + itemId + '"]');
-    if (e) {
-      e.textContent = text;
-    }
-  }
-
-  function submitNote(itemId) {
-    var input = document.getElementById("note-in-" + itemId);
-    var nameInput = document.getElementById("note-name-" + itemId);
-    if (!input) {
+  function saveNotes(key, box) {
+    var c = confirms[key];
+    if (!c) {
       return;
     }
-    var text = input.value.trim();
-    showNoteError(itemId, "");
-    if (!myName) {
-      var typed = nameInput ? nameInput.value.trim() : "";
-      if (!typed) {
-        showNoteError(itemId, "Add your name so everyone knows who wrote the note.");
-        if (nameInput) {
-          nameInput.focus();
-        }
-        return;
+    var text = box.value;
+    var next = Object.assign({}, c, {notes: text, notesAt: Date.now()});
+    confirms[key] = next;
+    setNotesStatus(key, "Saving");
+    putAnswer(key, next).then(function () {
+      if (box.value === text) {
+        notesPending[key] = false;
+        setNotesStatus(key, "Saved");
       }
-      myName = typed;
-      writeLocal(NAME_KEY, myName);
-      refreshAllWho();
-    }
-    if (!text) {
-      input.focus();
-      return;
-    }
-    var note = {id: uid("n"), item: itemId, text: text, name: myName, at: Date.now(), editedAt: 0, pending: true};
-    notes[note.id] = note;
-    markMine(note.id);
-    input.value = "";
-    refreshItemNotes(itemId);
-    storeCall({
-      action: "put", kind: NOTE_KIND, id: note.id, actor: myName,
-      payload: {meeting: MEETING, item: itemId, text: text, name: myName, at: note.at}
-    }).then(function () {
-      note.pending = false;
-      refreshItemNotes(itemId);
     }).catch(function () {
-      delete notes[note.id];
-      refreshItemNotes(itemId);
-      var again = document.getElementById("note-in-" + itemId);
-      if (again && !again.value) {
-        again.value = text;
-      }
-      showNoteError(itemId, "Your note did not save. Check your connection, then add it again.");
+      setNotesStatus(key, "Not saved. Check your connection, then type again to retry.", true);
     });
   }
 
-  function refreshAllWho() {
-    data.sections.forEach(function (sec) {
-      sec.items.forEach(function (item) { renderWho(item.id); });
-    });
-  }
-
-  function noteAction(btn) {
-    var act = btn.getAttribute("data-act");
-    if (act === "rename") {
-      myName = "";
-      writeLocal(NAME_KEY, "");
-      refreshAllWho();
-      return;
+  window.addEventListener("beforeunload", function (event) {
+    var unsaved = Object.keys(notesPending).some(function (k) { return notesPending[k]; });
+    if (unsaved) {
+      event.preventDefault();
+      event.returnValue = "";
     }
-    var entry = btn.closest(".note-entry");
-    var id = entry && entry.getAttribute("data-note");
-    var n = id && notes[id];
-    if (!n) {
-      return;
-    }
-    if (act === "edit") {
-      editingNote = id;
-      var list = entry.parentNode;
-      list.replaceChild(noteEntry(n), entry);
-      focusEnd(document.getElementById("note-edit-" + id));
-      return;
-    }
-    if (act === "cancel") {
-      editingNote = null;
-      refreshItemNotes(n.item);
-      return;
-    }
-    if (act === "save") {
-      var area = document.getElementById("note-edit-" + id);
-      var text = area ? area.value.trim() : "";
-      if (!text) {
-        area.focus();
-        return;
-      }
-      var before = {text: n.text, editedAt: n.editedAt};
-      n.text = text;
-      n.editedAt = Date.now();
-      editingNote = null;
-      refreshItemNotes(n.item);
-      storeCall({
-        action: "put", kind: NOTE_KIND, id: id, actor: myName || n.name,
-        payload: {meeting: MEETING, item: n.item, text: text, name: n.name, at: n.at, editedAt: n.editedAt}
-      }).catch(function () {
-        n.text = before.text;
-        n.editedAt = before.editedAt;
-        refreshItemNotes(n.item);
-        showNoteError(n.item, "Your edit did not save. Check your connection, then try again.");
-      });
-      return;
-    }
-    if (act === "delete") {
-      if (armedDelete !== id) {
-        armedDelete = id;
-        btn.textContent = "Delete this note?";
-        btn.classList.add("is-warning");
-        setTimeout(function () {
-          if (armedDelete === id) {
-            armedDelete = null;
-            btn.textContent = "Delete";
-            btn.classList.remove("is-warning");
-          }
-        }, 4000);
-        return;
-      }
-      armedDelete = null;
-      delete notes[id];
-      refreshItemNotes(n.item);
-      storeCall({action: "del", kind: NOTE_KIND, id: id, actor: myName || n.name, payload: {meeting: MEETING, item: n.item}})
-        .catch(function () {
-          notes[id] = n;
-          refreshItemNotes(n.item);
-          showNoteError(n.item, "The note was not deleted. Check your connection, then try again.");
-        });
-    }
-  }
+  });
 
   /* ---- Edit view ----------------------------------------------------- */
 
@@ -2389,12 +2106,8 @@
       renderEdit();
       return;
     }
-    editingNote = null;
     points = {};
     app.innerHTML = readMarkup(data);
-    if (STORE_URL) {
-      refreshAllNotes();
-    }
   }
 
   /* ---- GitHub saving ------------------------------------------------- */
@@ -2689,7 +2402,7 @@
       return pullLatest();
     }).then(function (latest) {
       storeToken(value);
-      // Only the owner can unlock, so this browser signs its notes and confirmations as Lindsay from now on.
+      // Only the owner can unlock, so this browser signs its answers as Lindsay from now on.
       if (!myName) {
         myName = OWNER_NAME;
         writeLocal(NAME_KEY, myName);
@@ -2710,15 +2423,15 @@
   render();
 
   if (STORE_URL) {
-    pullNotes();
+    pullStore();
     setInterval(function () {
       if (document.visibilityState === "visible") {
-        pullNotes();
+        pullStore();
       }
     }, POLL_MS);
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "visible") {
-        pullNotes();
+        pullStore();
       }
     });
   }
