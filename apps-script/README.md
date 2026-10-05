@@ -78,3 +78,23 @@ Consumer Gmail allows about 100 recipients a day. A Project Update mails
 the whole roster, so that is roughly 20 updates a day. Mentions cost one
 each. Well clear of normal use, but worth remembering before anyone
 scripts something against it.
+
+## Meeting agenda pages
+
+`sig-meet-10052026.html` uses this same store for two kinds of record,
+both tied to the meeting by `payload.meeting` (for example `"10052026"`):
+
+| Kind | One record per | Written by |
+| --- | --- | --- |
+| `meetnote` | note left under an agenda item | anyone on the page |
+| `meetconfirm` | agenda bullet marked Confirmed, with its exact wording, who, when, and every confirm and undo in `history` | Lindsay (the button shows only in browsers that have unlocked edit mode) |
+
+To get the whole meeting as one Markdown file, from the repo root:
+
+```
+python3 meeting-record.py sig-meet-10052026.html -o meet-10052026-record.md
+```
+
+Each point is listed as `[x]` (confirmed, by whom and when) or `[ ]`, and
+each item carries its notes, which is where the answers are. Read a
+confirmed point together with its item's notes before changing any copy.

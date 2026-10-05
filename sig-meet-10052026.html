@@ -199,6 +199,29 @@
   .item-details ul li + li{margin-top:.5rem;}
   .item-details ul li::marker{color:var(--color5-500);}
 
+  /* Confirmed points */
+  .confirm-slot{display:inline-flex;vertical-align:baseline;margin-left:.5rem;}
+  .confirm-slot:empty{display:none;}
+  .confirm-btn{
+    -webkit-appearance:none;appearance:none;
+    background:none;
+    border:1px solid var(--color5-700);border-radius:999px;
+    padding:.05rem .55rem;
+    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.03em;line-height:1.45;
+    color:var(--neutral-500);
+    white-space:nowrap;
+    cursor:pointer;
+    transition:color var(--ease-ui),border-color var(--ease-ui),background var(--ease-ui);
+  }
+  .confirm-btn:hover{color:var(--color5-300);border-color:var(--color5-300);}
+  .confirm-btn:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
+  .confirm-btn.is-on{background:var(--color5-700);border-color:var(--color5-700);color:var(--color5-50);}
+  .confirm-tag{
+    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.03em;line-height:1.45;
+    color:var(--color5-300);
+    white-space:nowrap;
+  }
+
   /* Attachments */
   .attach{display:flex;flex-wrap:wrap;align-items:center;gap:.625rem;margin-top:.75rem;}
   .attach:empty{display:none;}
@@ -469,6 +492,11 @@
   and they are kept in the shared project store (STORE_URL below, the
   Apps Script in apps-script/sig-project-store.gs) as records of kind
   "meetnote", tied to an item by its id. Keep item ids stable.
+
+  Confirmations are kept the same way, as records of kind "meetconfirm":
+  one per bullet, holding the bullet's exact text, who confirmed it, when,
+  and every confirm and undo. meeting-record.py turns notes and
+  confirmations into a Markdown record of the meeting.
 -->
 <script type="application/json" id="page-data">
 {
@@ -893,6 +921,8 @@
   var POLL_MS = 6000;
   var NAME_KEY = "sig_meet_name";
   var OWNER_NAME = "Lindsay";
+  var OWNER_KEY = "sig_meet_owner";      /* set in browsers that have unlocked edit mode */
+  var CONFIRM_KIND = "meetconfirm";
   var MINE_KEY = "sig_meet_my_notes";
   var OPEN_KEY = "sig_meet_open_" + MEETING;
 
@@ -1032,25 +1062,46 @@
     return previews[src] || src;
   }
 
+  var BULLET = /^\s*[-–•]\s+(.*)$/;
+
+  // A short hash of a point's text, so a confirmation stays with the wording it confirmed.
+  function textKey(text) {
+    var h = 5381;
+    for (var i = 0; i < text.length; i++) {
+      h = ((h << 5) + h + text.charCodeAt(i)) >>> 0;
+    }
+    return h.toString(36);
+  }
+
+  // One point that can be confirmed: the text plus a slot for its button or tag.
+  function pointMarkup(ctx, text) {
+    var key = ctx.item + "~" + textKey(text);
+    points[key] = {item: ctx.item, itemTitle: ctx.itemTitle, section: ctx.section, text: text};
+    return esc(text) + '<span class="confirm-slot" data-confirm="' + esc(key) + '">' + confirmInner(key) + "</span>";
+  }
+
   // Lines starting with "- " become a bulleted list; everything else is a paragraph.
-  function detailsMarkup(text) {
+  // Each bullet can be confirmed. An item with no bullets can be confirmed line by line.
+  function detailsMarkup(text, ctx) {
+    var lines = text.split("\n");
+    var hasBullets = lines.some(function (line) { return BULLET.test(line); });
     var out = "";
     var list = [];
     function flushList() {
       if (list.length) {
-        out += "<ul>" + list.map(function (li) { return "<li>" + esc(li) + "</li>"; }).join("") + "</ul>";
+        out += "<ul>" + list.map(function (li) { return "<li>" + li + "</li>"; }).join("") + "</ul>";
         list = [];
       }
     }
-    text.split("\n").forEach(function (line) {
-      var bullet = line.match(/^\s*[-–•]\s+(.*)$/);
+    lines.forEach(function (line) {
+      var bullet = line.match(BULLET);
       if (bullet) {
-        list.push(bullet[1]);
+        list.push(pointMarkup(ctx, bullet[1].trim()));
         return;
       }
       flushList();
       if (line.trim()) {
-        out += "<p>" + esc(line) + "</p>";
+        out += "<p>" + (hasBullets ? esc(line) : pointMarkup(ctx, line.trim())) + "</p>";
       }
     });
     flushList();
@@ -1080,7 +1131,7 @@
     var id = esc(item.id);
     var isOpen = !!open.items[item.id];
     var note = item.note ? '<p class="item-note">' + esc(item.note) + "</p>" : "";
-    var details = item.details ? '<div class="item-details">' + detailsMarkup(item.details) + "</div>" : "";
+    var details = item.details ? '<div class="item-details">' + detailsMarkup(item.details, {item: item.id, itemTitle: item.text, section: data.sections[gi].title}) + "</div>" : "";
     var links = item.links.map(function (href) {
       return '<a class="item-link" href="' + esc(safeHref(href)) + '" target="_blank" rel="noopener noreferrer">' + esc(linkLabel(href)) + " ↗</a>";
     }).join("");
@@ -1373,6 +1424,11 @@
       }
       return;
     }
+    var confirmBtn = event.target.closest(".confirm-btn");
+    if (confirmBtn) {
+      toggleConfirm(confirmBtn.parentNode.getAttribute("data-confirm"));
+      return;
+    }
     var act = event.target.closest("[data-act]");
     if (act) {
       noteAction(act);
@@ -1476,7 +1532,15 @@
       var touched = {};
       (res.records || []).forEach(function (rec) {
         var p = rec.payload || {};
-        if (rec.kind !== NOTE_KIND || p.meeting !== MEETING) {
+        if (p.meeting !== MEETING) {
+          return;
+        }
+        if (rec.kind === CONFIRM_KIND) {
+          confirms[rec.id] = p;
+          refreshConfirm(rec.id);
+          return;
+        }
+        if (rec.kind !== NOTE_KIND) {
           return;
         }
         if (rec.deleted) {
@@ -1569,6 +1633,61 @@
       input.setAttribute("aria-label", "Your name");
       who.appendChild(input);
     }
+  }
+
+  /* ---- Confirmed points --------------------------------------------- */
+
+  var points = {};           // confirm key -> the point's text and where it sits
+  var confirms = {};         // confirm key -> latest record, with its full history
+  var ownerBrowser = !!readLocal(OWNER_KEY, false);
+
+  function confirmTitle(c) {
+    return "Confirmed by " + (c.by || "Lindsay") + ", " + formatTime(c.at);
+  }
+
+  function confirmInner(key) {
+    var c = confirms[key];
+    var on = !!(c && c.confirmed);
+    if (ownerBrowser) {
+      return '<button type="button" class="confirm-btn' + (on ? " is-on" : "") + '" aria-pressed="' + on + '"' +
+        (on ? ' title="' + esc(confirmTitle(c)) + '. Click to undo."' : ' title="Mark this point confirmed"') + ">" +
+        (on ? "✓ Confirmed" : "Confirmed") + "</button>";
+    }
+    return on ? '<span class="confirm-tag" title="' + esc(confirmTitle(c)) + '">✓ Confirmed</span>' : "";
+  }
+
+  function refreshConfirm(key) {
+    app.querySelectorAll('[data-confirm="' + key + '"]').forEach(function (slot) {
+      slot.innerHTML = confirmInner(key);
+    });
+  }
+
+  function toggleConfirm(key) {
+    var point = points[key];
+    if (!point || !ownerBrowser || !STORE_URL) {
+      return;
+    }
+    var prev = confirms[key];
+    var on = !(prev && prev.confirmed);
+    var by = myName || OWNER_NAME;
+    var at = Date.now();
+    var history = prev && prev.history ? prev.history.slice() : [];
+    history.push({confirmed: on, by: by, at: at});
+    var next = {
+      meeting: MEETING, item: point.item, itemTitle: point.itemTitle, section: point.section,
+      text: point.text, confirmed: on, by: by, at: at, history: history
+    };
+    confirms[key] = next;
+    refreshConfirm(key);
+    storeCall({action: "put", kind: CONFIRM_KIND, id: key, actor: by, payload: next}).catch(function () {
+      if (prev) {
+        confirms[key] = prev;
+      } else {
+        delete confirms[key];
+      }
+      refreshConfirm(key);
+      flash("Not saved. Check your connection, then try again.");
+    });
   }
 
   function fillPeople() {
@@ -2092,6 +2211,7 @@
       return;
     }
     editingNote = null;
+    points = {};
     app.innerHTML = readMarkup(data);
     syncToggleAll();
     if (STORE_URL) {
@@ -2391,7 +2511,10 @@
       return pullLatest();
     }).then(function (latest) {
       storeToken(value);
-      // Only the owner can unlock, so this browser signs its notes as Lindsay from now on.
+      // Only the owner can unlock, so this browser signs its notes as Lindsay from now on
+      // and gets the Confirmed buttons.
+      ownerBrowser = true;
+      writeLocal(OWNER_KEY, true);
       if (!myName) {
         myName = OWNER_NAME;
         writeLocal(NAME_KEY, myName);
