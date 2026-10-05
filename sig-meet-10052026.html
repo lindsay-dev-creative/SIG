@@ -24,7 +24,7 @@
     --ff-inter:"inter-18pt","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 
     --fw-display:400; --fw-subhead:400;
-    --fw-base-normal:300; --fw-sm-normal:300; --fw-sm-link:500;
+    --fw-base-normal:300; --fw-sm-link:500;
     --ease-ui:160ms ease;
 
     --text-default:var(--color5-50);
@@ -55,6 +55,7 @@
     line-height:1.5;
     letter-spacing:.015em;
   }
+  [hidden]{display:none !important;}
 
   .wrap{max-width:64rem;margin:0 auto;padding:2rem 1.25rem 5rem;}
   @media (min-width:700px){ .wrap{padding:3rem 2rem 6rem;} }
@@ -82,74 +83,126 @@
   .btn:focus-visible{outline:2px solid var(--btn-text);outline-offset:3px;}
 
   /* Header */
-  header{padding:1rem 0 1.5rem;margin-bottom:3rem;}
-  h1,h5,h6{font-weight:var(--fw-display);text-transform:uppercase;letter-spacing:.08em;margin:0 0 1.25rem;text-wrap:balance;}
+  header{padding:1rem 0 1.5rem;margin-bottom:2.5rem;}
+  h1,h6{font-weight:var(--fw-display);text-transform:uppercase;letter-spacing:.08em;margin:0 0 1.25rem;text-wrap:balance;}
   h1{font-family:var(--ff-display);font-size:clamp(2.6rem,8vw,4.294rem);line-height:1.2;color:var(--text-default);}
   h6{font-family:var(--ff-subhead);font-size:1.412rem;line-height:1.4;color:var(--text-default);margin:0;}
 
-  /* Sections */
-  .group{margin-bottom:3.25rem;}
-  .group h5{
-    font-family:var(--ff-subhead);
-    font-size:1.419rem;
-    line-height:1.45;
-    color:var(--text-subtle);
-    margin:0 0 1.5rem;
+  /* Toolbar above the sections */
+  .agenda-tools{
+    display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.5rem 1rem;
+    margin:0 0 .75rem;
+    font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);
+  }
+  .notes-status[data-state="error"]{color:var(--danger);}
+
+  .link-btn{
+    -webkit-appearance:none;appearance:none;
+    background:none;border:none;padding:0;
+    font-family:var(--ff-inter);font-size:.75rem;letter-spacing:.02em;
+    color:var(--neutral-500);
+    cursor:pointer;
+    transition:color var(--ease-ui);
+  }
+  .link-btn:hover{color:var(--color5-300);}
+  .link-btn:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
+  .link-btn.is-warning{color:var(--danger);}
+
+  .caret{display:flex;flex:none;align-self:center;color:var(--icon-accent);line-height:0;}
+  .caret svg{display:block;width:14px;height:14px;transition:transform 200ms ease;}
+  [aria-expanded="true"] > .caret svg{transform:rotate(180deg);}
+  @media (prefers-reduced-motion:reduce){ .caret svg{transition:none;} }
+
+  /* Sections: one row each until opened */
+  .group{border-bottom:1px solid var(--border-neutral);}
+  .sec-h{margin:0;font:inherit;}
+  .sec-head{
+    -webkit-appearance:none;appearance:none;
     display:flex;align-items:baseline;gap:1rem;
+    width:100%;
+    padding:1.1rem 0;
+    background:none;border:none;
+    text-align:left;
+    cursor:pointer;
+    font-family:var(--ff-subhead);
+    font-weight:var(--fw-subhead);
+    font-size:1.25rem;
+    line-height:1.4;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-subtle);
+    transition:color var(--ease-ui);
   }
-  .group h5::after{content:"";flex:1;order:1;height:1px;min-width:2rem;background:var(--border-default);}
+  @media (min-width:700px){ .sec-head{font-size:1.5rem;} }
+  .sec-head:hover,.sec-head[aria-expanded="true"]{color:var(--text-default);}
+  .sec-head:focus-visible{outline:2px solid var(--color5-300);outline-offset:4px;}
   .sec-title{min-width:0;overflow-wrap:anywhere;}
-  @media (min-width:700px){ .group h5{font-size:1.5rem;} }
-
-  ol{list-style:none;margin:0;padding:0;}
-  li{display:flex;align-items:baseline;gap:1.25rem;padding:1rem 0 1rem .25rem;border-bottom:1px solid var(--border-neutral);}
-  li:last-child{border-bottom:none;}
-  .row-main{flex:1;min-width:0;}
-  .item-line{display:flex;align-items:baseline;gap:.5rem;}
-  .item{display:block;flex:0 1 auto;min-width:0;color:var(--text-neutral-light);font-size:1.118rem;overflow-wrap:anywhere;}
-
-  .note-flag{
-    -webkit-appearance:none;appearance:none;
-    display:flex;align-items:center;justify-content:center;flex:none;
-    width:16px;height:16px;padding:0;
-    background:none;border:none;color:var(--color5-500);line-height:0;cursor:pointer;
-    transition:color var(--ease-ui);
+  .sec-rule{flex:1;align-self:center;height:1px;min-width:1.5rem;background:var(--color5-700);}
+  .sec-meta{
+    flex:none;
+    font-family:var(--ff-inter);font-size:.75rem;letter-spacing:.02em;text-transform:none;
+    color:var(--neutral-500);
+    white-space:nowrap;
   }
-  .note-flag svg{display:block;width:14px;height:14px;}
-  .note-flag:hover,.note-flag.is-open{color:var(--color5-300);}
-  .note-flag:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
-  .item-note[hidden],.item-details[hidden]{display:none;}
+  @media (max-width:560px){
+    .sec-head{flex-wrap:wrap;gap:.25rem 1rem;}
+    .sec-title{flex:1 1 100%;}
+    .sec-rule{display:none;}
+    .sec-meta{flex:1;}
+  }
+  .sec-body{padding:0 0 1.75rem;}
+  .sec-intro{
+    margin:0 0 .5rem;
+    max-width:62ch;
+    font-style:italic;
+    color:var(--text-muted);
+  }
+
+  /* Items */
+  ol.rows{list-style:none;margin:0;padding:0;}
+  ol.rows > li{padding:.9rem 0 .9rem .25rem;border-bottom:1px solid var(--border-neutral);}
+  ol.rows > li:last-child{border-bottom:none;}
+  .item-head{
+    -webkit-appearance:none;appearance:none;
+    display:flex;align-items:baseline;gap:.75rem;
+    width:100%;
+    padding:0;
+    background:none;border:none;
+    text-align:left;
+    font:inherit;color:inherit;
+    cursor:pointer;
+  }
+  .item-head:focus-visible{outline:2px solid var(--color5-300);outline-offset:4px;}
+  .item{display:block;flex:1;min-width:0;color:var(--text-neutral-light);font-size:1.118rem;overflow-wrap:anywhere;transition:color var(--ease-ui);}
+  .item-head:hover .item{color:var(--text-default);}
+  .note-count{
+    flex:none;align-self:center;
+    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;line-height:1.4;
+    color:var(--color5-300);
+    border:1px solid var(--color5-700);border-radius:999px;
+    padding:.05rem .5rem;
+  }
+  .item-body{padding:.25rem 0 .5rem;}
+
   .item-note{
-    margin-top:.45rem;
-    font-family:var(--ff-sm);font-size:.75rem;line-height:1.45;letter-spacing:.02em;
+    margin:.6rem 0 0;
+    font-family:var(--ff-sm);font-size:.8125rem;line-height:1.5;letter-spacing:.02em;
     color:var(--neutral-400);
-    border-left:1px solid var(--color5-700);
-    padding-left:.6rem;
   }
-
-  .details-toggle{
-    -webkit-appearance:none;appearance:none;
-    flex:none;align-self:flex-start;
-    display:flex;align-items:center;justify-content:center;
-    width:28px;height:28px;padding:0;
-    background:none;border:none;color:var(--icon-accent);line-height:0;cursor:pointer;
-    transition:color var(--ease-ui);
-  }
-  .details-toggle svg{display:block;width:14px;height:14px;transition:transform 200ms ease;}
-  .details-toggle:hover,.details-toggle[aria-expanded="true"]{color:var(--icon-light);}
-  .details-toggle[aria-expanded="true"] svg{transform:rotate(180deg);}
-  .details-toggle:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
-  @media (prefers-reduced-motion:reduce){ .details-toggle svg{transition:none;} }
-
   .item-details{
     margin-top:.75rem;
     padding:.25rem 0 .25rem 1rem;
-    max-width:580px;
+    max-width:620px;
     color:var(--text-neutral);
     border-left:1px solid var(--color5-700);
     overflow-wrap:anywhere;
   }
-  .item-details > div + div{margin-top:1rem;}
+  .item-details > * + *{margin-top:.75rem;}
+  .item-details p{margin:0;}
+  .item-details ul{margin:0;padding-left:1.1rem;list-style:disc;}
+  .item-details ul li{padding-left:.2rem;}
+  .item-details ul li + li{margin-top:.5rem;}
+  .item-details ul li::marker{color:var(--color5-500);}
 
   /* Attachments */
   .attach{display:flex;flex-wrap:wrap;align-items:center;gap:.625rem;margin-top:.75rem;}
@@ -177,6 +230,77 @@
   .attachment-pill:hover{color:var(--color5-300);}
   .attachment-pill:focus-visible{outline:2px solid var(--color5-300);outline-offset:3px;}
 
+  /* Shared notes: set in Inter so live answers read apart from the agenda */
+  .notes{margin-top:1.25rem;max-width:620px;}
+  .notes-label{
+    margin:0 0 .6rem;
+    font-family:var(--ff-inter);font-size:.6875rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .note-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.85rem;}
+  .note-list:not(:empty){margin-bottom:.9rem;}
+  .note-entry{border-left:2px solid var(--color5-700);padding:.1rem 0 .1rem .75rem;}
+  .note-entry.is-pending{opacity:.6;}
+  .note-meta{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .6rem;
+    font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);
+  }
+  .note-meta b{font-weight:500;color:var(--color5-300);}
+  .note-text{
+    margin-top:.2rem;
+    font-family:var(--ff-inter);font-size:.9375rem;line-height:1.55;
+    color:var(--neutral-100);
+    white-space:pre-wrap;overflow-wrap:anywhere;
+  }
+  .note-form{display:flex;flex-direction:column;gap:.5rem;}
+  .note-input{
+    width:100%;
+    min-height:3.1rem;
+    resize:vertical;
+    background:var(--color1-900);
+    border:1px solid var(--neutral-800);
+    color:var(--neutral-100);
+    font-family:var(--ff-inter);font-size:.9375rem;line-height:1.5;
+    padding:.6rem .75rem;
+    transition:border-color var(--ease-ui);
+  }
+  .note-input::placeholder{color:var(--neutral-500);}
+  .note-input:focus{outline:none;border-color:var(--color5-400);}
+  .note-form-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;}
+  .note-who{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .5rem;font-family:var(--ff-inter);font-size:.75rem;color:var(--neutral-500);}
+  .note-who b{font-weight:500;color:var(--color5-300);}
+  .note-name{
+    width:12rem;max-width:100%;
+    background:var(--color1-900);
+    border:1px solid var(--neutral-800);
+    color:var(--neutral-100);
+    font-family:var(--ff-inter);font-size:.8125rem;
+    padding:.45rem .6rem;
+  }
+  .note-name::placeholder{color:var(--neutral-500);}
+  .note-name:focus{outline:none;border-color:var(--color5-400);}
+  .note-error{margin:0;font-family:var(--ff-inter);font-size:.75rem;color:var(--danger);}
+  .note-error:empty{display:none;}
+
+  .ghost{
+    background:none;
+    border:1px solid var(--color5-700);
+    color:var(--color5-300);
+    font-family:var(--ff-inter);
+    font-size:.875rem;
+    font-weight:500;
+    letter-spacing:.033em;
+    padding:.625rem .875rem;
+    cursor:pointer;
+    transition:background var(--ease-ui),color var(--ease-ui),border-color var(--ease-ui);
+  }
+  .ghost:hover{background:var(--color5-400);border-color:var(--color5-400);color:var(--color1-900);}
+  .ghost:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
+  .ghost:disabled{opacity:.5;cursor:default;}
+  .ghost.small{font-size:.8125rem;padding:.45rem .8rem;}
+  .ghost.quiet{border-color:transparent;color:var(--neutral-500);}
+  .ghost.quiet:hover{background:none;border-color:transparent;color:var(--color5-300);}
+
   /* Full size image view */
   .lightbox{
     position:fixed;inset:0;z-index:50;
@@ -194,14 +318,28 @@
   .lightbox-name:empty::before,.lightbox-caption:empty::before{content:attr(data-placeholder);color:var(--color5-500);}
 
   /* ---- Edit mode (only after unlocking with a GitHub token) ---- */
+  .editing .group{border-bottom:none;margin-bottom:3rem;}
+  .edit-sec-head{
+    display:flex;align-items:baseline;gap:1rem;
+    margin:0 0 .75rem;
+    font-family:var(--ff-subhead);font-weight:var(--fw-subhead);
+    font-size:1.419rem;line-height:1.45;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-subtle);
+  }
+  .edit-sec-head::after{content:"";flex:1;order:1;height:1px;min-width:2rem;background:var(--border-default);}
+  .editing .sec-intro{margin-bottom:1rem;}
+  .editing ol.rows > li{display:flex;align-items:baseline;gap:1.25rem;}
+  .row-main{flex:1;min-width:0;}
+
   .editing [contenteditable]{outline:none;border-bottom:1px solid transparent;caret-color:var(--color5-300);transition:border-color var(--ease-ui);}
   .editing [contenteditable]:hover{border-bottom-color:var(--color1-700);}
   .editing [contenteditable]:focus{border-bottom-color:var(--color5-300);}
   .editing [contenteditable]:empty::before{content:attr(data-placeholder);color:var(--text-neutral-muted);}
-  .editing .item-details[contenteditable],.editing .item-note[contenteditable]{border-bottom:none;}
+  .editing .item-details[contenteditable]{border-bottom:none;}
   .editing .item-details[contenteditable]:hover{border-left-color:var(--color5-500);}
-  .editing .item-details[contenteditable]:focus,.editing .item-note[contenteditable]:focus{border-left-color:var(--color5-300);}
+  .editing .item-details[contenteditable]:focus{border-left-color:var(--color5-300);}
   .editing .item-details[contenteditable]:empty::before{color:var(--text-muted);}
+  .editing .item-details > div + div{margin-top:.5rem;}
   .editing .item-note[contenteditable]:empty::before{color:var(--neutral-600);}
 
   .field{
@@ -223,7 +361,7 @@
   .sec-actions,.row-actions{display:flex;align-items:center;gap:.125rem;}
   .sec-actions{order:2;align-self:center;}
   .row-actions{align-self:flex-start;opacity:0;transition:opacity var(--ease-ui);}
-  li:hover .row-actions,li:focus-within .row-actions{opacity:1;}
+  li:hover > .row-actions,li:focus-within > .row-actions{opacity:1;}
   @media (hover:none){ .row-actions{opacity:1;} }
 
   .row-btn,.chip-x{
@@ -268,24 +406,6 @@
   .add-row:focus-visible{outline:2px solid var(--color5-300);outline-offset:3px;}
   .add-section{margin-top:0;font-size:1rem;color:var(--text-subtle);}
   .attach-tools .add-row,.files-bar .add-row{margin-top:0;}
-
-  .ghost{
-    background:none;
-    border:1px solid var(--color5-700);
-    color:var(--color5-300);
-    font-family:var(--ff-inter);
-    font-size:.875rem;
-    font-weight:500;
-    letter-spacing:.033em;
-    padding:.625rem .875rem;
-    cursor:pointer;
-    transition:background var(--ease-ui),color var(--ease-ui),border-color var(--ease-ui);
-  }
-  .ghost:hover{background:var(--color5-400);border-color:var(--color5-400);color:var(--color1-900);}
-  .ghost:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
-  .ghost:disabled{opacity:.5;cursor:default;}
-  .ghost.quiet{border-color:transparent;color:var(--neutral-500);}
-  .ghost.quiet:hover{background:none;border-color:transparent;color:var(--color5-300);}
 
   .edit-bar{
     position:fixed;left:1rem;bottom:1rem;z-index:20;
@@ -332,8 +452,8 @@
   .editing .wrap{padding-bottom:9rem;}
 
   @media print{
-    .edit-bar,.unlock,.toast,.details-toggle,.note-flag{display:none !important;}
-    .item-details[hidden],.item-note[hidden]{display:block !important;}
+    .edit-bar,.unlock,.toast,.caret,.agenda-tools,.note-form{display:none !important;}
+    .sec-body[hidden],.item-body[hidden]{display:block !important;}
   }
 </style>
 </head>
@@ -347,9 +467,14 @@
 
 <!--
   PAGE CONTENT
-  Everything on the page lives in this JSON block. Editing on the page
-  (open the page with #edit and unlock with a GitHub token) rewrites this
-  block and commits the file back to lindsay-dev-creative/SIG.
+  The agenda lives in this JSON block. Editing on the page (open the page
+  with #edit and unlock with a GitHub token) rewrites this block and
+  commits the file back to lindsay-dev-creative/SIG.
+
+  Meeting notes do NOT live here. Anyone viewing the page can add them,
+  and they are kept in the shared project store (STORE_URL below, the
+  Apps Script in apps-script/sig-project-store.gs) as records of kind
+  "meetnote", tied to an item by its id. Keep item ids stable.
 -->
 <script type="application/json" id="page-data">
 {
@@ -367,12 +492,353 @@
   ],
   "sections": [
     {
-      "title": "Item",
+      "id": "dates",
+      "title": "This Week's Dates",
+      "intro": "Quick decisions first. THE CONCIERGE™ date is four days away.",
       "items": [
         {
-          "text": "Item",
+          "id": "concierge-show",
+          "text": "THE CONCIERGE™ public show, October 9",
           "note": "",
-          "details": "- During the September shoot, did we get product packaging shots?\n- We need to go through the images together and pick the feature image for each product. That same image carries through to the product book for the launch, and to the take-home product card if the crop works at that size.",
+          "details": "Confirm whether the tentative October 9 public-show timing is approved or remains an internal planning target.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "heirloom-show",
+          "text": "THE HEIRLOOM™ public show, October 15",
+          "note": "",
+          "details": "Confirm whether the tentative October 15 public-show timing is approved or remains an internal planning target.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "release-sequence",
+          "text": "Release sequence and IP clearance",
+          "note": "",
+          "details": "Matt, confirm the release sequence for THE CONCIERGE™, THE SIGNATURE EDIT™, and THE HEIRLOOM™ so Lindsay does not publish ahead of IP clearance.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "ai-clips",
+          "text": "AI demonstration clips",
+          "note": "",
+          "details": "Matt asked to discuss these on the call. He will start them after the patent work and is aiming for October 15.\n- Confirm the timing and the format.\n- What does Lindsay need now to prepare? (product page thumbnails, launch-party QR codes)",
+          "links": [],
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "assortment",
+      "title": "Launch Assortment, Pricing and SKUs",
+      "intro": "What is on the site November 9 and what it costs. The copy, policy and Shopify decisions that follow build on these answers.",
+      "items": [
+        {
+          "id": "heirloom-assortment",
+          "text": "THE HEIRLOOM™",
+          "note": "",
+          "details": "- Launch variants: Tortoiseshell and Marble.\n- Is the third version on the production sheet launching later?\n- Confirm the retail price: $98.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "signature-assortment",
+          "text": "THE SIGNATURE EDIT™",
+          "note": "",
+          "details": "- Launch variants: Tortoiseshell and Calacatta Viola (in hand for Shoot II).\n- Is the marble always Calacatta Viola?\n- Confirm the Italian Statuario and Buffalo Horn editions launch later.\n- Confirm the retail prices: $128 Tortoiseshell and $148 Calacatta Viola.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "travel-case",
+          "text": "THE SIGNATURE EDIT™ Travel Case",
+          "note": "",
+          "details": "Marked $38 and November 2026 on the production sheet.\n- Is it on the site at launch?\n- Is it sold separately or included?\n- What is the final material?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "concierge-assortment",
+          "text": "THE CONCIERGE™",
+          "note": "",
+          "details": "- Launch variants: Oxblood and Tortoiseshell.\n- Is the crocodile finish launching in November or later?\n- Confirm pricing: $58 Oxblood and $64 Tortoiseshell. An earlier copy note lists $48 and $58.\n- Thymol freshener tablet refills: sold at launch, and at what replacement interval?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "brush-assortment",
+          "text": "THE MRBL ATELIER BRUSH™",
+          "note": "",
+          "details": "- Launch variants: Calacatta Viola, Rosso Levanto, and Verde Alpi.\n- The brush isn't on the SKU list yet.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "night-assortment",
+          "text": "THE NIGHT STANDARD™",
+          "note": "",
+          "details": "- Launch variant: Midnight Blue.\n- The copy says \"Midnight Blue\" but the SKU says Navy. We confirmed with Angel last week the colorway is labeled \"Midnight.\" Which name goes on the site and the SKU?\n- Confirm the retail price: $138.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "reserve",
+          "text": "THE RESERVE™ blades and cartridges",
+          "note": "",
+          "details": "Replacement blades for THE HEIRLOOM™ and THE SIGNATURE EDIT™.\n- Will they be available on November 9?\n- Confirm pack sizes and pricing. The production sheet lists a 4-pack at $28 for each; the product master details also list an 8-pack for THE HEIRLOOM™ at $48, plus Subscribe & Save.\n- How are the two versions distinguished by name on the site?\n- Neither version has a SKU yet.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "patches-sweatshirt",
+          "text": "Awakening Eye Patches and Signature Sweatshirt",
+          "note": "",
+          "details": "Packaging is in hand for both. The eye patches are marked November 2026 on the production sheet.\n- Do they belong to the Heritage Collection or somewhere else?\n- Eye patches: what are they, and what is the price?\n- Are they part of the November launch, and if so, on the site, at the event, or as a gift?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "sku-list",
+          "text": "SKU list check",
+          "note": "",
+          "details": "Does Matt's SKU list in the shared Drive cover everything Shopify needs?",
+          "links": [],
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "copy",
+      "title": "Product Copy and Claims",
+      "intro": "What the site may say about each piece, in the same order as above.",
+      "items": [
+        {
+          "id": "heirloom-copy",
+          "text": "THE HEIRLOOM™",
+          "note": "",
+          "details": "- Approve the replacement for \"weighted handle\" in public copy.\n- Confirm the metal or plating used for the blade assembly and other silver components.\n- Confirm the claims, care language, and views that are safe for the website, especially the underside and blade system.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "signature-copy",
+          "text": "THE SIGNATURE EDIT™",
+          "note": "",
+          "details": "Confirm the public material wording for the Calacatta Viola edition and the approved use-area and safety language for the product page.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "concierge-copy",
+          "text": "THE CONCIERGE™",
+          "note": "",
+          "details": "- Confirm the public wording for the bristles, describing the material (PBT infused with activated carbon) without oral-health or hygiene claims.\n- Confirm the approved public wording for the freshening tablet and how it is housed in the cap.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "brush-copy",
+          "text": "THE MRBL ATELIER BRUSH™",
+          "note": "",
+          "details": "- Did Angel's test on the broken brush support Matt's care instructions, or should anything change?\n- The care instructions mention a bristle cleaning brush. Is one included with the brush, sold separately, or a general recommendation?\n- Are the maple-wood box and all packaging details final and ready for Lindsay's site and collateral work?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "night-copy",
+          "text": "THE NIGHT STANDARD™",
+          "note": "",
+          "details": "- Confirm whether \"mulberry silk\" is accurate and approved, or whether the site should use \"22-momme 6A silk\" only.\n- Silk FAQ: does the answer on silk for skin and hair publish, and in what form?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "marble-provenance",
+          "text": "Marble provenance",
+          "note": "",
+          "details": "- May the site name the Italian quarry regions (Apuan Alps, Ligurian coast, Italian Alps), or should it say \"genuine European-quarried marble\"? Matt's October 3 care wording refers to \"Italian marble.\"\n- Is the cultured marble on THE HEIRLOOM™ noted in the FAQ or only on its product page?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "terminology",
+          "text": "Final names and terminology",
+          "note": "",
+          "details": "Confirm any remaining product names, materials, finish names, claims, or terminology that Lindsay should treat as final across the site, emails, and collateral.",
+          "links": [],
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "policies",
+      "title": "Customer Policies",
+      "intro": "One answer for each, used everywhere: policies, FAQ, and emails.",
+      "items": [
+        {
+          "id": "damage-window",
+          "text": "Damage-reporting window",
+          "note": "",
+          "details": "THE NIGHT STANDARD™ product details say 72 hours, and the website policy draft says 48 hours (30 days was recorded on October 1). Choose one window for every policy, FAQ, and email.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "warranty",
+          "text": "Warranty",
+          "note": "",
+          "details": "- Which pieces carry the Limited Lifetime Workmanship Warranty? The brush and dermaplaner product details say no warranty.\n- What remedy applies to an approved claim?\n- Should it be renamed The Signature Society Craftsmanship Guarantee, with an added normal-wear clause?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "contact-email",
+          "text": "Customer contact email",
+          "note": "",
+          "details": "contact@signaturesociety.com or concierge@signaturesociety.com?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "legal-entity",
+          "text": "Legal entity name",
+          "note": "",
+          "details": "For the privacy policy and checkout: Signature Society, LLC, or Dryfhout Body Grooming, LLC doing business as Signature Society?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "terms",
+          "text": "Terms of Service",
+          "note": "",
+          "details": "Who is drafting it, and when will it be reviewed alongside the Privacy, Returns, Shipping, and Warranty language?",
+          "links": [],
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "commerce",
+      "title": "Website Commerce and Fulfillment",
+      "intro": "These answers affect Lindsay's Shopify structure and the customer experience. Close each decision and name the person who will supply any missing file or list.",
+      "items": [
+        {
+          "id": "shipping-apps",
+          "text": "ShipStation and ShipBob",
+          "note": "",
+          "details": "Lindsay: can the ShipStation app be integrated for launch, and is there anything Marc will need from Lindsay later for the ShipBob API?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "integrations",
+          "text": "Other integrations",
+          "note": "",
+          "details": "Are there any other inventory, tax, tracking, or fulfillment integrations Lindsay must account for now?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "back-in-stock",
+          "text": "Back-in-stock notifications",
+          "note": "",
+          "details": "Offered at launch, and on which pieces?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "lifetime-benefit",
+          "text": "Post-event lifetime 10 percent benefit",
+          "note": "",
+          "details": "Does it require any remaining decisions or testing beyond the approved RSVP-email sign-in and six-digit-code flow?",
+          "links": [],
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "brand",
+      "title": "Brand Language and Taglines",
+      "intro": "Creative decisions. Recommendations are marked.",
+      "items": [
+        {
+          "id": "hero-tagline",
+          "text": "Hero tagline",
+          "note": "",
+          "details": "For the homepage and the @signaturesociety Instagram bio.\n- Recommended: \"The everyday, reconsidered.\"\n- Homepage lockup: The everyday, reconsidered. / Considered pieces for the moments you keep. / Discover the Collection.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "instagram-bio",
+          "text": "Instagram bio",
+          "note": "",
+          "details": "Drafts for discussion, even with the tagline undecided.\n- Evergreen: The everyday, reconsidered. / Self care to silk sleepwear, made to remain. / Designed in Nashville. Founded by @angelinadryfhout\n- Pre-launch: The everyday, reconsidered. / Luxury lifestyle and beauty, from self care to silk sleepwear. / The Heritage Collection arrives November 9.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "sub-taglines",
+          "text": "Sub-taglines by use",
+          "note": "",
+          "details": "- Made to remain. (permanence)\n- Renew what wears. Keep what endures. (replaceable components)\n- What you use every day should be worthy of being seen. (brand philosophy)\n- Your signature is how you care for yourself. (founder and press)\n- Designed in detail, passed as an heirloom. (heirloom standard)\n- Join the Society. (email capture)",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "concierge-line",
+          "text": "THE CONCIERGE™ line",
+          "note": "",
+          "details": "Keep \"Her standards travel with her.\" for brand and campaign use, and add a gender-neutral line for the product page and gifting:\n- \"Well kept. Well traveled.\" (recommended)\n- \"Standards that travel.\"",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "self-care-line",
+          "text": "\"When self care is the occasion\"",
+          "note": "",
+          "details": "Confirm whether this line is approved for website or campaign use.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "scarcity",
+          "text": "Scarcity language",
+          "note": "",
+          "details": "Confirm whether any \"limited run,\" scarcity, or brief-availability language is factually accurate and approved. Do not add it unless Angel and Matt both confirm the commercial position.",
+          "links": [],
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "readiness",
+      "title": "Launch Readiness and Next Steps",
+      "intro": "Close with an owner and a date for everything still open.",
+      "items": [
+        {
+          "id": "packaging-dates",
+          "text": "Packaging dates",
+          "note": "",
+          "details": "Confirm packaging dates for THE SIGNATURE EDIT™ and THE HEIRLOOM™, and which packaging must appear on the site at launch.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "staging-review",
+          "text": "Staging review",
+          "note": "",
+          "details": "Set a staging review date for Morgan and Angel before November 9, covering mobile, checkout, product pages, links, forms, and transactional emails.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "blockers",
+          "text": "Remaining blockers, owners and dates",
+          "note": "",
+          "details": "- Lindsay, identify every remaining blocker to the November 9 website launch and name the person whose answer or asset is needed.\n- What product, packaging, inventory, shipping, or policy information does Lindsay still need, and what is the latest safe date for each item?",
           "links": [],
           "images": []
         }
@@ -394,9 +860,18 @@
   var TOKEN_KEY = "sig_meet_gh_token";   /* shared with the other meeting pages */
   var MAX_EDGE = 1920;
 
+  /* ---- Shared notes -------------------------------------------------- */
+  // The project store's /exec URL. Until it is filled in, the page shows no notes.
+  var STORE_URL = "";
+  var MEETING = "10052026";
+  var NOTE_KIND = "meetnote";
+  var POLL_MS = 6000;
+  var NAME_KEY = "sig_meet_name";
+  var MINE_KEY = "sig_meet_my_notes";
+  var OPEN_KEY = "sig_meet_open_" + MEETING;
+
   var ICONS = {
     image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><circle cx="9" cy="10" r="1.5"/><path d="M4.5 16.5l4.2-4.2 3.3 3.3 2.8-2.4 4.7 4.3"/></svg>',
-    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><path d="M12 7.6v.9"/></svg>',
     caret: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 9.5l5.5 5.5 5.5-5.5"/></svg>',
     plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
@@ -412,6 +887,7 @@
   var editing = false;
   var undoStack = [];
   var previews = {};   // image path -> local data URL, until Pages publishes the file
+  var open = readOpen();
 
   function flash(message) {
     toast.textContent = message;
@@ -422,11 +898,31 @@
     }, 1800);
   }
 
+  function readLocal(key, fallback) {
+    try {
+      var v = JSON.parse(localStorage.getItem(key) || "null");
+      return v == null ? fallback : v;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function writeLocal(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {}
+  }
+
   /* ---- Data ---------------------------------------------------------- */
+
+  function uid(prefix) {
+    return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
 
   function normalizeItem(item) {
     item = item || {};
     return {
+      id: item.id || uid("i"),
       text: item.text || "",
       note: item.note || "",
       details: item.details || "",
@@ -444,9 +940,13 @@
       date: d.date || "",
       links: (d.links || []).map(function (l) { return {label: l.label || "", href: l.href || ""}; }),
       sections: (d.sections || []).map(function (s) {
-        return {title: s.title || "", items: (s.items || []).map(normalizeItem)};
+        return {id: s.id || uid("s"), title: s.title || "", intro: s.intro || "", items: (s.items || []).map(normalizeItem)};
       })
     };
+  }
+
+  function isBlank(item) {
+    return !item.text && !item.note && !item.details && !item.links.length && !item.images.length;
   }
 
   // Before any change that adds, removes or moves something, so Undo can step back.
@@ -456,6 +956,16 @@
       undoStack.shift();
     }
     updateUndo();
+  }
+
+  // Which sections and items this viewer has open. A convenience, kept per browser.
+  function readOpen() {
+    var saved = readLocal(OPEN_KEY, {});
+    return {sections: saved.sections || {}, items: saved.items || {}};
+  }
+
+  function saveOpen() {
+    writeLocal(OPEN_KEY, open);
   }
 
   /* ---- Markup -------------------------------------------------------- */
@@ -496,21 +1006,55 @@
     return previews[src] || src;
   }
 
-  function linesMarkup(text) {
+  // Lines starting with "- " become a bulleted list; everything else is a paragraph.
+  function detailsMarkup(text) {
+    var out = "";
+    var list = [];
+    function flushList() {
+      if (list.length) {
+        out += "<ul>" + list.map(function (li) { return "<li>" + esc(li) + "</li>"; }).join("") + "</ul>";
+        list = [];
+      }
+    }
+    text.split("\n").forEach(function (line) {
+      var bullet = line.match(/^\s*[-–•]\s+(.*)$/);
+      if (bullet) {
+        list.push(bullet[1]);
+        return;
+      }
+      flushList();
+      if (line.trim()) {
+        out += "<p>" + esc(line) + "</p>";
+      }
+    });
+    flushList();
+    return out;
+  }
+
+  function editLinesMarkup(text) {
     return text.split("\n").map(function (line) {
       return "<div>" + (line ? esc(line) : "<br>") + "</div>";
     }).join("");
   }
 
+  function plural(n, word) {
+    return n + " " + word + (n === 1 ? "" : "s");
+  }
+
+  function sectionMeta(sec) {
+    var items = sec.items.filter(function (i) { return !isBlank(i); });
+    var n = items.reduce(function (sum, i) { return sum + notesFor(i.id).length; }, 0);
+    return plural(items.length, "item") + (n ? " · " + plural(n, "note") : "");
+  }
+
   function rowMarkup(item, gi, ii) {
-    // A row left completely blank in edit mode is not shown to the client.
-    if (!item.text && !item.note && !item.details && !item.links.length && !item.images.length) {
+    if (isBlank(item)) {
       return "";
     }
-    var id = "details-" + gi + "-" + ii;
-    var flag = item.note ? '<button type="button" class="note-flag" aria-expanded="false" aria-label="Show the note" title="Show the note">' + ICONS.info + "</button>" : "";
-    var note = item.note ? '<div class="item-note" hidden>' + esc(item.note) + "</div>" : "";
-    var details = item.details ? '<div class="item-details" id="' + id + '" hidden>' + linesMarkup(item.details) + "</div>" : "";
+    var id = esc(item.id);
+    var isOpen = !!open.items[item.id];
+    var note = item.note ? '<p class="item-note">' + esc(item.note) + "</p>" : "";
+    var details = item.details ? '<div class="item-details">' + detailsMarkup(item.details) + "</div>" : "";
     var links = item.links.map(function (href) {
       return '<a class="item-link" href="' + esc(safeHref(href)) + '" target="_blank" rel="noopener noreferrer">' + esc(linkLabel(href)) + " ↗</a>";
     }).join("");
@@ -518,8 +1062,51 @@
       return '<button type="button" class="attachment-pill" data-gi="' + gi + '" data-ii="' + ii + '" data-img="' + k + '" title="View full size">' + esc(img.name || "Image") + "</button>";
     }).join("");
     var attach = (links || pills) ? '<div class="attach">' + links + pills + "</div>" : "";
-    var toggle = item.details ? '<button type="button" class="details-toggle" aria-controls="' + id + '" aria-expanded="false" aria-label="Show details" title="Show details">' + ICONS.caret + "</button>" : "";
-    return '<li><div class="row-main"><div class="item-line"><span class="item">' + esc(item.text) + "</span>" + flag + "</div>" + note + details + attach + "</div>" + toggle + "</li>";
+    var notes = STORE_URL ? notesBlock(item.id) : "";
+    var body = note + details + attach + notes;
+    var count = notesFor(item.id).length;
+    if (!body) {
+      return '<li data-item="' + id + '"><div class="item-head"><span class="item">' + esc(item.text) + "</span></div></li>";
+    }
+    return '<li data-item="' + id + '">' +
+      '<button type="button" class="item-head" aria-expanded="' + isOpen + '" aria-controls="ib-' + id + '">' +
+        '<span class="item">' + esc(item.text) + "</span>" +
+        '<span class="note-count" data-count="' + id + '" title="Notes"' + (count ? "" : " hidden") + ">" + count + "</span>" +
+        '<span class="caret">' + ICONS.caret + "</span>" +
+      "</button>" +
+      '<div class="item-body" id="ib-' + id + '"' + (isOpen ? "" : " hidden") + ">" + body + "</div>" +
+    "</li>";
+  }
+
+  function notesBlock(itemId) {
+    var id = esc(itemId);
+    return '<div class="notes">' +
+      '<p class="notes-label">Notes</p>' +
+      '<ul class="note-list" data-list="' + id + '"></ul>' +
+      '<form class="note-form" data-form="' + id + '">' +
+        '<textarea class="note-input" id="note-in-' + id + '" rows="2" placeholder="Add a note or an answer" aria-label="Add a note"></textarea>' +
+        '<div class="note-form-row"><span class="note-who" data-who="' + id + '"></span>' +
+        '<button type="submit" class="ghost small">Add note</button></div>' +
+        '<p class="note-error" data-error="' + id + '" role="alert"></p>' +
+      "</form>" +
+    "</div>";
+  }
+
+  function sectionMarkup(sec, gi) {
+    var id = esc(sec.id);
+    var isOpen = !!open.sections[sec.id];
+    return '<section class="group" data-sec="' + id + '">' +
+      '<h2 class="sec-h"><button type="button" class="sec-head" aria-expanded="' + isOpen + '" aria-controls="sb-' + id + '">' +
+        '<span class="sec-title">' + esc(sec.title) + "</span>" +
+        '<span class="sec-rule" aria-hidden="true"></span>' +
+        '<span class="sec-meta" data-meta="' + id + '">' + esc(sectionMeta(sec)) + "</span>" +
+        '<span class="caret">' + ICONS.caret + "</span>" +
+      "</button></h2>" +
+      '<div class="sec-body" id="sb-' + id + '"' + (isOpen ? "" : " hidden") + ">" +
+        (sec.intro ? '<p class="sec-intro">' + esc(sec.intro) + "</p>" : "") +
+        '<ol class="rows">' + sec.items.map(function (item, ii) { return rowMarkup(item, gi, ii); }).join("") + "</ol>" +
+      "</div>" +
+    "</section>";
   }
 
   // What the client sees.
@@ -527,13 +1114,11 @@
     var links = d.links.filter(function (l) { return l.href; }).map(function (l) {
       return '<a class="btn" href="' + esc(safeHref(l.href)) + '" target="_blank" rel="noopener noreferrer">' + esc(l.label || linkLabel(l.href)) + "</a>";
     }).join("");
-    var sections = d.sections.map(function (sec, gi) {
-      return '<section class="group"><h5><span class="sec-title">' + esc(sec.title) + "</span></h5><ol>" +
-        sec.items.map(function (item, ii) { return rowMarkup(item, gi, ii); }).join("") + "</ol></section>";
-    }).join("");
     return '<div class="files-bar">' + links + "</div>" +
       "<header><h1>" + esc(d.title) + "</h1><h6>" + esc(d.date) + "</h6></header>" +
-      '<main id="agenda">' + sections + "</main>";
+      '<div class="agenda-tools"><button type="button" class="link-btn" id="toggleAll"></button>' +
+        '<span class="notes-status" id="notesStatus" aria-live="polite"></span></div>' +
+      '<main id="agenda">' + d.sections.map(sectionMarkup).join("") + "</main>";
   }
 
   /* ---- Small DOM helpers --------------------------------------------- */
@@ -571,7 +1156,7 @@
       return;
     }
     node.focus();
-    if (node.tagName === "INPUT") {
+    if (node.tagName === "INPUT" || node.tagName === "TEXTAREA") {
       return;
     }
     var range = document.createRange();
@@ -693,27 +1278,66 @@
 
   /* ---- Read view ----------------------------------------------------- */
 
+  function setExpanded(button, body, isOpen) {
+    button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    body.hidden = !isOpen;
+  }
+
+  function syncToggleAll() {
+    var btn = document.getElementById("toggleAll");
+    if (!btn) {
+      return;
+    }
+    var allOpen = data.sections.every(function (s) { return open.sections[s.id]; });
+    btn.textContent = allOpen ? "Collapse all" : "Expand all sections";
+  }
+
+  function toggleAll() {
+    var allOpen = data.sections.every(function (s) { return open.sections[s.id]; });
+    app.querySelectorAll(".group").forEach(function (group) {
+      var id = group.getAttribute("data-sec");
+      var head = group.querySelector(".sec-head");
+      open.sections[id] = !allOpen;
+      setExpanded(head, document.getElementById(head.getAttribute("aria-controls")), !allOpen);
+    });
+    if (allOpen) {
+      open.items = {};
+      app.querySelectorAll(".item-head").forEach(function (head) {
+        setExpanded(head, document.getElementById(head.getAttribute("aria-controls")), false);
+      });
+    }
+    saveOpen();
+    syncToggleAll();
+  }
+
   app.addEventListener("click", function (event) {
     if (editing) {
       return;
     }
-    var flag = event.target.closest(".note-flag");
-    if (flag) {
-      var note = flag.closest("li").querySelector(".item-note");
-      note.hidden = !note.hidden;
-      flag.classList.toggle("is-open", !note.hidden);
-      flag.title = note.hidden ? "Show the note" : "Hide the note";
-      flag.setAttribute("aria-label", flag.title);
-      flag.setAttribute("aria-expanded", note.hidden ? "false" : "true");
+    if (event.target.closest("#toggleAll")) {
+      toggleAll();
       return;
     }
-    var toggle = event.target.closest(".details-toggle");
-    if (toggle) {
-      var details = document.getElementById(toggle.getAttribute("aria-controls"));
-      details.hidden = !details.hidden;
-      toggle.title = details.hidden ? "Show details" : "Hide details";
-      toggle.setAttribute("aria-label", toggle.title);
-      toggle.setAttribute("aria-expanded", details.hidden ? "false" : "true");
+    var secHead = event.target.closest(".sec-head");
+    if (secHead) {
+      var sid = secHead.closest(".group").getAttribute("data-sec");
+      open.sections[sid] = secHead.getAttribute("aria-expanded") !== "true";
+      setExpanded(secHead, document.getElementById(secHead.getAttribute("aria-controls")), open.sections[sid]);
+      saveOpen();
+      syncToggleAll();
+      return;
+    }
+    var itemHead = event.target.closest(".item-head");
+    if (itemHead && itemHead.tagName === "BUTTON") {
+      var iid = itemHead.closest("li").getAttribute("data-item");
+      var nowOpen = itemHead.getAttribute("aria-expanded") !== "true";
+      if (nowOpen) {
+        open.items[iid] = true;
+      } else {
+        delete open.items[iid];
+      }
+      setExpanded(itemHead, document.getElementById(itemHead.getAttribute("aria-controls")), nowOpen);
+      saveOpen();
       return;
     }
     var pill = event.target.closest(".attachment-pill");
@@ -722,8 +1346,364 @@
       if (image) {
         openLightbox(image, null);
       }
+      return;
+    }
+    var act = event.target.closest("[data-act]");
+    if (act) {
+      noteAction(act);
     }
   });
+
+  app.addEventListener("submit", function (event) {
+    var form = event.target.closest(".note-form");
+    if (!form || editing) {
+      return;
+    }
+    event.preventDefault();
+    submitNote(form.getAttribute("data-form"));
+  });
+
+  app.addEventListener("keydown", function (event) {
+    // Cmd or Ctrl + Enter adds the note; plain Enter starts a new line.
+    if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && event.target.classList.contains("note-input")) {
+      event.preventDefault();
+      var form = event.target.closest(".note-form");
+      if (form) {
+        submitNote(form.getAttribute("data-form"));
+      }
+    }
+    if (event.key === "Enter" && event.target.classList.contains("note-name")) {
+      event.preventDefault();
+      var f = event.target.closest(".note-form");
+      if (f) {
+        submitNote(f.getAttribute("data-form"));
+      }
+    }
+  });
+
+  /* ---- Shared notes -------------------------------------------------- */
+
+  var notes = {};            // note id -> note
+  var since = 0;
+  var pulling = false;
+  var editingNote = null;    // id of the note open in an inline editor
+  var armedDelete = null;
+  var myName = readLocal(NAME_KEY, "") || "";
+  var mine = readLocal(MINE_KEY, []);
+
+  function notesFor(itemId) {
+    return Object.keys(notes).map(function (k) { return notes[k]; })
+      .filter(function (n) { return n.item === itemId; })
+      .sort(function (a, b) { return a.at - b.at; });
+  }
+
+  function isMine(id) {
+    return mine.indexOf(id) !== -1;
+  }
+
+  function markMine(id) {
+    if (!isMine(id)) {
+      mine.push(id);
+      writeLocal(MINE_KEY, mine);
+    }
+  }
+
+  function setNotesStatus(text, isError) {
+    var s = document.getElementById("notesStatus");
+    if (s) {
+      s.textContent = text;
+      s.setAttribute("data-state", isError ? "error" : "");
+    }
+  }
+
+  function storeCall(body) {
+    return fetch(STORE_URL, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify(body)
+    }).then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      if (!res || !res.ok) {
+        throw new Error((res && res.error) || "The notes store did not answer");
+      }
+      return res;
+    });
+  }
+
+  function pullNotes() {
+    if (!STORE_URL || pulling) {
+      return;
+    }
+    pulling = true;
+    fetch(STORE_URL + "?action=pull&since=" + since).then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      if (!res || !res.ok) {
+        throw new Error("pull failed");
+      }
+      since = res.now || since;
+      var touched = {};
+      (res.records || []).forEach(function (rec) {
+        var p = rec.payload || {};
+        if (rec.kind !== NOTE_KIND || p.meeting !== MEETING) {
+          return;
+        }
+        if (rec.deleted) {
+          delete notes[rec.id];
+        } else {
+          notes[rec.id] = {id: rec.id, item: p.item, text: p.text || "", name: p.name || "", at: p.at || rec.updatedAt, editedAt: p.editedAt || 0};
+        }
+        touched[p.item] = true;
+      });
+      Object.keys(touched).forEach(refreshItemNotes);
+      setNotesStatus("Notes update live");
+    }).catch(function () {
+      setNotesStatus("Notes could not load. Retrying.", true);
+    }).then(function () {
+      pulling = false;
+    });
+  }
+
+  function formatTime(ms) {
+    var d = new Date(ms);
+    var time = d.toLocaleTimeString([], {hour: "numeric", minute: "2-digit"});
+    if (d.toDateString() === new Date().toDateString()) {
+      return time;
+    }
+    return d.toLocaleDateString([], {month: "short", day: "numeric"}) + ", " + time;
+  }
+
+  function noteEntry(n) {
+    var li = el("li", "note-entry" + (n.pending ? " is-pending" : ""));
+    li.setAttribute("data-note", n.id);
+    var meta = el("div", "note-meta");
+    meta.appendChild(el("b", null, n.name || "Someone"));
+    meta.appendChild(el("span", null, formatTime(n.at) + (n.editedAt ? " · edited" : "")));
+    if (isMine(n.id) && !n.pending) {
+      var edit = el("button", "link-btn", "Edit");
+      edit.type = "button";
+      edit.setAttribute("data-act", "edit");
+      var del = el("button", "link-btn", "Delete");
+      del.type = "button";
+      del.setAttribute("data-act", "delete");
+      meta.appendChild(edit);
+      meta.appendChild(del);
+    }
+    li.appendChild(meta);
+
+    if (editingNote === n.id) {
+      var box = el("div", "note-form");
+      var area = el("textarea", "note-input");
+      area.id = "note-edit-" + n.id;
+      area.value = n.text;
+      area.setAttribute("aria-label", "Edit note");
+      var row = el("div", "note-form-row");
+      var cancel = el("button", "ghost quiet small", "Cancel");
+      cancel.type = "button";
+      cancel.setAttribute("data-act", "cancel");
+      var saveBtn = el("button", "ghost small", "Save");
+      saveBtn.type = "button";
+      saveBtn.setAttribute("data-act", "save");
+      row.appendChild(cancel);
+      row.appendChild(saveBtn);
+      box.appendChild(area);
+      box.appendChild(row);
+      li.appendChild(box);
+    } else {
+      li.appendChild(el("div", "note-text", n.text));
+    }
+    return li;
+  }
+
+  function renderWho(itemId) {
+    var who = app.querySelector('[data-who="' + itemId + '"]');
+    if (!who) {
+      return;
+    }
+    who.textContent = "";
+    if (myName) {
+      who.appendChild(document.createTextNode("Adding as "));
+      who.appendChild(el("b", null, myName));
+      var change = el("button", "link-btn", "Change");
+      change.type = "button";
+      change.setAttribute("data-act", "rename");
+      who.appendChild(change);
+    } else {
+      var input = el("input", "note-name");
+      input.type = "text";
+      input.id = "note-name-" + itemId;
+      input.placeholder = "Your name";
+      input.autocomplete = "name";
+      input.setAttribute("aria-label", "Your name");
+      who.appendChild(input);
+    }
+  }
+
+  function refreshItemNotes(itemId) {
+    var list = app.querySelector('[data-list="' + itemId + '"]');
+    if (list && !(editingNote && notes[editingNote] && notes[editingNote].item === itemId)) {
+      list.textContent = "";
+      notesFor(itemId).forEach(function (n) { list.appendChild(noteEntry(n)); });
+    }
+    var count = notesFor(itemId).length;
+    var badge = app.querySelector('[data-count="' + itemId + '"]');
+    if (badge) {
+      badge.textContent = count;
+      badge.hidden = !count;
+    }
+    data.sections.forEach(function (sec) {
+      var has = sec.items.some(function (i) { return i.id === itemId; });
+      var meta = has && app.querySelector('[data-meta="' + sec.id + '"]');
+      if (meta) {
+        meta.textContent = sectionMeta(sec);
+      }
+    });
+  }
+
+  function refreshAllNotes() {
+    data.sections.forEach(function (sec) {
+      sec.items.forEach(function (item) {
+        refreshItemNotes(item.id);
+        renderWho(item.id);
+      });
+    });
+  }
+
+  function showNoteError(itemId, text) {
+    var e = app.querySelector('[data-error="' + itemId + '"]');
+    if (e) {
+      e.textContent = text;
+    }
+  }
+
+  function submitNote(itemId) {
+    var input = document.getElementById("note-in-" + itemId);
+    var nameInput = document.getElementById("note-name-" + itemId);
+    if (!input) {
+      return;
+    }
+    var text = input.value.trim();
+    showNoteError(itemId, "");
+    if (!myName) {
+      var typed = nameInput ? nameInput.value.trim() : "";
+      if (!typed) {
+        showNoteError(itemId, "Add your name so everyone knows who wrote the note.");
+        if (nameInput) {
+          nameInput.focus();
+        }
+        return;
+      }
+      myName = typed;
+      writeLocal(NAME_KEY, myName);
+      refreshAllWho();
+    }
+    if (!text) {
+      input.focus();
+      return;
+    }
+    var note = {id: uid("n"), item: itemId, text: text, name: myName, at: Date.now(), editedAt: 0, pending: true};
+    notes[note.id] = note;
+    markMine(note.id);
+    input.value = "";
+    refreshItemNotes(itemId);
+    storeCall({
+      action: "put", kind: NOTE_KIND, id: note.id, actor: myName,
+      payload: {meeting: MEETING, item: itemId, text: text, name: myName, at: note.at}
+    }).then(function () {
+      note.pending = false;
+      refreshItemNotes(itemId);
+    }).catch(function () {
+      delete notes[note.id];
+      refreshItemNotes(itemId);
+      var again = document.getElementById("note-in-" + itemId);
+      if (again && !again.value) {
+        again.value = text;
+      }
+      showNoteError(itemId, "Your note did not save. Check your connection, then add it again.");
+    });
+  }
+
+  function refreshAllWho() {
+    data.sections.forEach(function (sec) {
+      sec.items.forEach(function (item) { renderWho(item.id); });
+    });
+  }
+
+  function noteAction(btn) {
+    var act = btn.getAttribute("data-act");
+    if (act === "rename") {
+      myName = "";
+      writeLocal(NAME_KEY, "");
+      refreshAllWho();
+      return;
+    }
+    var entry = btn.closest(".note-entry");
+    var id = entry && entry.getAttribute("data-note");
+    var n = id && notes[id];
+    if (!n) {
+      return;
+    }
+    if (act === "edit") {
+      editingNote = id;
+      var list = entry.parentNode;
+      list.replaceChild(noteEntry(n), entry);
+      focusEnd(document.getElementById("note-edit-" + id));
+      return;
+    }
+    if (act === "cancel") {
+      editingNote = null;
+      refreshItemNotes(n.item);
+      return;
+    }
+    if (act === "save") {
+      var area = document.getElementById("note-edit-" + id);
+      var text = area ? area.value.trim() : "";
+      if (!text) {
+        area.focus();
+        return;
+      }
+      var before = {text: n.text, editedAt: n.editedAt};
+      n.text = text;
+      n.editedAt = Date.now();
+      editingNote = null;
+      refreshItemNotes(n.item);
+      storeCall({
+        action: "put", kind: NOTE_KIND, id: id, actor: myName || n.name,
+        payload: {meeting: MEETING, item: n.item, text: text, name: n.name, at: n.at, editedAt: n.editedAt}
+      }).catch(function () {
+        n.text = before.text;
+        n.editedAt = before.editedAt;
+        refreshItemNotes(n.item);
+        showNoteError(n.item, "Your edit did not save. Check your connection, then try again.");
+      });
+      return;
+    }
+    if (act === "delete") {
+      if (armedDelete !== id) {
+        armedDelete = id;
+        btn.textContent = "Delete this note?";
+        btn.classList.add("is-warning");
+        setTimeout(function () {
+          if (armedDelete === id) {
+            armedDelete = null;
+            btn.textContent = "Delete";
+            btn.classList.remove("is-warning");
+          }
+        }, 4000);
+        return;
+      }
+      armedDelete = null;
+      delete notes[id];
+      refreshItemNotes(n.item);
+      storeCall({action: "del", kind: NOTE_KIND, id: id, actor: myName || n.name, payload: {meeting: MEETING, item: n.item}})
+        .catch(function () {
+          notes[id] = n;
+          refreshItemNotes(n.item);
+          showNoteError(n.item, "The note was not deleted. Check your connection, then try again.");
+        });
+    }
+  }
 
   /* ---- Edit view ----------------------------------------------------- */
 
@@ -818,7 +1798,6 @@
     var li = el("li");
     var main = el("div", "row-main");
 
-    var line = el("div", "item-line");
     var span = el("span", "item", item.text);
     editableLine(span, "Item title", "Item title", function (t) { item.text = t; }, function (event) {
       if (event.key === "Enter") {
@@ -830,28 +1809,26 @@
         focusItem(gi, ii + 1);
         return true;
       }
-      if (event.key === "Backspace" && !span.textContent.trim() && items.length > 1 &&
-          !item.details && !item.note && !item.links.length && !item.images.length) {
+      if (event.key === "Backspace" && !span.textContent.trim() && items.length > 1 && isBlank(item)) {
         event.preventDefault();
         remove(items, ii);
         focusItem(gi, Math.max(0, ii - 1));
         return true;
       }
     });
-    line.appendChild(span);
-    main.appendChild(line);
+    main.appendChild(span);
 
-    var note = el("div", "item-note", item.note);
-    editableLine(note, "Add a note (optional, opens from the info icon)", "Item note", function (t) { item.note = t; });
+    var note = el("p", "item-note", item.note);
+    editableLine(note, "Add a short note (optional)", "Item note", function (t) { item.note = t; });
     main.appendChild(note);
 
     var details = el("div", "item-details");
-    details.innerHTML = item.details ? linesMarkup(item.details) : "";
+    details.innerHTML = item.details ? editLinesMarkup(item.details) : "";
     details.contentEditable = "true";
     details.setAttribute("role", "textbox");
     details.setAttribute("aria-multiline", "true");
     details.setAttribute("aria-label", "Item details");
-    details.setAttribute("data-placeholder", "Add details (optional)");
+    details.setAttribute("data-placeholder", "Add details (optional). Start a line with - for a bullet.");
     details.addEventListener("input", function () {
       item.details = details.innerText.replace(/\n{2,}/g, "\n").trim();
       save();
@@ -928,7 +1905,7 @@
     main.appendChild(attach);
 
     var tools = el("div", "attach-tools");
-    var linkField = textField("link-new-" + gi + "-" + ii, "", "Paste a link and press Enter", "Add a link to this item");
+    var linkField = textField("link-new-" + item.id, "", "Paste a link and press Enter", "Add a link to this item");
     linkField.addEventListener("keydown", function (event) {
       if (event.key !== "Enter") {
         return;
@@ -969,7 +1946,7 @@
     var sections = data.sections;
     var sec = sections[gi];
     var section = el("section", "group");
-    var h = el("h5");
+    var h = el("h2", "edit-sec-head");
     var title = el("span", "sec-title", sec.title);
     editableLine(title, "Section title", "Section title", function (t) { sec.title = t; });
     h.appendChild(title);
@@ -989,7 +1966,11 @@
     h.appendChild(actions);
     section.appendChild(h);
 
-    var ol = el("ol");
+    var intro = el("p", "sec-intro", sec.intro);
+    editableLine(intro, "Short intro shown when the section opens (optional)", "Section intro", function (t) { sec.intro = t; });
+    section.appendChild(intro);
+
+    var ol = el("ol", "rows");
     sec.items.forEach(function (_, ii) { ol.appendChild(rowEditor(gi, ii)); });
     section.appendChild(ol);
     section.appendChild(addBtn("Add item", function () {
@@ -1055,7 +2036,7 @@
     app.appendChild(main);
     app.appendChild(addBtn("Add section", function () {
       snapshot();
-      data.sections.push({title: "", items: [normalizeItem({})]});
+      data.sections.push({id: uid("s"), title: "", intro: "", items: [normalizeItem({})]});
       render();
       save();
       var titles = app.querySelectorAll(".sec-title");
@@ -1066,8 +2047,13 @@
   function render() {
     if (editing) {
       renderEdit();
-    } else {
-      app.innerHTML = readMarkup(data);
+      return;
+    }
+    editingNote = null;
+    app.innerHTML = readMarkup(data);
+    syncToggleAll();
+    if (STORE_URL) {
+      refreshAllNotes();
     }
   }
 
@@ -1377,6 +2363,20 @@
   }
 
   render();
+
+  if (STORE_URL) {
+    pullNotes();
+    setInterval(function () {
+      if (document.visibilityState === "visible") {
+        pullNotes();
+      }
+    }, POLL_MS);
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible") {
+        pullNotes();
+      }
+    });
+  }
 
   window.addEventListener("hashchange", function () {
     if (window.location.hash === "#edit" && !editing) {
