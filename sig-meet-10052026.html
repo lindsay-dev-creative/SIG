@@ -495,7 +495,9 @@
 
   Confirmations are kept the same way, as records of kind "meetconfirm":
   one per bullet, holding the bullet's exact text, who confirmed it, when,
-  and every confirm and undo. meeting-record.py turns notes and
+  and every confirm and undo. Anyone on the page can confirm a point; no
+  name is asked for, and it's recorded only if that browser already has one.
+  meeting-record.py turns notes and
   confirmations into a Markdown record of the meeting.
 -->
 <script type="application/json" id="page-data">
@@ -1136,7 +1138,6 @@
   var POLL_MS = 6000;
   var NAME_KEY = "sig_meet_name";
   var OWNER_NAME = "Lindsay";
-  var OWNER_KEY = "sig_meet_owner";      /* set in browsers that have unlocked edit mode */
   var CONFIRM_KIND = "meetconfirm";
   var MINE_KEY = "sig_meet_my_notes";
   var OPEN_KEY = "sig_meet_open_" + MEETING;
@@ -1855,21 +1856,20 @@
 
   var points = {};           // confirm key -> the point's text and where it sits
   var confirms = {};         // confirm key -> latest record, with its full history
-  var ownerBrowser = !!readLocal(OWNER_KEY, false);
 
   function confirmTitle(c) {
-    return "Confirmed by " + (c.by || "Lindsay") + ", " + formatTime(c.at);
+    return "Confirmed" + (c.by ? " by " + c.by : "") + ", " + formatTime(c.at);
   }
 
   function confirmInner(key) {
     var c = confirms[key];
     var on = !!(c && c.confirmed);
-    if (ownerBrowser) {
-      return '<button type="button" class="confirm-btn' + (on ? " is-on" : "") + '" aria-pressed="' + on + '"' +
-        (on ? ' title="' + esc(confirmTitle(c)) + '. Click to undo."' : ' title="Mark this point confirmed"') + ">" +
-        (on ? "✓ Confirmed" : "Confirmed") + "</button>";
+    if (!STORE_URL) {
+      return "";
     }
-    return on ? '<span class="confirm-tag" title="' + esc(confirmTitle(c)) + '">✓ Confirmed</span>' : "";
+    return '<button type="button" class="confirm-btn' + (on ? " is-on" : "") + '" aria-pressed="' + on + '"' +
+      (on ? ' title="' + esc(confirmTitle(c)) + '. Click to undo."' : ' title="Mark this point confirmed"') + ">" +
+      (on ? "✓ Confirmed" : "Confirmed") + "</button>";
   }
 
   function refreshConfirm(key) {
@@ -1880,12 +1880,12 @@
 
   function toggleConfirm(key) {
     var point = points[key];
-    if (!point || !ownerBrowser || !STORE_URL) {
+    if (!point || !STORE_URL) {
       return;
     }
     var prev = confirms[key];
     var on = !(prev && prev.confirmed);
-    var by = myName || OWNER_NAME;
+    var by = myName;   // signed only when this browser already has a name; never asked for
     var at = Date.now();
     var history = prev && prev.history ? prev.history.slice() : [];
     history.push({confirmed: on, by: by, at: at});
@@ -2727,10 +2727,7 @@
       return pullLatest();
     }).then(function (latest) {
       storeToken(value);
-      // Only the owner can unlock, so this browser signs its notes as Lindsay from now on
-      // and gets the Confirmed buttons.
-      ownerBrowser = true;
-      writeLocal(OWNER_KEY, true);
+      // Only the owner can unlock, so this browser signs its notes and confirmations as Lindsay from now on.
       if (!myName) {
         myName = OWNER_NAME;
         writeLocal(NAME_KEY, myName);

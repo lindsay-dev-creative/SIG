@@ -7,7 +7,7 @@ Turn a meeting agenda page and its shared notes into one Markdown record.
 
 The agenda comes from the page's JSON block. Notes and confirmations come
 from the shared project store (the STORE_URL written in the page), where
-anyone on the page adds notes and Lindsay marks points Confirmed.
+anyone on the page adds notes and marks points Confirmed.
 
 The record lists every section, item and point in agenda order. Each point
 says whether it was confirmed, by whom and when, and each item carries the
@@ -50,6 +50,11 @@ def when(ms):
     if not ms:
         return ""
     return datetime.datetime.fromtimestamp(ms / 1000).strftime("%b %-d, %Y %-I:%M %p")
+
+
+def by_whom(c):
+    # Confirming asks for no name, so one is recorded only when the browser had it.
+    return " by " + c["by"] if c.get("by") else ""
 
 
 def points_of(details, info=False):
@@ -98,7 +103,7 @@ def main():
 
     used = set()
     out = ["# %s · %s" % (agenda.get("title", "Meeting"), agenda.get("date", "")), ""]
-    out.append("Record generated %s from the shared notes store. [x] marks a point Lindsay confirmed." %
+    out.append("Record generated %s from the shared notes store. [x] marks a confirmed point." %
                datetime.datetime.now().strftime("%b %-d, %Y %-I:%M %p"))
     for sec in agenda.get("sections", []):
         out += ["", "## " + sec.get("title", "")]
@@ -117,7 +122,7 @@ def main():
                 c = confirms.get(key)
                 used.add(key)
                 if c and c.get("confirmed"):
-                    out.append("- [x] %s  (confirmed by %s, %s)" % (text, c.get("by", "Lindsay"), when(c.get("at"))))
+                    out.append("- [x] %s  (confirmed%s, %s)" % (text, by_whom(c), when(c.get("at"))))
                 else:
                     out.append("- [ ] " + text)
             item_notes = notes.get(item["id"], [])
@@ -133,8 +138,8 @@ def main():
         out += ["", "## Confirmed points no longer in the agenda", "",
                 "These were confirmed, then the wording on the page changed. This is the wording that was confirmed."]
         for c in orphans:
-            out.append("- [x] %s / %s: %s  (confirmed by %s, %s)" % (
-                c.get("section", ""), c.get("itemTitle", ""), c.get("text", ""), c.get("by", "Lindsay"), when(c.get("at"))))
+            out.append("- [x] %s / %s: %s  (confirmed%s, %s)" % (
+                c.get("section", ""), c.get("itemTitle", ""), c.get("text", ""), by_whom(c), when(c.get("at"))))
 
     text = "\n".join(out) + "\n"
     if args.out:

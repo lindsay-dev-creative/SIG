@@ -87,7 +87,7 @@ both tied to the meeting by `payload.meeting` (for example `"10052026"`):
 | Kind | One record per | Written by |
 | --- | --- | --- |
 | `meetnote` | note left under an agenda item | anyone on the page |
-| `meetconfirm` | agenda bullet marked Confirmed, with its exact wording, who, when, and every confirm and undo in `history` | Lindsay (the button shows only in browsers that have unlocked edit mode) |
+| `meetconfirm` | agenda bullet marked Confirmed, with its exact wording, who, when, and every confirm and undo in `history` | anyone on the page; no name is asked for, and it's recorded when the browser already has one |
 
 To get the whole meeting as one Markdown file, from the repo root:
 
