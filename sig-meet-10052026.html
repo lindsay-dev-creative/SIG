@@ -152,12 +152,6 @@
     .sec-meta{flex:1;}
   }
   .sec-body{padding:0 0 1.75rem;}
-  .sec-intro{
-    margin:0 0 .5rem;
-    max-width:62ch;
-    font-style:italic;
-    color:var(--text-muted);
-  }
 
   /* Items */
   ol.rows{list-style:none;margin:0;padding:0;}
@@ -328,7 +322,6 @@
     color:var(--text-subtle);
   }
   .edit-sec-head::after{content:"";flex:1;order:1;height:1px;min-width:2rem;background:var(--border-default);}
-  .editing .sec-intro{margin-bottom:1rem;}
   .editing ol.rows > li{display:flex;align-items:baseline;gap:1.25rem;}
   .row-main{flex:1;min-width:0;}
 
@@ -495,7 +488,6 @@
     {
       "id": "dates",
       "title": "This Week's Dates",
-      "intro": "Quick decisions first. THE CONCIERGE™ date is four days away.",
       "items": [
         {
           "id": "concierge-show",
@@ -534,7 +526,6 @@
     {
       "id": "assortment",
       "title": "Launch Assortment, Pricing and SKUs",
-      "intro": "What is on the site November 9 and what it costs. The copy, policy and Shopify decisions that follow build on these answers.",
       "items": [
         {
           "id": "heirloom-assortment",
@@ -613,7 +604,6 @@
     {
       "id": "copy",
       "title": "Product Copy and Claims",
-      "intro": "What the site may say about each piece, in the same order as above.",
       "items": [
         {
           "id": "heirloom-copy",
@@ -668,7 +658,6 @@
     {
       "id": "care",
       "title": "Care and Use",
-      "intro": "How customers should look after each piece.",
       "items": [
         {
           "id": "care-marble",
@@ -715,7 +704,6 @@
     {
       "id": "policies",
       "title": "Customer Policies",
-      "intro": "One answer for each, used everywhere: policies, FAQ, and emails.",
       "items": [
         {
           "id": "damage-window",
@@ -762,7 +750,6 @@
     {
       "id": "commerce",
       "title": "Website Commerce and Fulfillment",
-      "intro": "These answers affect Lindsay's Shopify structure and the customer experience. Close each decision and name the person who will supply any missing file or list.",
       "items": [
         {
           "id": "shipping-apps",
@@ -801,7 +788,6 @@
     {
       "id": "brand",
       "title": "Brand Language and Taglines",
-      "intro": "Creative decisions. Recommendations are marked.",
       "items": [
         {
           "id": "hero-tagline",
@@ -856,7 +842,6 @@
     {
       "id": "readiness",
       "title": "Launch Readiness and Next Steps",
-      "intro": "Close with an owner and a date for everything still open.",
       "items": [
         {
           "id": "packaging-dates",
@@ -981,7 +966,7 @@
       date: d.date || "",
       links: (d.links || []).map(function (l) { return {label: l.label || "", href: l.href || ""}; }),
       sections: (d.sections || []).map(function (s) {
-        return {id: s.id || uid("s"), title: s.title || "", intro: s.intro || "", items: (s.items || []).map(normalizeItem)};
+        return {id: s.id || uid("s"), title: s.title || "", items: (s.items || []).map(normalizeItem)};
       })
     };
   }
@@ -1144,7 +1129,6 @@
         '<span class="caret">' + ICONS.caret + "</span>" +
       "</button></h2>" +
       '<div class="sec-body" id="sb-' + id + '"' + (isOpen ? "" : " hidden") + ">" +
-        (sec.intro ? '<p class="sec-intro">' + esc(sec.intro) + "</p>" : "") +
         '<ol class="rows">' + sec.items.map(function (item, ii) { return rowMarkup(item, gi, ii); }).join("") + "</ol>" +
       "</div>" +
     "</section>";
@@ -2028,10 +2012,6 @@
     h.appendChild(actions);
     section.appendChild(h);
 
-    var intro = el("p", "sec-intro", sec.intro);
-    editableLine(intro, "Short intro shown when the section opens (optional)", "Section intro", function (t) { sec.intro = t; });
-    section.appendChild(intro);
-
     var ol = el("ol", "rows");
     sec.items.forEach(function (_, ii) { ol.appendChild(rowEditor(gi, ii)); });
     section.appendChild(ol);
@@ -2098,7 +2078,7 @@
     app.appendChild(main);
     app.appendChild(addBtn("Add section", function () {
       snapshot();
-      data.sections.push({id: uid("s"), title: "", intro: "", items: [normalizeItem({})]});
+      data.sections.push({id: uid("s"), title: "", items: [normalizeItem({})]});
       render();
       save();
       var titles = app.querySelectorAll(".sec-title");
