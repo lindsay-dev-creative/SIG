@@ -867,6 +867,7 @@
   var NOTE_KIND = "meetnote";
   var POLL_MS = 6000;
   var NAME_KEY = "sig_meet_name";
+  var OWNER_NAME = "Lindsay";
   var MINE_KEY = "sig_meet_my_notes";
   var OPEN_KEY = "sig_meet_open_" + MEETING;
 
@@ -2370,6 +2371,11 @@
       return pullLatest();
     }).then(function (latest) {
       storeToken(value);
+      // Only the owner can unlock, so this browser signs its notes as Lindsay from now on.
+      if (!myName) {
+        myName = OWNER_NAME;
+        writeLocal(NAME_KEY, myName);
+      }
       data = latest;
       editing = true;
       document.body.classList.add("editing");
