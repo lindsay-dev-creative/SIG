@@ -174,17 +174,6 @@
     margin:-1.25rem 0 2.25rem;
     font-family:var(--ff-inter);font-size:.8125rem;color:var(--neutral-500);
   }
-  .edited-tag{
-    display:inline-block;
-    margin-left:.6rem;
-    padding:.05rem .45rem;
-    border:1px solid var(--color5-700);border-radius:999px;
-    font-family:var(--ff-inter);font-size:.625rem;font-weight:500;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;
-    color:var(--color5-300);
-    vertical-align:middle;
-    white-space:nowrap;
-  }
-
   /* Item row: title (opens the item), image icon, arrow */
   .item-row{display:flex;align-items:center;gap:.5rem;}
   .item-row .item-head{flex:1;min-width:0;}
@@ -1593,7 +1582,7 @@
     return '<li data-item="' + id + '">' +
       '<div class="item-row' + (isOpen ? " is-open" : "") + '">' +
         '<button type="button" class="item-head" aria-expanded="' + isOpen + '" aria-controls="ib-' + id + '">' +
-          '<span class="item">' + esc(item.text) + itemTag(item) + "</span>" +
+          '<span class="item">' + esc(item.text) + "</span>" +
         "</button>" +
         icon +
         '<span class="caret item-caret" aria-hidden="true">' + ICONS.caret + "</span>" +
@@ -1606,52 +1595,12 @@
     return !!STORE_URL && Date.now() < EDIT_UNTIL;
   }
 
-  function baseSection(id) {
-    return base.sections.filter(function (s) { return s.id === id; })[0];
-  }
-
-  function baseItem(id) {
-    for (var g = 0; g < base.sections.length; g++) {
-      var hit = base.sections[g].items.filter(function (i) { return i.id === id; })[0];
-      if (hit) {
-        return hit;
-      }
-    }
-    return null;
-  }
-
-  // "New" or "Edited" beside anything that differs from the agenda as published.
-  function tag(word) {
-    return '<span class="edited-tag">' + word + "</span>";
-  }
-
-  function sectionTag(sec) {
-    if (!showingOverlay) {
-      return "";
-    }
-    var b = baseSection(sec.id);
-    return !b ? tag("New") : b.title !== sec.title ? tag("Edited") : "";
-  }
-
-  function itemTag(item) {
-    if (!showingOverlay) {
-      return "";
-    }
-    var b = baseItem(item.id);
-    if (!b) {
-      return tag("New");
-    }
-    var changed = b.text !== item.text || b.details !== item.details || b.note !== item.note ||
-      JSON.stringify(b.links) !== JSON.stringify(item.links);
-    return changed ? tag("Edited") : "";
-  }
-
   function sectionMarkup(sec, gi) {
     var id = esc(sec.id);
     var isOpen = !!open.sections[sec.id];
     return '<section class="group" data-sec="' + id + '">' +
       '<h2 class="sec-h"><button type="button" class="sec-head" aria-expanded="' + isOpen + '" aria-controls="sb-' + id + '">' +
-        '<span class="sec-title">' + esc(sec.title) + sectionTag(sec) + "</span>" +
+        '<span class="sec-title">' + esc(sec.title) + "</span>" +
         '<span class="sec-rule" aria-hidden="true"></span>' +
         '<span class="sec-meta" data-meta="' + id + '">' + esc(sectionMeta(sec)) + "</span>" +
         '<span class="caret">' + ICONS.caret + "</span>" +
