@@ -928,7 +928,34 @@
           "id": "party-status",
           "text": "Where the guest list stands",
           "note": "",
-          "details": "- The Master Invitation List (Google Sheet: Launch Event, GUEST_LIST) is the single source of truth for the guest list.\n- As of October 4: 69 guests mailed, 3 invitations hand-delivered by Angel, 1 sent with the VIP mailing, 46 not yet sent or provided (Angel is mailing about 40 on Monday, October 5), and 12 still unknown.\n- Added per Angel: Brianna (Bri) Burns and Courtney (Court) Adams, both hand-delivered, and Sarah Sullivan, Angel's neighbor.\n- Every guest may bring a plus-one.\n- The RSVP reminder moves to Monday, October 12. The RSVP deadline is now Friday, October 16.\n- The Klaviyo guest list was loaded on September 21 and isn't linked to the sheet, so guests added since then aren't in Klaviyo yet.\n- For Matt: the red and green row colors are gone. Red meant a label was printed, not that an invitation was mailed. Mailing status now lives in Invitation Sent / Provided (W) and Mail Evidence (X). The old colors are saved in File → Version history → \"Before Claude Phase 1 cleanup – Oct 4.\"",
+          "details": "- The Master Invitation List (Google Sheet: Launch Event, GUEST_LIST) is the single source of truth for the guest list.\n- As of October 4: 69 guests mailed, 3 invitations hand-delivered by Angel, 1 sent with the VIP mailing, 46 not yet sent or provided (Angel is mailing about 40 on Monday, October 5), and 12 still unknown.\n- Added per Angel: Brianna (Bri) Burns and Courtney (Court) Adams, both hand-delivered, and Sarah Sullivan, Angel's neighbor.\n- Every guest may bring a plus-one.\n- The RSVP reminder moves to Monday, October 12. The RSVP deadline is now Friday, October 16.\n- For Matt: the red and green row colors are gone. Red meant a label was printed, not that an invitation was mailed. Mailing status now lives in Invitation Sent / Provided (W) and Mail Evidence (X). The old colors are saved in File → Version history → \"Before Claude Phase 1 cleanup – Oct 4.\"",
+          "links": [],
+          "images": [],
+          "info": true
+        },
+        {
+          "id": "party-how",
+          "text": "How RSVPs work now",
+          "note": "",
+          "details": "- A guest fills in the RSVP form on the Coming Soon page, and Klaviyo sends a confirmation email (one version for accepting, one for declining).\n- Klaviyo passes the reply to the master sheet: it's added to the RSVP Log tab, and the guest's row on MASTER INVITE LIST is updated.\n- Every 10 minutes, the sheet sends changes back to Klaviyo: whether the invitation was sent, whether they're attending, and whether they're bringing a guest and who. That keeps the reminder, One Week Away, and Day Of emails going to the right people.\n- New question on the form: after \"Accepts with pleasure,\" it asks \"Will you be bringing a guest?\" A Yes makes the guest's full name required. The answers fill Plus-One Invited? (L) and Plus-One Name (M). The wording can be changed in the theme editor.\n- The sheet wins: an RSVP never overrides the \"Attending Event?\" column. If someone declines on the form and later tells Angel they're coming, the sheet's answer stands.\n- The same answer sent twice by the same person within 6 hours is skipped.\n- Plus-one addresses listed in Column F as \"email (Name)\" are no longer mistaken for the invited guest.\n- If an RSVP doesn't match anyone on the master list, Lindsay and Morgan get an email so it can be fixed by hand.\n- Guests added to the master list go onto the Original Society list in Klaviyo automatically. Guests marked Removed come off it, and go back on if their row is made active again.\n- A name fixed in Klaviyo is never overwritten by the sheet.",
+          "links": [],
+          "images": [],
+          "info": true
+        },
+        {
+          "id": "party-email-schedule",
+          "text": "Who gets which email",
+          "note": "",
+          "details": "- RSVP Reminder: Monday, October 12, 10 AM CT, sent in batches. Goes to guests whose invitation was sent and who haven't replied, about 51 at last check. Guests marked Maybe still get it; guests marked No don't.\n- One Week Away: Saturday, October 31, 10 AM. Accepted guests, about 22 at last check.\n- Day Of: Saturday, November 7, noon. Accepted guests.\n- Shared households get one copy, addressed to the invited person: Stephanie, David, Cindy, and Ashley rather than Grant.\n- Brooke, Holly, and Chris accepted another way, so they don't get the reminder.\n- Katherine Power is left out until her email address is corrected.",
+          "links": [],
+          "images": [],
+          "info": true
+        },
+        {
+          "id": "party-cleanup",
+          "text": "Clean-up done",
+          "note": "",
+          "details": "- The September 22 RSVPs from Grace, Adir, and Camille were tests. They're removed, along with what they changed.\n- Mike's duplicate row is deleted.\n- The four Email 2 cells are filled in, Haley Sluss's row is cleaned up, and Leigh Love's first-name change is confirmed.\n- Hadley's address is updated, and her old one is off the list.\n- A test copy of the reminder was sent to Lindsay, and the plain-text unsubscribe line is fixed.\n- The new guest question was built on a test copy of the theme, then pushed live after approval.",
           "links": [],
           "images": [],
           "info": true
@@ -945,7 +972,7 @@
           "id": "party-contacts",
           "text": "Missing guest details",
           "note": "",
-          "details": "- Matt or Angel: which mailing address was used for Alissa Harb? Two addresses are on file.\n- Angel: an email and mailing address for Sarah Sullivan, and an email for Courtney Adams.",
+          "details": "- Alissa Harb: which mailing address was used? Morgan is confirming on Monday.\n- Angel: an email and mailing address for Sarah Sullivan, and an email for Courtney Adams.\n- Katherine Power: a correct email address for Column D.",
           "links": [],
           "images": []
         },
@@ -958,10 +985,42 @@
           "images": []
         },
         {
-          "id": "party-reminder",
-          "text": "RSVP reminder",
+          "id": "party-earlier-plusones",
+          "text": "Plus-ones for earlier RSVPs",
           "note": "",
-          "details": "- Lindsay: confirm the October 5 reminder is paused and rescheduled for Monday, October 12.\n- Audience: confirmed-invited guests who haven't responded yet, excluding anyone who has RSVP'd and any test profiles.\n- Update every deadline mention to Friday, October 16: the reminder's preview text and body, the RSVP landing page, and the RSVP confirmation email.",
+          "details": "About 25 guests replied before the guest question existed, so we don't know whether they're bringing someone.\n- How should we find out?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "party-plusone-emails",
+          "text": "Plus-one addresses in event emails",
+          "note": "",
+          "details": "Should the sync automatically leave labelled plus-one addresses out of the event emails?",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "party-live-test",
+          "text": "First live RSVP",
+          "note": "",
+          "details": "No real RSVP has gone through the new guest question yet.\n- Confirm the first guest who accepts comes through end to end.",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "party-morgan-text",
+          "text": "Columns L and M for Morgan",
+          "note": "",
+          "details": "Send Morgan the drafted text about Plus-One Invited? (L) and Plus-One Name (M).",
+          "links": [],
+          "images": []
+        },
+        {
+          "id": "party-reminder",
+          "text": "Deadline wording",
+          "note": "",
+          "details": "Lindsay: update every deadline mention to Friday, October 16: the reminder's preview text and body, the RSVP landing page, and the RSVP confirmation email.",
           "links": [],
           "images": []
         },
@@ -969,15 +1028,15 @@
           "id": "party-klaviyo",
           "text": "Klaviyo guest profiles",
           "note": "",
-          "details": "- Lindsay: update the profiles for Kristin Cavallari (new email address), Julia Berolzheimer, Mallory Ervin, and Sazan Hendrix.\n- Add the guests who joined the list after September 21, including Bri Burns, Courtney Adams, and Sarah Sullivan, before the October 12 reminder.",
+          "details": "Lindsay: update the profiles for Kristin Cavallari (new email address), Julia Berolzheimer, Mallory Ervin, and Sazan Hendrix.",
           "links": [],
           "images": []
         },
         {
           "id": "party-emails",
-          "text": "Event emails",
+          "text": "Email greetings",
           "note": "",
-          "details": "- Send the One Week Away email (Saturday, October 31) and the Day Of email (Saturday, November 7) only to accepted guests, using each guest's most recent reply.\n- Check how the greeting reads for RSVPs entered as couples and for guests with no first name on file.",
+          "details": "Check how the greeting reads for RSVPs entered as couples and for guests with no first name on file.",
           "links": [],
           "images": []
         },
@@ -985,15 +1044,15 @@
           "id": "party-matching",
           "text": "RSVP matching",
           "note": "",
-          "details": "- Can the script ignore capitalization, check the additional email columns (E and F), and handle plus-ones?\n- Does it find columns by header name or by position?",
+          "details": "- Can the script ignore capitalization and check the additional email columns (E and F)?\n- Does it find columns by header name or by position?",
           "links": [],
           "images": []
         },
         {
-          "id": "party-sept22",
-          "text": "September 22 RSVP entries",
+          "id": "party-test-theme",
+          "text": "Test theme",
           "note": "",
-          "details": "- Were any of these test submissions?\n- Grace Atwood's reply (accepted, then declined) is on hold.\n- Confirm Adir Abergel's decline and Camille Seven's accept.",
+          "details": "Delete the \"Coming Soon - plus-one test\" theme.",
           "links": [],
           "images": []
         },
@@ -1001,7 +1060,7 @@
           "id": "party-sheet",
           "text": "Working in the master sheet",
           "note": "",
-          "details": "Agree on a few habits so RSVP replies keep matching the right guests. Notes live in Important Notes (A), Misc. Notes (U), and Outreach Log (Z), and only Morgan, Lindsay, Angel, and Matt can edit.\n- Add new guests at the bottom, with their email in Column D.\n- Put alternate addresses in Column F.\n- Log outreach in Column Z with the date and who reached out.\n- For now, don't type in Column E or move columns A through U.\n- To sort, select the whole sheet first or use a filter view. An October 4 sort reordered columns A–U without the tracking columns; this has been corrected.",
+          "details": "Agree on a few habits so RSVP replies keep matching the right guests. Notes live in Important Notes (A), Misc. Notes (U), and Outreach Log (Z), and only Morgan, Lindsay, Angel, and Matt can edit.\n- Add new guests at the bottom, with their email in Column D.\n- Put alternate addresses in Column F.\n- List a plus-one's email in Column F as \"email (Name)\".\n- Log outreach in Column Z with the date and who reached out.\n- For now, don't type in Column E or move columns A through U.\n- To sort, select the whole sheet first or use a filter view. An October 4 sort reordered columns A–U without the tracking columns; this has been corrected.",
           "links": [],
           "images": []
         },
