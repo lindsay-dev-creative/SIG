@@ -52,9 +52,13 @@ def when(ms):
     return datetime.datetime.fromtimestamp(ms / 1000).strftime("%b %-d, %Y %-I:%M %p")
 
 
-def points_of(details):
-    """The confirmable points of an item, in order, as the page builds them."""
+def points_of(details, info=False):
+    """The confirmable points of an item, in order, as the page builds them.
+    A reference item ("info") has no confirmable points: every line is context."""
     lines = details.split("\n")
+    if info:
+        return [("context", BULLET.match(l).group(1).strip() if BULLET.match(l) else l.strip())
+                for l in lines if l.strip()]
     has_bullets = any(BULLET.match(line) for line in lines)
     out = []
     for line in lines:
@@ -104,9 +108,10 @@ def main():
             out += ["", "### " + item.get("text", "")]
             if item.get("note"):
                 out.append("_%s_" % item["note"])
-            for kind, text in points_of(item.get("details", "")):
+            info = item.get("info")
+            for kind, text in points_of(item.get("details", ""), info):
                 if kind == "context":
-                    out.append(text)
+                    out.append(("- " if info else "") + text)
                     continue
                 key = item["id"] + "~" + text_key(text)
                 c = confirms.get(key)
