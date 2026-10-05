@@ -7,19 +7,20 @@ Turn a meeting agenda page and its answers into one Markdown record.
 
 The agenda comes from the page's JSON block. Answers come from the shared
 project store (the STORE_URL written in the page): every point on the page
-has Confirm: Yes and Confirm: No buttons, and a No opens a Notes box.
+has Confirm: Yes and Add Notes buttons, and Add Notes opens a Notes box.
+(Add Notes is stored as answer "no": the point does not stand as written.)
 
 The record lists every section, item and point in agenda order:
 
     - [x] point   Confirm: Yes
-    - [ ] point   Confirm: No, with its notes indented underneath
+    - [ ] point   Add Notes, with its notes indented underneath
     - [ ] point   not answered
 
 Images added to an item are listed under it with their title, description
 and a Google Drive link.
 
 A Yes means the point stands as written, so it can go into the copy as is.
-A No means it doesn't, and the notes say what changes; use the notes, not
+Add Notes means it doesn't, and the notes say what changes; use the notes, not
 the point's wording, when updating copy. Notes typed under a point that was
 later switched back to Yes are kept and shown too.
 
@@ -81,7 +82,7 @@ def answer_lines(text, c, prefix=""):
     if answer == "yes":
         lines = ["- [x] %s%s  (Confirm: Yes%s, %s)" % (prefix, text, by_whom(c), when(c.get("at")))]
     elif answer == "no":
-        lines = ["- [ ] %s%s  (Confirm: No%s, %s)" % (prefix, text, by_whom(c), when(c.get("at")))]
+        lines = ["- [ ] %s%s  (Add Notes%s, %s)" % (prefix, text, by_whom(c), when(c.get("at")))]
     else:
         lines = ["- [ ] %s%s" % (prefix, text)]
     if notes:
@@ -154,7 +155,7 @@ def main():
 
     used = set()
     out = ["# %s · %s" % (agenda.get("title", "Meeting"), agenda.get("date", "")), ""]
-    out.append("Record generated %s from the shared store. [x] is Confirm: Yes; Confirm: No points carry their notes." %
+    out.append("Record generated %s from the shared store. [x] is Confirm: Yes; Add Notes points carry their notes." %
                datetime.datetime.now().strftime("%b %-d, %Y %-I:%M %p"))
     for sec in agenda.get("sections", []):
         out += ["", "## " + sec.get("title", "")]

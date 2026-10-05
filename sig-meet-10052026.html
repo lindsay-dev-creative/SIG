@@ -258,7 +258,7 @@
   .item-details ul li + li{margin-top:.5rem;}
   .item-details ul li::marker{color:var(--color5-500);}
 
-  /* Confirm: Yes / Confirm: No on each point, and the Notes box a No opens */
+  /* Confirm: Yes / Add Notes on each point, and the Notes box Add Notes opens */
   .confirm-pair{display:flex;flex-wrap:wrap;gap:.35rem;margin:.4rem 0 0;}
   .confirm-pair:empty{display:none;}
   .confirm-btn{
@@ -522,7 +522,7 @@
   with #edit and unlock with a GitHub token) rewrites this block and
   commits the file back to lindsay-dev-creative/SIG.
 
-  Answers do NOT live here. Each point gets Confirm: Yes and Confirm: No
+  Answers do NOT live here. Each point gets Confirm: Yes and Add Notes
   buttons, and a No opens a Notes box. Answers and notes are kept in the
   shared project store (STORE_URL below, the Apps Script in
   apps-script/sig-project-store.gs) as records of kind "meetconfirm": one
@@ -1318,7 +1318,7 @@
     return h.toString(36);
   }
 
-  // One point that can be answered: its text, the Confirm: Yes and Confirm: No buttons,
+  // One point that can be answered: its text, the Confirm: Yes and Add Notes buttons,
   // and the Notes box that opens when the answer is No.
   function pointMarkup(ctx, text) {
     var key = ctx.item + "~" + textKey(text);
@@ -1797,7 +1797,7 @@
     return d.toLocaleDateString([], {month: "short", day: "numeric"}) + ", " + time;
   }
 
-  /* ---- Confirm: Yes / Confirm: No ------------------------------------ */
+  /* ---- Confirm: Yes / Add Notes --------------------------------------- */
 
   var points = {};           // answer key -> the point's text and where it sits
   var confirms = {};         // answer key -> latest record: answer, notes, and every change in history
@@ -1821,7 +1821,7 @@
   }
 
   function answerTitle(c, answer) {
-    return (answer === "yes" ? "Confirmed" : "Marked No") + (c.by ? " by " + c.by : "") + ", " + formatTime(c.at) + ". Click again to clear.";
+    return (answer === "yes" ? "Confirmed" : "Notes added") + (c.by ? " by " + c.by : "") + ", " + formatTime(c.at) + ". Click again to clear.";
   }
 
   function confirmButtons(key) {
@@ -1832,7 +1832,7 @@
       return '<button type="button" class="confirm-btn is-' + value + (on ? " is-on" : "") + '" data-answer="' + value + '"' +
         ' aria-pressed="' + on + '"' + (on ? ' title="' + esc(answerTitle(c, value)) + '"' : "") + ">" + label + "</button>";
     }
-    return button("yes", "Confirm: Yes") + button("no", "Confirm: No");
+    return button("yes", "Confirm: Yes") + button("no", "Add Notes");
   }
 
   function refreshPoint(key) {

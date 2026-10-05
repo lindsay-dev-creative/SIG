@@ -82,7 +82,8 @@ scripts something against it.
 ## Meeting agenda pages
 
 `sig-meet-10052026.html` uses this same store for its answers. Every point
-on the page has Confirm: Yes and Confirm: No buttons, and a No opens a Notes
+on the page has Confirm: Yes and Add Notes buttons (Add Notes is stored as
+`answer: "no"`), and Add Notes opens a Notes
 box. Each point is one record of kind `meetconfirm`, tied to the meeting by
 `payload.meeting` (for example `"10052026"`), holding the point's exact
 wording, `answer` (`"yes"`, `"no"` or `null`), `notes`, when, and every change
@@ -101,5 +102,5 @@ Images added from an item's image icon are records of kind `meetimage`
 Drive folder. Removing an image soft-deletes its record; the file stays in
 the folder.
 
-A Yes point stands as written. A No point carries notes saying what
+A Yes point stands as written. An Add Notes point carries notes saying what
 changes; use the notes, not the point's wording, when updating copy.
