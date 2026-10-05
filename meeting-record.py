@@ -5,7 +5,8 @@ Turn a meeting agenda page and its answers into one Markdown record.
     python3 meeting-record.py sig-meet-10052026.html
     python3 meeting-record.py sig-meet-10052026.html -o records/meet-10052026.md
 
-The agenda comes from the page's JSON block. Answers come from the shared
+The agenda comes from the page's JSON block, or from the copy people edited
+on the page (a "meetagenda" record in the store) when that one is newer. Answers come from the shared
 project store (the STORE_URL written in the page): every point on the page
 has Confirm: Yes and Add Notes buttons, and Add Notes opens a Notes box.
 (Add Notes is stored as answer "no": the point does not stand as written.)
@@ -137,6 +138,16 @@ def main():
         pulled = json.load(res)
     records = [r for r in pulled.get("records", []) if (r.get("payload") or {}).get("meeting") == meeting]
 
+    # People could edit the agenda on the page until the deadline. Those edits live in the
+    # store; use them when they're newer than the copy saved in the page file.
+    edited = [r["payload"] for r in records if r["kind"] == "meetagenda" and (r["payload"] or {}).get("doc")]
+    agenda_source = "the page file"
+    if edited:
+        latest = max(edited, key=lambda p: p.get("at") or 0)
+        if (latest.get("at") or 0) > (agenda.get("savedAt") or 0):
+            agenda = latest["doc"]
+            agenda_source = "edits made on the page, saved %s" % when(latest.get("at"))
+
     notes = {}
     for r in records:
         if r["kind"] == "meetnote" and not r.get("deleted"):
@@ -157,6 +168,7 @@ def main():
     out = ["# %s · %s" % (agenda.get("title", "Meeting"), agenda.get("date", "")), ""]
     out.append("Record generated %s from the shared store. [x] is Confirm: Yes; Add Notes points carry their notes." %
                datetime.datetime.now().strftime("%b %-d, %Y %-I:%M %p"))
+    out.append("Agenda wording from " + agenda_source + ".")
     for sec in agenda.get("sections", []):
         out += ["", "## " + sec.get("title", "")]
         for item in sec.get("items", []):

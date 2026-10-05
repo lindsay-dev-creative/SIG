@@ -168,6 +168,23 @@
   .item-head:hover .item{color:var(--text-default);}
   .item-body{padding:.25rem 0 .5rem;}
 
+  /* Open editing, until the deadline */
+  .open-edit{
+    display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;
+    margin:-1.25rem 0 2.25rem;
+    font-family:var(--ff-inter);font-size:.8125rem;color:var(--neutral-500);
+  }
+  .edited-tag{
+    display:inline-block;
+    margin-left:.6rem;
+    padding:.05rem .45rem;
+    border:1px solid var(--color5-700);border-radius:999px;
+    font-family:var(--ff-inter);font-size:.625rem;font-weight:500;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;
+    color:var(--color5-300);
+    vertical-align:middle;
+    white-space:nowrap;
+  }
+
   /* Item row: title (opens the item), image icon, arrow */
   .item-row{display:flex;align-items:center;gap:.5rem;}
   .item-row .item-head{flex:1;min-width:0;}
@@ -531,6 +548,12 @@
   Images added from an item's image icon are kept the same way, as
   records of kind "meetimage" (Drive id, title, description), with the
   files in the store's Google Drive folder.
+
+  Until 10:30 AM ET on October 5 anyone can edit the agenda itself from
+  the Edit agenda button. Those edits are kept in the store as one record
+  of kind "meetagenda" holding the whole agenda; the page shows whichever
+  is newer, that record or this block (its savedAt). Saving from #edit
+  writes the newest copy back into this block.
 
   Keep item ids stable. meeting-record.py turns the agenda, the answers
   and the images into a Markdown record of the meeting.
@@ -1296,6 +1319,11 @@
   var OWNER_NAME = "Lindsay";
   var CONFIRM_KIND = "meetconfirm";
   var IMAGE_KIND = "meetimage";
+  var AGENDA_KIND = "meetagenda";
+  // Anyone can edit the agenda until 10:30 AM Eastern on Monday, October 5 (EDT, UTC-4).
+  var EDIT_UNTIL = Date.UTC(2026, 9, 5, 14, 30);
+  var EDIT_UNTIL_LABEL = "10:30 AM ET on Monday, October 5";
+  var MAX_DOC_CHARS = 48000;   // one Sheet cell holds 50,000 characters
 
   var ICONS = {
     image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><circle cx="9" cy="10" r="1.5"/><path d="M4.5 16.5l4.2-4.2 3.3 3.3 2.8-2.4 4.7 4.3"/></svg>',
@@ -1311,7 +1339,14 @@
   var app = document.getElementById("app");
   var toast = document.getElementById("toast");
   var toastTimer = null;
-  var data = normalizeDoc(JSON.parse(document.getElementById("page-data").textContent));
+  // base: the agenda as published in this file. overlay: the copy people edited on the page,
+  // kept in the shared store. Whichever was saved last is the one shown.
+  var base = normalizeDoc(JSON.parse(document.getElementById("page-data").textContent));
+  var data = copyDoc(base);
+  var overlay = null;
+  var overlayAt = 0;
+  var showingOverlay = false;
+  var editMode = "";          // "github" (Lindsay, #edit) or "store" (anyone, Edit agenda)
   var editing = false;
   var undoStack = [];
   var previews = {};   // image path -> local data URL, until Pages publishes the file
@@ -1364,9 +1399,14 @@
     };
   }
 
+  function copyDoc(d) {
+    return normalizeDoc(JSON.parse(JSON.stringify(d)));
+  }
+
   function normalizeDoc(d) {
     d = d || {};
     return {
+      savedAt: d.savedAt || 0,   // when Lindsay last saved this file from #edit
       title: d.title || "",
       date: d.date || "",
       links: (d.links || []).map(function (l) { return {label: l.label || "", href: l.href || ""}; }),
@@ -1553,7 +1593,7 @@
     return '<li data-item="' + id + '">' +
       '<div class="item-row' + (isOpen ? " is-open" : "") + '">' +
         '<button type="button" class="item-head" aria-expanded="' + isOpen + '" aria-controls="ib-' + id + '">' +
-          '<span class="item">' + esc(item.text) + "</span>" +
+          '<span class="item">' + esc(item.text) + itemTag(item) + "</span>" +
         "</button>" +
         icon +
         '<span class="caret item-caret" aria-hidden="true">' + ICONS.caret + "</span>" +
@@ -1562,12 +1602,56 @@
     "</li>";
   }
 
+  function editingOpen() {
+    return !!STORE_URL && Date.now() < EDIT_UNTIL;
+  }
+
+  function baseSection(id) {
+    return base.sections.filter(function (s) { return s.id === id; })[0];
+  }
+
+  function baseItem(id) {
+    for (var g = 0; g < base.sections.length; g++) {
+      var hit = base.sections[g].items.filter(function (i) { return i.id === id; })[0];
+      if (hit) {
+        return hit;
+      }
+    }
+    return null;
+  }
+
+  // "New" or "Edited" beside anything that differs from the agenda as published.
+  function tag(word) {
+    return '<span class="edited-tag">' + word + "</span>";
+  }
+
+  function sectionTag(sec) {
+    if (!showingOverlay) {
+      return "";
+    }
+    var b = baseSection(sec.id);
+    return !b ? tag("New") : b.title !== sec.title ? tag("Edited") : "";
+  }
+
+  function itemTag(item) {
+    if (!showingOverlay) {
+      return "";
+    }
+    var b = baseItem(item.id);
+    if (!b) {
+      return tag("New");
+    }
+    var changed = b.text !== item.text || b.details !== item.details || b.note !== item.note ||
+      JSON.stringify(b.links) !== JSON.stringify(item.links);
+    return changed ? tag("Edited") : "";
+  }
+
   function sectionMarkup(sec, gi) {
     var id = esc(sec.id);
     var isOpen = !!open.sections[sec.id];
     return '<section class="group" data-sec="' + id + '">' +
       '<h2 class="sec-h"><button type="button" class="sec-head" aria-expanded="' + isOpen + '" aria-controls="sb-' + id + '">' +
-        '<span class="sec-title">' + esc(sec.title) + "</span>" +
+        '<span class="sec-title">' + esc(sec.title) + sectionTag(sec) + "</span>" +
         '<span class="sec-rule" aria-hidden="true"></span>' +
         '<span class="sec-meta" data-meta="' + id + '">' + esc(sectionMeta(sec)) + "</span>" +
         '<span class="caret">' + ICONS.caret + "</span>" +
@@ -1585,6 +1669,8 @@
     }).join("");
     return '<div class="files-bar">' + links + "</div>" +
       "<header><h1>" + esc(d.title) + "</h1><h6>" + esc(d.date) + "</h6></header>" +
+      (editingOpen() ? '<div class="open-edit"><button type="button" class="ghost small" id="openEdit">Edit agenda</button>' +
+        "<span>Anyone with this link can edit the agenda until " + EDIT_UNTIL_LABEL + ".</span></div>" : "") +
       '<p class="notes-status" id="notesStatus" role="status"></p>' +
       '<main id="agenda">' + d.sections.map(sectionMarkup).join("") + "</main>";
   }
@@ -1773,6 +1859,10 @@
       setExpanded(secHead, document.getElementById(secHead.getAttribute("aria-controls")), open.sections[sid]);
       return;
     }
+    if (event.target.closest("#openEdit")) {
+      startOpenEdit();
+      return;
+    }
     var imageIcon = event.target.closest(".image-icon");
     if (imageIcon) {
       addImages(imageIcon.getAttribute("data-image-item"));
@@ -1834,6 +1924,10 @@
 
   var since = 0;
   var pulling = false;
+  // Resolves once the first check of the store has answered (or failed), so #edit can wait
+  // for everyone's open edits before it starts.
+  var markStoreReady;
+  var storeReady = new Promise(function (resolve) { markStoreReady = resolve; });
   var myName = readLocal(NAME_KEY, "") || "";   // never asked for; set in browsers that unlock edit mode
 
   function setStoreStatus(text) {
@@ -1871,9 +1965,18 @@
       }
       since = res.now || since;
       var touchedImages = {};
+      var agendaChanged = false;
       (res.records || []).forEach(function (rec) {
         var p = rec.payload || {};
         if (p.meeting !== MEETING) {
+          return;
+        }
+        if (rec.kind === AGENDA_KIND) {
+          if (p.doc && (p.at || 0) > overlayAt) {
+            overlay = normalizeDoc(p.doc);
+            overlayAt = p.at || 0;
+            agendaChanged = true;
+          }
           return;
         }
         if (rec.kind === IMAGE_KIND) {
@@ -1897,11 +2000,15 @@
         refreshPoint(rec.id);
       });
       Object.keys(touchedImages).forEach(renderImages);
+      if (agendaChanged || pendingApply) {
+        applyLatestAgenda();
+      }
       setStoreStatus("");
     }).catch(function () {
       setStoreStatus("Answers could not load. Retrying.");
     }).then(function () {
       pulling = false;
+      markStoreReady();
     });
   }
 
@@ -2061,6 +2168,136 @@
       event.returnValue = "";
     }
   });
+
+  /* ---- Open editing --------------------------------------------------- */
+  // Until EDIT_UNTIL, anyone can open the editor from the Edit agenda button. Their edits
+  // save the whole agenda to the store as one "meetagenda" record, and every view shows
+  // whichever copy is newest: that record, or this file as Lindsay last saved it.
+
+  var pendingApply = false;
+
+  // Someone is typing on the page (an answer's notes, an image title, an edit in progress).
+  function busyTyping() {
+    var a = document.activeElement;
+    var typing = a && (a.isContentEditable || a.tagName === "INPUT" || a.tagName === "TEXTAREA");
+    var unsavedNotes = Object.keys(notesPending).some(function (k) { return notesPending[k]; });
+    return typing || unsavedNotes || dirty || saving || pending;
+  }
+
+  function applyLatestAgenda() {
+    if (!overlay || overlayAt <= (base.savedAt || 0)) {
+      pendingApply = false;
+      return;
+    }
+    if (busyTyping()) {
+      pendingApply = true;   // try again on the next check, so nobody's typing is wiped out
+      return;
+    }
+    pendingApply = false;
+    if (JSON.stringify(overlay) === JSON.stringify(data) && showingOverlay) {
+      return;
+    }
+    data = copyDoc(overlay);
+    showingOverlay = true;
+    render();
+  }
+
+  function startOpenEdit() {
+    if (!editingOpen()) {
+      flash("Editing closed at " + EDIT_UNTIL_LABEL + ".");
+      render();
+      return;
+    }
+    editMode = "store";
+    editing = true;
+    undoStack = [];
+    document.body.classList.add("editing");
+    showEditBar();
+    render();
+  }
+
+  function stopEditing(message) {
+    editing = false;
+    editMode = "";
+    document.body.classList.remove("editing");
+    if (barEl) {
+      barEl.remove();
+    }
+    barEl = null;
+    statusEl = null;
+    undoBtn = null;
+    render();
+    if (message) {
+      flash(message);
+    }
+  }
+
+  function flushStore() {
+    if (saving) {
+      pending = true;
+      return;
+    }
+    clearTimeout(saveTimer);
+    function settle() {
+      var done = waiters;
+      waiters = [];
+      done.forEach(function (resolve) { resolve(); });
+    }
+    if (!editingOpen()) {
+      dirty = false;
+      lastError = {message: "Editing closed at " + EDIT_UNTIL_LABEL + "."};
+      setStatus("Editing closed at " + EDIT_UNTIL_LABEL + ", so this change wasn't saved.", true);
+      settle();
+      return;
+    }
+    var doc = JSON.parse(JSON.stringify(data));
+    if (JSON.stringify(doc).length > MAX_DOC_CHARS) {
+      lastError = {message: "The agenda is too long to save. Shorten some text, then try again."};
+      setStatus(lastError.message, true);
+      settle();
+      return;
+    }
+    saving = true;
+    pending = false;
+    dirty = false;
+    setStatus("Saving");
+    var at = Date.now();
+    storeCall({action: "put", kind: AGENDA_KIND, id: MEETING, actor: myName,
+      payload: {meeting: MEETING, doc: doc, at: at, by: myName}}).then(function () {
+      overlay = normalizeDoc(doc);
+      overlayAt = at;
+      showingOverlay = true;
+      lastError = null;
+      setStatus("Saved. Everyone sees this now");
+    }).catch(function () {
+      dirty = true;
+      lastError = {message: "Not saved. Check your connection, then try again."};
+      setStatus(lastError.message, true);
+    }).then(function () {
+      saving = false;
+      if (pending) {
+        flush();
+        return;
+      }
+      settle();
+    });
+  }
+
+  // At the deadline: save what's waiting, close the editor, and remove the Edit agenda button.
+  setInterval(function () {
+    if (editingOpen()) {
+      return;
+    }
+    if (editMode === "store") {
+      whenSaved().then(function () {
+        if (editMode === "store") {
+          stopEditing("Editing closed at " + EDIT_UNTIL_LABEL + ".");
+        }
+      });
+    } else if (!editing && document.getElementById("openEdit")) {
+      render();
+    }
+  }, 20000);
 
   /* ---- Images on items ---------------------------------------------- */
   // Anyone can add images to an item from the image icon on its row. Files go to the
@@ -2532,7 +2769,10 @@
       focusEnd(document.getElementById(linkField.id));
     });
     tools.appendChild(linkField);
-    tools.appendChild(addBtn("Add images", function () { uploadImages(item); }, null, "image"));
+    if (editMode === "github") {
+      // Open editors add images from the image icon on the page instead.
+      tools.appendChild(addBtn("Add images", function () { uploadImages(item); }, null, "image"));
+    }
     main.appendChild(tools);
     li.appendChild(main);
 
@@ -2768,6 +3008,10 @@
   }
 
   function flush() {
+    if (editMode === "store") {
+      flushStore();
+      return;
+    }
     if (saving) {
       pending = true;
       return;
@@ -2777,6 +3021,7 @@
     pending = false;
     dirty = false;
     setStatus("Saving");
+    data.savedAt = Date.now();   // newer than any open edit, so this copy is the one shown
     var json = "\n" + JSON.stringify(data, null, 2).replace(/</g, "\\u003c") + "\n";
     var next = fileText.replace(DATA_BLOCK, function (all, open, body, close) {
       return open + json + close;
@@ -2785,6 +3030,8 @@
     putFile(FILE, toBase64(next), "Update meeting page content", fileSha).then(function (body) {
       fileSha = body.content.sha;
       fileText = next;
+      base = copyDoc(data);
+      showingOverlay = false;
       retried = false;
       lastError = null;
       setStatus("Saved. Live in about a minute");
@@ -2868,7 +3115,9 @@
   function showEditBar() {
     var bar = el("div", "edit-bar");
     barEl = bar;
-    statusEl = el("span", "status", "Editing. Changes save to GitHub");
+    var github = editMode === "github";
+    statusEl = el("span", "status", github ? "Editing. Changes save to GitHub" :
+      "Editing. Changes save for everyone until " + EDIT_UNTIL_LABEL);
 
     undoBtn = el("button", "ghost quiet", "Undo");
     undoBtn.type = "button";
@@ -2884,31 +3133,29 @@
     });
     updateUndo();
 
-    var done = el("button", "ghost", "Lock");
+    var done = el("button", "ghost", github ? "Lock" : "Done");
     done.type = "button";
-    // Lock waits for every save to land, then shows the page the way the client sees it.
+    // Lock and Done wait for every save to land, then show the page the way the client sees it.
     done.addEventListener("mousedown", function (event) {
       event.preventDefault();
     });
     done.addEventListener("click", function () {
       done.disabled = true;
-      setStatus("Saving before locking");
+      setStatus(github ? "Saving before locking" : "Saving");
       whenSaved().then(function () {
-        if (lastError) {
+        if (lastError && github) {
           done.disabled = false;
           setStatus("Not saved, so the page is still unlocked. " + explain(lastError), true);
           return;
         }
-        storeToken("");
-        token = "";
-        editing = false;
-        document.body.classList.remove("editing");
-        bar.remove();
-        statusEl = null;
-        undoBtn = null;
-        history.replaceState(null, "", window.location.pathname);
-        render();
-        flash("Locked. Edits are live in a few minutes");
+        if (github) {
+          storeToken("");
+          token = "";
+          history.replaceState(null, "", window.location.pathname);
+          stopEditing("Locked. Edits are live in a few minutes");
+        } else {
+          stopEditing(lastError ? lastError.message : "Saved");
+        }
       });
     });
     bar.appendChild(statusEl);
@@ -2948,7 +3195,9 @@
       if (!repo.permissions || !repo.permissions.push) {
         throw new Error("That token cannot write to the SIG repo.");
       }
-      return pullLatest();
+      // Wait for the store too (at most 8 seconds), so the newest open edits are loaded first.
+      var waitForStore = STORE_URL ? Promise.race([storeReady, new Promise(function (r) { setTimeout(r, 8000); })]) : null;
+      return Promise.all([pullLatest(), waitForStore]).then(function (both) { return both[0]; });
     }).then(function (latest) {
       storeToken(value);
       // Only the owner can unlock, so this browser signs its answers as Lindsay from now on.
@@ -2956,8 +3205,11 @@
         myName = OWNER_NAME;
         writeLocal(NAME_KEY, myName);
       }
-      data = latest;
+      // Start from the newest copy, so saving writes everyone's open edits into this file.
+      data = overlay && overlayAt > (latest.savedAt || 0) ? copyDoc(overlay) : latest;
+      editMode = "github";
       editing = true;
+      undoStack = [];
       document.body.classList.add("editing");
       document.getElementById("unlock-slot").textContent = "";
       showEditBar();

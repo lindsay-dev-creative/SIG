@@ -102,5 +102,11 @@ Images added from an item's image icon are records of kind `meetimage`
 Drive folder. Removing an image soft-deletes its record; the file stays in
 the folder.
 
+Until 10:30 AM ET on October 5, anyone on the page can edit the agenda
+itself from its Edit agenda button. Those edits are one record of kind
+`meetagenda` (id `10052026`) holding the whole agenda as `doc`, plus `at`.
+The page shows that copy when it's newer than the `savedAt` in the page
+file; Lindsay saving from `#edit` writes it back into the page file.
+
 A Yes point stands as written. An Add Notes point carries notes saying what
 changes; use the notes, not the point's wording, when updating copy.
