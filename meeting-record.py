@@ -146,6 +146,13 @@ def main():
             for kind, text in points_of(item.get("details", ""), info):
                 if kind == "context":
                     out.append(("- " if info else "") + text)
+                    if info:
+                        # Reference points can't be answered, but can carry notes.
+                        key = item["id"] + "~" + text_key(text)
+                        used.add(key)
+                        ref_notes = (confirms.get(key) or {}).get("notes", "").strip()
+                        if ref_notes:
+                            out.append("  Notes: " + ref_notes.replace("\n", "\n  "))
                     continue
                 key = item["id"] + "~" + text_key(text)
                 used.add(key)

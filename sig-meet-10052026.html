@@ -205,6 +205,19 @@
   .confirm-btn:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
   .confirm-btn.is-yes.is-on{background:var(--color5-700);border-color:var(--color5-700);color:var(--color5-50);}
   .confirm-btn.is-no.is-on{background:var(--color3-700);border-color:var(--color3-700);color:var(--neutral-50);}
+  .note-icon{
+    -webkit-appearance:none;appearance:none;
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;margin-left:.35rem;padding:0;
+    vertical-align:middle;
+    background:none;border:none;
+    color:var(--icon-muted);line-height:0;cursor:pointer;
+    transition:color var(--ease-ui);
+  }
+  .note-icon svg{display:block;width:15px;height:15px;}
+  .note-icon:hover,.note-icon[aria-expanded="true"]{color:var(--color5-300);}
+  .note-icon.has-notes{color:var(--color5-500);}
+  .note-icon:focus-visible{outline:2px solid var(--color5-300);outline-offset:2px;}
   .point-notes{margin:.65rem 0 .25rem;max-width:620px;}
   .point-notes-label{
     display:block;margin:0 0 .35rem;
@@ -1096,6 +1109,7 @@
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
     up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 14l5-5 5 5"/></svg>',
     down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>',
+    note: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v7A2.5 2.5 0 0 1 16.5 16H11l-4 4v-4H7.5A2.5 2.5 0 0 1 5 13.5z"/><path d="M8 8h8M8 11h8"/></svg>',
     trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12"/></svg>'
   };
 
@@ -1245,11 +1259,33 @@
     if (!STORE_URL) {
       return esc(text);
     }
-    var k = esc(key);
     var c = confirms[key];
     return esc(text) +
-      '<span class="confirm-pair" data-confirm="' + k + '">' + confirmButtons(key) + "</span>" +
-      '<div class="point-notes" data-notes="' + k + '"' + (c && answerOf(c) === "no" ? "" : " hidden") + ">" +
+      '<span class="confirm-pair" data-confirm="' + esc(key) + '">' + confirmButtons(key) + "</span>" +
+      notesBoxMarkup(key, answerOf(c) === "no");
+  }
+
+  // A point on a reference item: a fact, so no Confirm buttons, just a note icon
+  // that opens the same Notes box. It starts open when the point already has notes.
+  function refPointMarkup(ctx, text) {
+    var key = ctx.item + "~" + textKey(text);
+    points[key] = {item: ctx.item, itemTitle: ctx.itemTitle, section: ctx.section, text: text, ref: true};
+    if (!STORE_URL) {
+      return esc(text);
+    }
+    if (refOpen[key] === undefined) {
+      refOpen[key] = hasNotes(key);
+    }
+    return esc(text) +
+      '<button type="button" class="note-icon' + (hasNotes(key) ? " has-notes" : "") + '" data-note-key="' + esc(key) + '"' +
+        ' aria-expanded="' + refOpen[key] + '" aria-controls="pnw-' + esc(key) + '" title="Add a note" aria-label="Add a note">' + ICONS.note + "</button>" +
+      notesBoxMarkup(key, refOpen[key]);
+  }
+
+  function notesBoxMarkup(key, shown) {
+    var k = esc(key);
+    var c = confirms[key];
+    return '<div class="point-notes" id="pnw-' + k + '" data-notes="' + k + '"' + (shown ? "" : " hidden") + ">" +
         '<label class="point-notes-label" for="pn-' + k + '">Notes</label>' +
         '<textarea class="point-notes-input" id="pn-' + k + '" rows="5">' + esc((c && c.notes) || "") + "</textarea>" +
         '<span class="point-notes-status" data-notes-status="' + k + '" aria-live="polite"></span>' +
@@ -1272,14 +1308,16 @@
     lines.forEach(function (line) {
       var bullet = line.match(BULLET);
       if (bullet) {
-        list.push(ctx.info ? esc(bullet[1].trim()) : pointMarkup(ctx, bullet[1].trim()));
+        list.push(ctx.info ? refPointMarkup(ctx, bullet[1].trim()) : pointMarkup(ctx, bullet[1].trim()));
         return;
       }
       flushList();
       if (!line.trim()) {
         return;
       }
-      if (hasBullets || ctx.info) {
+      if (ctx.info) {
+        out += '<div class="point">' + refPointMarkup(ctx, line.trim()) + "</div>";
+      } else if (hasBullets) {
         out += "<p>" + esc(line) + "</p>";
       } else {
         out += '<div class="point">' + pointMarkup(ctx, line.trim()) + "</div>";
@@ -1556,6 +1594,19 @@
     var confirmBtn = event.target.closest(".confirm-btn");
     if (confirmBtn) {
       setAnswer(confirmBtn.parentNode.getAttribute("data-confirm"), confirmBtn.getAttribute("data-answer"));
+      return;
+    }
+    var noteIcon = event.target.closest(".note-icon");
+    if (noteIcon) {
+      var nk = noteIcon.getAttribute("data-note-key");
+      refOpen[nk] = !refOpen[nk];
+      refreshPoint(nk);
+      if (refOpen[nk]) {
+        var box = document.getElementById("pn-" + nk);
+        if (box) {
+          box.focus();
+        }
+      }
     }
   });
 
@@ -1642,6 +1693,11 @@
   var confirms = {};         // answer key -> latest record: answer, notes, and every change in history
   var notesTimers = {};
   var notesPending = {};     // answer key -> notes typed here but not saved yet
+  var refOpen = {};          // reference point key -> its Notes box is open in this view
+
+  function hasNotes(key) {
+    return !!(confirms[key] && (confirms[key].notes || "").trim());
+  }
 
   // "yes", "no" or null. Records from the earlier single Confirmed button count as yes.
   function answerOf(c) {
@@ -1674,9 +1730,18 @@
     if (pair) {
       pair.innerHTML = confirmButtons(key);
     }
+    var icon = app.querySelector('[data-note-key="' + key + '"]');
+    if (icon) {
+      // Notes someone else adds open the box here too.
+      if (hasNotes(key)) {
+        refOpen[key] = refOpen[key] || !icon.classList.contains("has-notes");
+      }
+      icon.classList.toggle("has-notes", hasNotes(key));
+      icon.setAttribute("aria-expanded", refOpen[key] ? "true" : "false");
+    }
     var wrap = app.querySelector('[data-notes="' + key + '"]');
     if (wrap) {
-      wrap.hidden = answerOf(confirms[key]) !== "no";
+      wrap.hidden = icon ? !refOpen[key] : answerOf(confirms[key]) !== "no";
       var box = document.getElementById("pn-" + key);
       if (box && box !== document.activeElement && !notesPending[key]) {
         box.value = (confirms[key] && confirms[key].notes) || "";
@@ -1740,7 +1805,11 @@
   }
 
   function saveNotes(key, box) {
-    var c = confirms[key];
+    var point = points[key];
+    var c = confirms[key] || (point && {
+      meeting: MEETING, item: point.item, itemTitle: point.itemTitle, section: point.section, text: point.text,
+      answer: null, notes: "", by: myName, at: Date.now(), history: []
+    });
     if (!c) {
       return;
     }
