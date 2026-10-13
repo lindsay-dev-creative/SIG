@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Questions for Matt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0A;
+  --surface-1:#1A1A1A;
+  --surface-2:#262626;
+  --line:#2E2E2E;
+  --line-strong:#424242;
+  --heading:#EDEDED;
+  --accent:#D4A85A;
+  --accent-hover:#EACD94;
+  --accent-focus:#B6862F;
+  --body:#B8B8B8;
+  --body-mute:#989898;
+  --body-faint:#797979;
+  --body-dim:#555555;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+
+  --step-0:1rem;
+  --step-1:1.25rem;
+  --step-2:1.5625rem;
+  --step-3:1.9531rem;
+  --step-4:2.4414rem;
+  --step-5:3.0518rem;
+
+  --gutter:16px;
+}
+
+*{box-sizing:border-box;}
+
+html{-webkit-text-size-adjust:100%;}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--body);
+  font-family:var(--sans);
+  font-size:var(--step-0);
+  font-weight:400;
+  letter-spacing:0;
+  line-height:1.7;
+}
+
+.wrap{
+  max-width:860px;
+  margin:0 auto;
+  padding:72px var(--gutter) 96px;
+}
+
+h1,h2,h3{
+  font-family:var(--serif);
+  color:var(--heading);
+  font-weight:400;
+  line-height:1.2;
+  margin:0;
+}
+
+h1 em, h2 em, h3 em{
+  font-style:italic;
+  color:var(--accent);
+}
+
+h1{font-size:var(--step-5);letter-spacing:-0.01em;}
+h2{font-size:var(--step-3);}
+h3{font-size:var(--step-1);line-height:1.35;}
+
+p{margin:0 0 1em;max-width:70ch;}
+p:last-child{margin-bottom:0;}
+
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line-strong);}
+a:hover{color:var(--accent-hover);border-bottom-color:var(--accent-hover);}
+
+/* header */
+.masthead{
+  border-bottom:1px solid var(--line);
+  padding-bottom:40px;
+  margin-bottom:56px;
+}
+.masthead p{
+  color:var(--body-mute);
+  margin-top:20px;
+}
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 28px;
+  margin-top:28px;
+  font-size:.8125rem;
+  color:var(--body-faint);
+}
+.meta span strong{
+  color:var(--body);
+  font-weight:500;
+}
+
+/* counts */
+.tally{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin:0 0 64px;
+}
+.tally div{
+  background:var(--surface-1);
+  padding:22px 20px;
+}
+.tally .n{
+  font-family:var(--serif);
+  font-size:var(--step-4);
+  color:var(--heading);
+  line-height:1;
+  display:block;
+}
+.tally .l{
+  display:block;
+  margin-top:10px;
+  font-size:.75rem;
+  letter-spacing:.06em;
+  color:var(--body-faint);
+}
+
+/* sections */
+section{margin-bottom:64px;}
+section:last-of-type{margin-bottom:0;}
+
+.sec-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.sec-head .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent);
+  flex:none;
+  transform:translateY(-3px);
+}
+.sec-head .dot.done{background:var(--body-dim);}
+.sec-head .dot.new{background:var(--accent-focus);}
+
+.sec-note{
+  color:var(--body-faint);
+  font-size:.9375rem;
+  margin:0 0 28px;
+  max-width:70ch;
+}
+
+/* item cards */
+.item{
+  border:1px solid var(--line);
+  background:var(--surface-1);
+  padding:26px 26px 24px;
+  margin-bottom:12px;
+}
+.item:hover{border-color:var(--line-strong);}
+
+.item-top{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+.num{
+  font-family:var(--serif);
+  font-size:var(--step-1);
+  color:var(--accent);
+  line-height:1.3;
+  flex:none;
+  min-width:1.4em;
+}
+.item h3{margin-bottom:12px;}
+.item p{
+  color:var(--body-mute);
+  font-size:.9375rem;
+}
+.item .body{flex:1;min-width:0;}
+
+.why{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  color:var(--body-faint);
+  font-size:.875rem;
+}
+.why b{color:var(--body);font-weight:500;}
+
+.tag{
+  display:inline-block;
+  font-size:.6875rem;
+  letter-spacing:.14em;
+  color:var(--accent);
+  border:1px solid var(--line-strong);
+  padding:5px 11px;
+  margin-bottom:14px;
+}
+.tag.blocker{color:var(--accent-hover);border-color:var(--accent-focus);}
+.tag.build{color:var(--body-faint);}
+
+/* resolved list */
+.resolved{
+  border:1px solid var(--line);
+  background:var(--surface-1);
+}
+.resolved .row{
+  display:flex;
+  gap:18px;
+  padding:20px 26px;
+  border-bottom:1px solid var(--line);
+}
+.resolved .row:last-child{border-bottom:none;}
+.resolved .row .k{
+  flex:0 0 190px;
+  color:var(--heading);
+  font-size:.9375rem;
+  font-weight:500;
+}
+.resolved .row .v{
+  color:var(--body-faint);
+  font-size:.9375rem;
+}
+.resolved .row .v b{color:var(--body);font-weight:500;}
+
+/* callout */
+.callout{
+  border-left:2px solid var(--accent);
+  background:var(--surface-2);
+  padding:24px 26px;
+}
+.callout h3{margin-bottom:12px;}
+.callout p{color:var(--body-mute);font-size:.9375rem;}
+
+/* footer */
+footer{
+  margin-top:80px;
+  padding-top:32px;
+  border-top:1px solid var(--line);
+  color:var(--body-dim);
+  font-size:.8125rem;
+}
+
+@media (max-width:760px){
+  :root{--step-1:1.125rem;--step-2:1.2656rem;--step-3:1.4238rem;--step-4:1.6018rem;--step-5:1.8020rem;}
+  .wrap{padding:48px var(--gutter) 72px;}
+  .tally{grid-template-columns:1fr;}
+  .resolved .row{flex-direction:column;gap:6px;padding:18px 20px;}
+  .resolved .row .k{flex:none;}
+  .item{padding:22px 20px;}
+  .item-top{gap:12px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Questions for <em>Matt</em></h1>
+    <p>Updated against the August 6 biweekly check-in notes. Four of the original questions are now answered and have moved out of the list. Seven are still open, and the notes raise five new ones that have to be settled before the policy pages can be written.</p>
+    <div class="meta">
+      <span><strong>Signature Society</strong></span>
+      <span>Policy and legal copy</span>
+      <span>Phase 1, October 30</span>
+    </div>
+  </header>
+
+  <div class="tally">
+    <div><span class="n">7</span><span class="l">Still open</span></div>
+    <div><span class="n">5</span><span class="l">New from the notes</span></div>
+    <div><span class="n">4</span><span class="l">Answered, closed out</span></div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="dot"></span><h2>Still open</h2></div>
+    <p class="sec-note">These were in the original list and the August 6 notes do not answer them.</p>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">1</span>
+        <div class="body">
+          <span class="tag">Warranty</span>
+          <h3>What does an approved warranty claim actually get the customer?</h3>
+          <p>The warranty defines coverage and exclusions in detail but never says whether we repair, replace, or issue credit.</p>
+          <div class="why"><b>Why it changed.</b> The August 6 decision is store credit or exchange only, no refunds. Warranty should probably follow that same ladder, but it has to be written down or the Concierge Team will improvise it case by case.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">2</span>
+        <div class="body">
+          <span class="tag">Returns</span>
+          <h3>What is the restocking fee?</h3>
+          <p>The notes confirm there is one. We need the number, whether it is a percentage or a flat amount, and whether it applies to exchanges or only to store credit returns.</p>
+          <div class="why"><b>Why it matters.</b> This number has to appear in the return policy and in the Concierge reply template. It cannot be decided per claim.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">3</span>
+        <div class="body">
+          <span class="tag build">Affects checkout setup</span>
+          <h3>Are customs duties collected at checkout, or billed to the customer on delivery?</h3>
+          <p>The notes confirm the customer covers duties and that duties are never refunded. They do not say where the money is collected.</p>
+          <div class="why"><b>Why it matters.</b> Collected at checkout means configuring Shopify Markets and duty calculation. Billed on delivery means the customer gets a bill from the carrier, which needs a plain warning on the product and checkout pages so it does not read as a surprise.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">4</span>
+        <div class="body">
+          <span class="tag">Returns</span>
+          <h3>What happens when an order comes back undeliverable, refused, or was sent to a wrong address the customer entered?</h3>
+          <p>Not covered anywhere. We need a position on who absorbs the return shipping, and whether the order is then treated as a return under the 14-day store credit rule or reshipped at the customer's cost.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">5</span>
+        <div class="body">
+          <span class="tag">Returns</span>
+          <h3>What happens when a package is marked delivered but the customer says it never arrived?</h3>
+          <p>The return policy uses carrier tracking as the source of truth for the 14-day window. That makes this sharper than it was, because the same tracking data is what we would be pointing at to decline the claim.</p>
+          <div class="why"><b>Worth deciding now.</b> Whether we file the carrier claim ourselves or hand it to the customer, and whether shipping insurance is purchased on higher value orders.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">6</span>
+        <div class="body">
+          <span class="tag blocker">Blocks launch</span>
+          <h3>What is the business address for the contact policy?</h3>
+          <p>Shopify requires a published business address. The phone question is settled, there will not be one, so the address is the only piece still missing.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">7</span>
+        <div class="body">
+          <span class="tag blocker">Blocks launch</span>
+          <h3>Who is writing the privacy policy and terms of service, and by when?</h3>
+          <p>Both link from checkout, so neither can be missing at launch. The cancellation policy sits in the same lane and is already assigned to you and Angel.</p>
+          <div class="why"><b>Status.</b> A privacy policy draft is written and waiting on your review. Terms of service has not been started.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="dot new"></span><h2>New, raised by the <em>notes</em></h2></div>
+    <p class="sec-note">The August 6 decisions create these. None of them were on the original list.</p>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">8</span>
+        <div class="body">
+          <span class="tag blocker">Chargeback risk</span>
+          <h3>Does no refunds apply to damaged goods too, or only to undamaged returns?</h3>
+          <p>Store credit or exchange only is clear for a customer who simply changed their mind. If a marble piece arrives broken and the customer is offered store credit instead of money back, that is the single most likely source of a card chargeback.</p>
+          <div class="why"><b>Recommendation.</b> Carve damaged and defective goods out of the no refunds rule. Refunding a rare broken piece costs far less than losing the dispute and the processing fee.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">9</span>
+        <div class="body">
+          <span class="tag build">Affects backend setup</span>
+          <h3>How does store credit actually work?</h3>
+          <p>Shopify store credit or a gift card code? Does it expire? Does it cover the shipping cost on the exchange, or does the customer pay that again?</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">10</span>
+        <div class="body">
+          <span class="tag">Cancellations</span>
+          <h3>What is the actual cancellation cutoff?</h3>
+          <p>The notes say changes and cancellations are not guaranteed once fulfillment has begun. A customer cannot read that and know where they stand. We need something concrete, for example within two hours of ordering, or any time before a shipping label is created.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">11</span>
+        <div class="body">
+          <span class="tag">Returns</span>
+          <h3>Which products, if any, are final sale?</h3>
+          <p>Nothing has been designated final sale. The Signature Edit dermaplane and the Concierge toothbrush are hygiene-contact products. Confirm whether an opened unit is returnable at all, and whether the blades and refills are returnable once the seal is broken.</p>
+          <div class="why"><b>Why it matters.</b> There is a final sale flag built into the product template already. It stays off until you confirm which pieces carry it.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-top">
+        <span class="num">12</span>
+        <div class="body">
+          <span class="tag build">Affects product pages</span>
+          <h3>Confirm the natural variation language can sit on the product page, not only in the policy.</h3>
+          <p>The policy states that natural variation is not grounds for return. For that to hold up, the customer has to have seen it before they bought, which means it belongs beside the marble variant selector as well as in the return policy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="dot done"></span><h2>Answered, closed out</h2></div>
+    <p class="sec-note">No reply needed on these. Listed so you can see what moved.</p>
+
+    <div class="resolved">
+      <div class="row">
+        <div class="k">Shipping on a return</div>
+        <div class="v">Not refunded. <b>Shipping and duties are never refunded</b>, on domestic or international orders.</div>
+      </div>
+      <div class="row">
+        <div class="k">Marble returns</div>
+        <div class="v">Marble is not final sale. Undamaged marble follows the standard <b>14-day store credit or exchange</b> rule. The 48-hour window applies only to damage.</div>
+      </div>
+      <div class="row">
+        <div class="k">Phone number</div>
+        <div class="v">No phone. Support is <b>email only</b> with a 24 to 48 hour response window. No AI chat.</div>
+      </div>
+      <div class="row">
+        <div class="k">Customer-facing email</div>
+        <div class="v"><b>contact@signaturesociety.com</b>, set on the navs and footers on August 20. Several drafts still say concierge@ and need a pass to correct them.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <h3>One recommendation, not a <em>question</em></h3>
+      <p>The 48-hour marble damage window is a decision on record, with the rationale of separating freight damage from customer-caused damage. That rationale holds at seven days just as well as at two. Forty-eight hours punishes a customer who was traveling when the box landed, and it is the clause most likely to read as unreasonable on an international order.</p>
+      <p>The change costs almost nothing operationally and makes the policy easier to defend. Worth an attorney's read either way, since it is the one term with real money behind it.</p>
+    </div>
+  </section>
+
+  <footer>
+    Signature Society, policy and legal copy. Internal working document.
+  </footer>
+
+</div>
+</body>
+</html>

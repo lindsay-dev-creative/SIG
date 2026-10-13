@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Signature Society — Join the List</title>
+<meta name="description" content="Join the Signature Society list for early access to the launch, private previews, and first word on new pieces.">
+<!--
+  SIGNATURE SOCIETY — Social Subscribe Page (Klaviyo mockup)
+  Fonts: Kepler Std (display) is approximated here with Cormorant Garamond.
+         Replace with the licensed Kepler Std webfont in production.
+         Inter is the body/UI face.
+  Colors: semantic tokens below stand in for the SIG css-variables.liquid values
+          (midnight ink, alabaster linen, cognac). Swap exact hex when moving to Klaviyo.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brand tokens (placeholders for SIG design tokens) */
+    --ink:        #12141A;
+    --ink-soft:   #1A1D25;
+    --linen:      #EFE9DE;
+    --linen-muted:#C4BCAD;
+    --linen-faint:#8F887B;
+    --cognac:     #B08A5B;
+    --cognac-hi:  #C7A375;
+    --hairline:   rgba(239, 233, 222, 0.16);
+    --hairline-strong: rgba(239, 233, 222, 0.28);
+
+    /* Type */
+    --display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--body);
+    background-color: var(--ink);
+    /* subtle atmospheric wash */
+    background-image:
+      radial-gradient(120% 90% at 50% 8%, rgba(176, 138, 91, 0.10) 0%, rgba(18, 20, 26, 0) 55%),
+      radial-gradient(140% 120% at 50% 120%, rgba(18, 20, 26, 0) 40%, #0C0E13 100%);
+    color: var(--linen);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+  }
+
+  .wordmark {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--linen);
+    padding-left: 0.42em; /* optical balance for tracking */
+  }
+
+  .rule {
+    border: none;
+    height: 1px;
+    width: 44px;
+    margin: 28px auto 30px;
+    background: var(--cognac);
+    opacity: 0.9;
+  }
+
+  .display {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1.12;
+    letter-spacing: 0.005em;
+    color: var(--linen);
+    margin-bottom: 20px;
+  }
+
+  .lede {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--linen-muted);
+    max-width: 40ch;
+    margin: 0 auto 36px;
+  }
+
+  form { display: block; }
+
+  .field {
+    position: relative;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+
+  .field input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--hairline-strong);
+    color: var(--linen);
+    font-family: var(--body);
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    padding: 12px 2px;
+    transition: border-color 0.25s ease;
+  }
+
+  .field input::placeholder {
+    color: var(--linen-faint);
+    letter-spacing: 0.04em;
+  }
+
+  .field input:focus {
+    outline: none;
+    border-bottom-color: var(--cognac);
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    margin-top: 26px;
+    background: var(--cognac);
+    color: var(--ink);
+    border: none;
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .btn:hover { background: var(--cognac-hi); }
+  .btn:active { background: #9A7746; }
+
+  .fineprint {
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--linen-faint);
+    margin-top: 26px;
+    max-width: 36ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Confirmation state */
+  .confirm { display: none; }
+  .confirm .display { margin-bottom: 16px; }
+  body.done .form-state { display: none; }
+  body.done .confirm { display: block; }
+
+  @media (max-width: 480px) {
+    .display { font-size: 34px; }
+    .lede { font-size: 15px; line-height: 1.7; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <!-- Form state -->
+    <div class="form-state">
+      <div class="wordmark">Signature Society</div>
+      <hr class="rule">
+      <h1 class="display">An invitation to the Society</h1>
+      <p class="lede">Signature Society is a collection of considered objects for the home and the daily ritual, made from marble, horn, wood, and leather. Add your name to receive early access to the launch, private previews, and first word on new pieces.</p>
+
+      <form id="subscribeForm" novalidate>
+        <div class="field">
+          <input type="text" name="firstName" placeholder="First name" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
+        </div>
+        <button type="submit" class="btn">Join the Society</button>
+      </form>
+
+      <p class="fineprint">By subscribing, you agree to receive emails from Signature Society. You can unsubscribe at any time.</p>
+    </div>
+
+    <!-- Confirmation state -->
+    <div class="confirm">
+      <div class="wordmark">Signature Society</div>
+      <hr class="rule">
+      <h1 class="display">You are on the list</h1>
+      <p class="lede">Thank you for joining. Watch your inbox for early access, private previews, and first word on new pieces.</p>
+    </div>
+  </main>
+
+  <script>
+    // In-memory demo only — no data is stored or sent. Klaviyo handles the real submit.
+    document.getElementById('subscribeForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = this.email.value.trim();
+      if (!email) { this.email.focus(); return; }
+      document.body.classList.add('done');
+    });
+  </script>
+</body>
+</html>
