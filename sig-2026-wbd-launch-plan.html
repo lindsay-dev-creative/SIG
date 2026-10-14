@@ -258,6 +258,9 @@
   .item__label { color: var(--cream); font-size: 17px; line-height: 1.45; display: block; transition: color 0.22s; }
   .item__hint { display: block; margin-top: 5px; font-size: 14.5px; line-height: 1.55; color: var(--gold-deep); transition: color 0.22s; }
   .item__hint b { font-weight: 400; color: var(--sand); }
+  /* Table under a checklist item, lined up with the item text */
+  .item-table { width: calc(100% - 55px); margin: 0 0 10px 55px; }
+  .item-table td:last-child, .item-table th:last-child { text-align: right; white-space: nowrap; }
   .item input:checked ~ .item__text .item__label {
     color: var(--gold-deep);
     text-decoration: line-through;
@@ -415,6 +418,24 @@
     <h3>Products</h3>
     <ul>
       <li><label class="item"><input type="checkbox" id="s-p1"><span class="item__text"><span class="item__label">Confirm the launch line-up<span class="who">You</span></span><span class="item__hint">Are <b>The Society Sweatshirt</b> and <b>The Awakening Eye Patches</b> launching? Everything else is assumed yes.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-p5"><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="who who--claude">Claude</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart.</span></span></label>
+        <table class="item-table">
+          <thead><tr><th>Product</th><th>Price</th></tr></thead>
+          <tbody>
+          <tr><td>The Heirloom, both finishes</td><td>$118</td></tr>
+          <tr><td>The Signature Edit, Tortoiseshell</td><td>$138</td></tr>
+          <tr><td>The Signature Edit, Marble</td><td>$148</td></tr>
+          <tr><td>MRBL Atelier Brush</td><td>$248</td></tr>
+          <tr><td>The Night Standard</td><td>$148</td></tr>
+          <tr><td>The Concierge, Oxblood</td><td>$48</td></tr>
+          <tr><td>The Concierge, Tortoiseshell</td><td>$58</td></tr>
+          <tr><td>Eye Patches</td><td>$38</td></tr>
+          <tr><td>Sweatshirt</td><td>$128</td></tr>
+          <tr><td>Heirloom Reserve, 4-pack</td><td>$38</td></tr>
+          <tr><td>Heirloom Reserve, 8-pack</td><td>$68</td></tr>
+          </tbody>
+        </table>
+      </li>
       <li><label class="item"><input type="checkbox" id="s-p2"><span class="item__text"><span class="item__label">Turn on stock tracking, add SKUs, weights and package sizes<span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Weights drive the shipping rates. Send Claude the SKUs, weights and stock counts.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="s-p3"><span class="item__text"><span class="item__label">Create the product fields and fill them in<span class="who who--claude">Claude</span></span><span class="item__hint">Material, care instructions, final sale, sold as a set, refill product, marble type. The product page accordions and Final Sale badge read these.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="s-p4"><span class="item__text"><span class="item__label">Approve product photos, prices and alt text<span class="who">You</span></span></span></label></li>
