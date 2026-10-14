@@ -258,6 +258,9 @@
   .item__label { color: var(--cream); font-size: 17px; line-height: 1.45; display: block; transition: color 0.22s; }
   .item__hint { display: block; margin-top: 5px; font-size: 14.5px; line-height: 1.55; color: var(--gold-deep); transition: color 0.22s; }
   .item__hint b { font-weight: 400; color: var(--sand); }
+  /* Table under a checklist item, lined up with the item text */
+  .item-table { width: calc(100% - 55px); margin: 0 0 10px 55px; }
+  .item-table td:last-child, .item-table th:last-child { text-align: right; white-space: nowrap; }
   .item input:checked ~ .item__text .item__label {
     color: var(--gold-deep);
     text-decoration: line-through;
@@ -491,6 +494,24 @@
       <li><label class="item"><input type="checkbox" id="d15-2"><span class="item__text"><span class="item__label">Replace raw px spacing with the spacing tokens<span class="who who--claude">Claude</span></span><span class="item__hint">32 values in <code>sig-custom.css</code>. Flag any deliberate one-offs.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-3"><span class="item__text"><span class="item__label">Finish the form CSS tokens<span class="who who--both">Both</span></span><span class="item__hint">Which face typed text uses, the "filled" state, label and help text roles, review at 360, 768 and 1920.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-4"><span class="item__text"><span class="item__label">Turn on Shop Pay, PayPal, Klarna and Afterpay<span class="who">You</span></span><span class="item__hint">Settings → Payments, once Shopify Payments is active.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d15-5"><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="who">You</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart. Friday's approval checks these.</span></span></label>
+        <table class="item-table">
+          <thead><tr><th>Product</th><th>Price</th></tr></thead>
+          <tbody>
+          <tr><td>The Heirloom, both finishes</td><td>$118</td></tr>
+          <tr><td>The Signature Edit, Tortoiseshell</td><td>$138</td></tr>
+          <tr><td>The Signature Edit, Marble</td><td>$148</td></tr>
+          <tr><td>MRBL Atelier Brush</td><td>$248</td></tr>
+          <tr><td>The Night Standard</td><td>$148</td></tr>
+          <tr><td>The Concierge, Oxblood</td><td>$48</td></tr>
+          <tr><td>The Concierge, Tortoiseshell</td><td>$58</td></tr>
+          <tr><td>Eye Patches</td><td>$38</td></tr>
+          <tr><td>Sweatshirt</td><td>$128</td></tr>
+          <tr><td>Heirloom Reserve, 4-pack</td><td>$38</td></tr>
+          <tr><td>Heirloom Reserve, 8-pack</td><td>$68</td></tr>
+          </tbody>
+        </table>
+      </li>
       </ul>
     </div>
     <div class="day" data-date="2026-10-16" id="day-2026-10-16">
