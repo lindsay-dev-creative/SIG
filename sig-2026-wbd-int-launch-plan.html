@@ -299,8 +299,6 @@
   .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; color: var(--gold-deep); margin: -26px 0 44px; }
   .legend .who, .legend .flag { margin-left: 0; margin-right: 8px; }
 
-  /* Owner and priority tags hidden for now */
-  .who, .flag, .legend { display: none; }
 
   /* Decisions */
   ol.decisions { margin: 0; padding: 0 0 0 1.4em; color: var(--cream); }
@@ -450,6 +448,20 @@
     </table>
   </section>
 
+  <section id="decisions">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Decisions needed</h2><span class="sec-date">Oct 14–20</span></div>
+    <p class="sec-note">Setup can't finish without these.</p>
+    <ol class="decisions">
+      <li>Keep the Oct 2 type-test scale, warm or cool grays, and which button burgundy?<span>Due Wed Oct 14. The token cleanup waits on these.</span></li>
+      <li>Which secondary brand font, and what does it cover?<span>Due Wed Oct 14. The form CSS on Thursday waits on it.</span></li>
+      <li>Are the Sweatshirt and Eye Patches launching?<span>Matt, Fri Oct 16.</span></li>
+      <li>For orders under $150: one flat shipping price, or priced by weight?<span>Matt, Fri Oct 16.</span></li>
+      <li>Above what order value is a signature required?<span>Matt, Fri Oct 16.</span></li>
+      <li>Who writes the Klaviyo and Shopify email copy?<span>Automation copy due Wed Oct 21; order email copy by Fri Oct 23.</span></li>
+      <li>Which sender should Klaviyo use: contact@ (current) or concierge@?<span>Due Tue Oct 20. The order email sender (Oct 21) and the Klaviyo template (Oct 22) wait on it.</span></li>
+    </ol>
+  </section>
+
   <div class="meter">
     <span class="meter__count"><span id="done">0</span> / <span id="total">0</span> complete</span>
     <span class="meter__track"><span class="meter__fill" id="fill"></span></span>
@@ -457,13 +469,12 @@
   </div>
 
   <section class="week" id="w1">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Setup decisions and store basics</h2><span class="sec-date">Oct 12–16</span></div>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Setup decisions and store basics</h2><span class="sec-date">Oct 12–16</span></div>
     <p class="sec-note">Decisions first: the type scale, colors and the secondary font set everything else in motion.</p>
     <div class="day" data-date="2026-10-12" id="day-2026-10-12">
       <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 12</span><span class="day__tag">Done</span></div>
       <ul>
       <li><label class="item"><input type="checkbox" id="d12-1" checked><span class="item__text"><span class="item__label">Publish the privacy, shipping, return and contact policies<span class="who who--claude">Claude</span></span><span class="item__hint">Copied word for word from the final copy docs. Privacy policy switched off the automated version.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d12-2" checked><span class="item__text"><span class="item__label">Add form field styles to <code>sig-custom.css</code><span class="who who--claude">Claude</span></span><span class="item__hint">Fields, checkboxes and states from the form tokens. Not yet checked in the live theme.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d12-3" checked><span class="item__text"><span class="item__label">Write the launch plan<span class="who who--claude">Claude</span></span></span></label></li>
       </ul>
     </div>
@@ -481,6 +492,7 @@
       <div class="day__head"><span class="day__name">Wednesday</span><span class="day__date">Oct 14</span></div>
       <ul>
       <li><label class="item"><input type="checkbox" id="d14-1"><span class="item__text"><span class="item__label">Decide the type scale, gray family and button burgundy<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Keep the Oct 2 type-test scale? Warm or cool grays for text on navy? Buttons <code>#3F1214</code> or <code>#5f2426</code>?</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d16-1"><span class="item__text"><span class="item__label">Decide the secondary brand font and what it covers<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Small text, labels, buttons, nav, or all. Check the web license covers the site and email.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-2"><span class="item__text"><span class="item__label">Rebuild the type scale as <code>--step</code> tokens and remove the root size override<span class="who who--claude">Claude</span></span><span class="item__hint">Edit the source in <code>SIG_2026_WBD_Main/css/</code>, then rebuild <code>sig-tokens.css</code>. Point <code>custom.css</code> and <code>sig-custom.css</code> at the same scale.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-3"><span class="item__text"><span class="item__label">Move the token breakpoints to Prestige's 700 and 1000<span class="who who--claude">Claude</span></span><span class="item__hint">Today they switch at 768 and 1024, so type and layout change at different widths.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-4"><span class="item__text"><span class="item__label">Turn on Shopify Tax and add Tennessee, plus any other state you're registered in<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Taxes and duties.</span></span></label></li>
@@ -492,7 +504,7 @@
       <ul>
       <li><label class="item"><input type="checkbox" id="d15-1"><span class="item__text"><span class="item__label">Replace raw colors with tokens; merge the two button sets<span class="who who--claude">Claude</span></span><span class="item__hint">18 raw colors in <code>sig-custom.css</code>, 63 in <code>sig-nav.css</code>. Needs Wednesday's decisions.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-2"><span class="item__text"><span class="item__label">Replace raw px spacing with the spacing tokens<span class="who who--claude">Claude</span></span><span class="item__hint">32 values in <code>sig-custom.css</code>. Flag any deliberate one-offs.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d15-3"><span class="item__text"><span class="item__label">Finish the form CSS tokens<span class="who who--both">Both</span></span><span class="item__hint">Which face typed text uses, the "filled" state, label and help text roles, review at 360, 768 and 1920.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d15-3"><span class="item__text"><span class="item__label">Finish, preview and commit the form CSS<span class="who who--both">Both</span></span><span class="item__hint">Field styles were written Oct 12 in <code>sig-custom.css</code> (from line 667) and logged in <code>CHANGES.md</code>, not yet committed or previewed. Still open: which face typed text uses (decided Wednesday), the "filled" state, label and help text roles. Review at 360, 768 and 1920, run the theme check and preview before pushing to <code>launch</code>.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-4"><span class="item__text"><span class="item__label">Turn on Shop Pay, PayPal, Klarna and Afterpay<span class="who">You</span></span><span class="item__hint">Settings → Payments, once Shopify Payments is active.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-5"><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="who">You</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart. Friday's approval checks these.</span></span></label>
         <table class="item-table">
@@ -517,7 +529,6 @@
     <div class="day" data-date="2026-10-16" id="day-2026-10-16">
       <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Oct 16</span><span class="day__tag">Deadline</span></div>
       <ul>
-      <li><label class="item"><input type="checkbox" id="d16-1"><span class="item__text"><span class="item__label">Decide the secondary brand font and what it covers<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Small text, labels, buttons, nav, or all. Check the web license covers the site and email.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-2"><span class="item__text"><span class="item__label">Matt sends weights, stock, product details and ShipStation answers<span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Includes launch line-up, under-$150 shipping (flat or by weight), signature threshold and carriers.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-3"><span class="item__text"><span class="item__label">Approve product photos, prices and alt text<span class="who">You</span></span></span></label></li>
       </ul>
@@ -525,7 +536,7 @@
   </section>
 
   <section class="week" id="w2">
-    <div class="sec-head"><span class="sec-num">02</span><h2>Products, fulfillment and foundations</h2><span class="sec-date">Oct 19–23</span></div>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Products, fulfillment and foundations</h2><span class="sec-date">Oct 19–23</span></div>
     <p class="sec-note">Products and shipping are set from Matt's answers. Fonts go into the theme. Copy for the four must-have automations is due Wednesday.</p>
     <div class="day" data-date="2026-10-19" id="day-2026-10-19">
       <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 19</span></div>
@@ -542,7 +553,7 @@
       <li><label class="item"><input type="checkbox" id="d20-1"><span class="item__text"><span class="item__label">Create the product fields and fill them in<span class="who who--claude">Claude</span></span><span class="item__hint">Material, care, final sale, set, refill product, marble type.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d20-2"><span class="item__text"><span class="item__label">ShipStation: carriers, ship-from address, package presets, packing slip, insurance<span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d20-3"><span class="item__text"><span class="item__label">ShipStation: signature-required rule, and its own customer emails off<span class="who">You</span></span><span class="item__hint">Shopify sends the shipping email.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d20-4"><span class="item__text"><span class="item__label">Count the stock and enter it in Shopify<span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d20-4"><span class="item__text"><span class="item__label">Matt enters the stock count for each product in Shopify<span class="who who--matt">Matt</span><span class="flag">Blocker</span></span></span></label></li>
       </ul>
     </div>
     <div class="day" data-date="2026-10-21" id="day-2026-10-21">
@@ -568,6 +579,7 @@
       <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Oct 23</span></div>
       <ul>
       <li><label class="item"><input type="checkbox" id="d23-1"><span class="item__text"><span class="item__label">Build abandoned checkout and post-purchase<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">As drafts for your review.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d04-2"><span class="item__text"><span class="item__label">Build abandoned cart, browse abandonment and the review request<span class="who who--both">Both</span></span><span class="item__hint">As drafts for your review. All Klaviyo emails are built by today. The review request needs Judge.me, installed today.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d23-2"><span class="item__text"><span class="item__label">Brand and rewrite the Shopify order emails<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Confirmation, shipping, canceled, store credit and refund, returns, gift card, accounts. Copy from you.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d23-3"><span class="item__text"><span class="item__label">Install and set up Judge.me<span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d23-4"><span class="item__text"><span class="item__label">Matt sends the Terms of Service<span class="who who--matt">Matt</span></span><span class="item__hint">Drafting with his attorney. The shipping and returns policies link to it.</span></span></label></li>
@@ -576,7 +588,7 @@
   </section>
 
   <section class="week" id="w3">
-    <div class="sec-head"><span class="sec-num">03</span><h2>Site pages</h2><span class="sec-date">Oct 24–25 weekend</span></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Site pages</h2><span class="sec-date">Oct 24–25 weekend</span></div>
     <p class="sec-note">The heaviest stretch. If pages slip, they move into Monday and testing of those pages starts Tuesday.</p>
     <div class="day" data-date="2026-10-24" id="day-2026-10-24">
       <div class="day__head"><span class="day__name">Saturday</span><span class="day__date">Oct 24</span></div>
@@ -597,7 +609,7 @@
   </section>
 
   <section class="week" id="w4">
-    <div class="sec-head"><span class="sec-num">04</span><h2>Testing</h2><span class="sec-date">Oct 26–30</span></div>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Testing</h2><span class="sec-date">Oct 26–30</span></div>
     <p class="sec-note">Log every problem in one list. Fixes happen from Nov 4.</p>
     <div class="day" data-date="2026-10-26" id="day-2026-10-26">
       <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 26</span><span class="day__tag">Testing starts</span></div>
@@ -641,7 +653,7 @@
   </section>
 
   <section class="week" id="w5">
-    <div class="sec-head"><span class="sec-num">05</span><h2>Testing wraps, fixes and sign-off</h2><span class="sec-date">Nov 2–6</span></div>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Testing wraps, fixes and sign-off</h2><span class="sec-date">Nov 2–6</span></div>
     <p class="sec-note">Testing ends Tuesday Nov 3. Wednesday on is fixes only, no new features.</p>
     <div class="day" data-date="2026-11-02" id="day-2026-11-02">
       <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Nov 2</span></div>
@@ -663,7 +675,6 @@
       <div class="day__head"><span class="day__name">Wednesday</span><span class="day__date">Nov 4</span></div>
       <ul>
       <li><label class="item"><input type="checkbox" id="d04-1"><span class="item__text"><span class="item__label">Fix and retest the test list<span class="who who--both">Both</span><span class="flag">Blocker</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d04-2"><span class="item__text"><span class="item__label">Build abandoned cart, browse abandonment and the review request<span class="who who--both">Both</span></span><span class="item__hint">Can go live just after launch if time runs short.</span></span></label></li>
       </ul>
     </div>
     <div class="day" data-date="2026-11-05" id="day-2026-11-05">
@@ -684,7 +695,7 @@
   </section>
 
   <section class="week" id="w6">
-    <div class="sec-head"><span class="sec-num">06</span><h2>Launch</h2><span class="sec-date">Nov 7–9</span></div>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Launch</h2><span class="sec-date">Nov 7–9</span></div>
     <div class="day day--event" data-date="2026-11-07" id="day-2026-11-07">
       <div class="day__head"><span class="day__name">Saturday</span><span class="day__date">Nov 7</span><span class="day__tag">Launch party</span></div>
       <p class="day--empty">Launch party. No site work scheduled.</p>
@@ -704,7 +715,7 @@
   </section>
 
   <section class="week" id="w7">
-    <div class="sec-head"><span class="sec-num">07</span><h2>After launch</h2><span class="sec-date">Nov 10 onward</span></div>
+    <div class="sec-head"><span class="sec-num">08</span><h2>After launch</h2><span class="sec-date">Nov 10 onward</span></div>
     <div class="day" data-date="" id="day-w7">
       <div class="day__head"><span class="day__name">Next</span><span class="day__date"></span></div>
       <ul>
@@ -719,7 +730,7 @@
 
   <!-- ==================== APPS ==================== -->
   <section id="apps">
-    <div class="sec-head"><span class="sec-num">08</span><h2>Apps worth installing</h2></div>
+    <div class="sec-head"><span class="sec-num">09</span><h2>Apps worth installing</h2></div>
     <p class="sec-note">Any app that collects customer data and isn't listed in the privacy policy has to be added to it.</p>
     <table>
       <thead><tr><th>App</th><th>Why</th><th>Cost</th></tr></thead>
@@ -736,19 +747,6 @@
   </section>
 
   <!-- ==================== DECISIONS ==================== -->
-  <section id="decisions">
-    <div class="sec-head"><span class="sec-num">09</span><h2>Decisions needed</h2><span class="sec-date">By Oct 16</span></div>
-    <p class="sec-note">Setup can't finish without these.</p>
-    <ol class="decisions">
-      <li>Keep the Oct 2 type-test scale, warm or cool grays, and which button burgundy?<span>Due Wed Oct 14. The token cleanup waits on these.</span></li>
-      <li>Which secondary brand font, and what does it cover?<span>Due Fri Oct 16.</span></li>
-      <li>Are the Sweatshirt and Eye Patches launching?<span>Matt, Fri Oct 16.</span></li>
-      <li>For orders under $150: one flat shipping price, or priced by weight?<span>Matt, Fri Oct 16.</span></li>
-      <li>Above what order value is a signature required?<span>Matt, Fri Oct 16.</span></li>
-      <li>Who writes the Klaviyo and Shopify email copy?<span>Automation copy due Wed Oct 21; order email copy by Fri Oct 23.</span></li>
-      <li>Which sender should Klaviyo use: contact@ (current) or concierge@?</li>
-    </ol>
-  </section>
 
   <div class="sign-off">
     <span>Signature Society · Internal · Launch November 9, 2026</span>
