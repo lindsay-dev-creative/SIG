@@ -390,6 +390,13 @@
   .out-empty { margin: 4px 0 0; color: var(--gold-deep); }
   .is-flash { outline: 1px solid var(--gold); outline-offset: 4px; }
   @media print { .outstanding { display: none; } }
+  /* Where things stand: a closed accordion */
+  .snap > summary { list-style: none; cursor: pointer; }
+  .snap > summary::-webkit-details-marker { display: none; }
+  .snap > summary::before { content: "+"; align-self: center; width: 18px; margin-right: -6px; font-family: var(--caption); font-size: 20px; color: var(--gold); }
+  .snap[open] > summary::before { content: "\2212"; }
+  .snap > summary:hover h2 { color: var(--gold); }
+  @media print { .snap > *:not(summary) { display: block; } .snap > summary::before { display: none; } }
 </style>
 </head>
 <body>
@@ -426,7 +433,8 @@
   </div>
 
   <section id="snapshot">
-    <div class="sec-head"><span class="sec-num">00</span><h2>Where things stand</h2><span class="sec-date">Checked Oct 12</span></div>
+    <details class="snap">
+    <summary class="sec-head"><h2>Where things stand</h2><span class="sec-date">Checked Oct 12</span></summary>
     <p class="sec-note">Read from the live Klaviyo account and the Shopify product catalog.</p>
     <table>
       <thead><tr><th>Area</th><th>Status</th></tr></thead>
@@ -442,6 +450,7 @@
         <tr><td>Shopify fulfillment location</td><td class="warn">One location: the Maryland Way office</td></tr>
       </tbody>
     </table>
+    </details>
   </section>
 
   <div class="meter">
