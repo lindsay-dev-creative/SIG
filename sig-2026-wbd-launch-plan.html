@@ -364,6 +364,32 @@
   .legend .app, .app-legend .app { margin-left: 0; margin-right: 8px; }
   .app-legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; color: var(--gold-deep); margin: -26px 0 44px; }
   @media print { .app { border: 1px solid #999; color: #000; } }
+  /* Still outstanding: one accordion at the top, built by the script */
+  .outstanding { margin: 0 0 44px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .outstanding summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 12px;
+    font-family: var(--caption);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .outstanding summary::-webkit-details-marker { display: none; }
+  .outstanding summary::before { content: "+"; display: inline-block; width: 18px; }
+  .outstanding details[open] summary::before { content: "\2212"; }
+  .outstanding summary:hover { color: var(--cream); }
+  .out-body { padding: 0 12px 18px 30px; }
+  .out-day { font-family: var(--caption); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); margin: 14px 0 4px; }
+  .out-list { list-style: none; margin: 0; padding: 0; }
+  .out-list li { padding: 4px 0; }
+  .out-list a { color: var(--cream); text-decoration: none; border-bottom: 1px solid transparent; }
+  .out-list a:hover { border-bottom-color: currentColor; }
+  .out-flag { margin-left: 8px; font-family: var(--caption); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+  .out-empty { margin: 4px 0 0; color: var(--gold-deep); }
+  .is-flash { outline: 1px solid var(--gold); outline-offset: 4px; }
+  @media print { .outstanding { display: none; } }
 </style>
 </head>
 <body>
@@ -424,25 +450,30 @@
     <button type="button" id="reset">Reset</button>
   </div>
 
+  <section class="outstanding" id="outstanding" aria-label="Still outstanding">
+    <details><summary>Still outstanding <span class="out-count"></span></summary><div class="out-body"></div></details>
+  </section>
+
+
   <!-- ==================== 01 SETUP ==================== -->
   <section id="setup">
     <div class="sec-head"><span class="sec-num">01</span><h2>Setup decisions and store basics</h2><span class="sec-date">Oct 12–16</span></div>
     <p class="sec-note">Decisions first: the type scale, colors and the secondary font set everything else in motion. Then the tokens: text and buttons Wednesday, color and spacing Thursday. Form fields follow on Monday.</p>
 
     <h3>Mon Oct 12</h3>
-    <ul>
+    <ul data-date="2026-10-12">
       <li><label class="item"><input type="checkbox" id="d12-1" checked><span class="item__text"><span class="item__label">Publish the privacy, shipping, return and contact policies<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Copied word for word from the final copy docs. Privacy policy switched off the automated version.</span></span></label></li>
     </ul>
 
     <h3>Tue Oct 13</h3>
-    <ul>
+    <ul data-date="2026-10-13">
       <li><label class="item"><input type="checkbox" id="d13-1" checked><span class="item__text"><span class="item__label">Send Matt the information request<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Weights and stock for every product, sweatshirt and eye patch details plus stock per size, and the ShipStation questions. Due back Wed Oct 14.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d13-3" checked><span class="item__text"><span class="item__label">Markets: United States only, international off<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Markets.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d13-4" checked><span class="item__text"><span class="item__label">Turn on the new customer accounts<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Customer accounts. Store credit needs these.</span></span></label></li>
     </ul>
 
     <h3>Wed Oct 14</h3>
-    <ul>
+    <ul data-date="2026-10-14">
       <li><label class="item"><input type="checkbox" id="d14-1" checked><span class="item__text"><span class="item__label">Decide the type scale, gray family and button burgundy<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Keep the Oct 2 type-test scale? Warm or cool grays for text on navy? Buttons <code>#3F1214</code> or <code>#5f2426</code>?</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-1" checked><span class="item__text"><span class="item__label">Decide the secondary brand font and what it covers<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Small text, labels, buttons, nav, or all. Check the web license covers the site and email.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-6" checked><span class="item__text"><span class="item__label">Add account.signaturesociety.com as the customer accounts domain<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Domains → Connect existing domain. Shopify then shows the DNS record to add.</span></span></label></li>
@@ -462,7 +493,7 @@
     </ul>
 
     <h3>Thu Oct 15</h3>
-    <ul>
+    <ul data-date="2026-10-15">
       <li><label class="item"><input type="checkbox" id="d15-5" checked><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart. Monday's approval checks these.</span></span></label>
         <table class="item-table">
           <thead><tr><th>Product</th><th>Price</th></tr></thead>
@@ -494,7 +525,7 @@
     <p class="sec-note">Products and shipping are set from Matt's answers. Fonts go into the theme. All site pages are built by Thursday. Email copy is written; every Klaviyo email, including the launch-day email, is built by Friday.</p>
 
     <h3>Mon Oct 19</h3>
-    <ul>
+    <ul data-date="2026-10-19">
       <li><label class="item"><input type="checkbox" id="d19-2" checked><span class="item__text"><span class="item__label">Add the secondary font to Figma text styles and variables<span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-4"><span class="item__text"><span class="item__label">Turn on Shop Pay, PayPal, Klarna and Afterpay<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Waiting on Matt. Settings → Payments, once Shopify Payments is active.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-3"><span class="item__text"><span class="item__label">Approve product photos, prices and alt text<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
@@ -507,7 +538,7 @@
     </ul>
 
     <h3>Tue Oct 20</h3>
-    <ul>
+    <ul data-date="2026-10-20">
       <li><label class="item"><input type="checkbox" id="d20-4"><span class="item__text"><span class="item__label">Matt enters the stock count for each product in Shopify<span class="app app--shopify">Shopify</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d20-2"><span class="item__text"><span class="item__label">ShipStation: carriers, ship-from address, package presets, packing slip, insurance<span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d20-3"><span class="item__text"><span class="item__label">ShipStation: signature-required rule, and its own customer emails off<span class="who">You</span></span><span class="item__hint">Shopify sends the shipping email.</span></span></label></li>
@@ -518,7 +549,7 @@
     </ul>
 
     <h3>Wed Oct 21</h3>
-    <ul>
+    <ul data-date="2026-10-21">
       <li><label class="item"><input type="checkbox" id="d21-1" checked><span class="item__text"><span class="item__label">Copy for every Klaviyo and Shopify email<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Already written, including the launch-day email.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d21-2"><span class="item__text"><span class="item__label">Order email sender set to concierge@, domain authenticated<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Notifications → Sender email → Authenticate domain.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d21-5"><span class="item__text"><span class="item__label">Turn off Shopify's abandoned checkout email<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Klaviyo sends it instead.</span></span></label></li>
@@ -532,7 +563,7 @@
     </ul>
 
     <h3>Thu Oct 22</h3>
-    <ul>
+    <ul data-date="2026-10-22">
       <li><label class="item"><input type="checkbox" id="d22-3"><span class="item__text"><span class="item__label">Install Google &amp; YouTube and Facebook &amp; Instagram<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Confirm GA4 data retention is 2 months.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d22-4"><span class="item__text"><span class="item__label">Cookie banner and data sharing opt-out on<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Customer privacy.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d05-3"><span class="item__text"><span class="item__label">Confirm the Shopify plan and billing<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
@@ -545,7 +576,7 @@
     </ul>
 
     <h3>Fri Oct 23</h3>
-    <ul>
+    <ul data-date="2026-10-23">
       <li><label class="item"><input type="checkbox" id="d23-4"><span class="item__text"><span class="item__label">Matt sends the Terms of Service<span class="who who--matt">Matt</span></span><span class="item__hint">Drafting with his attorney. The shipping and returns policies link to it.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d23-3"><span class="item__text"><span class="item__label">Install and set up Judge.me<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d25-4"><span class="item__text"><span class="item__label">Publish the Terms of Service<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Policies → Terms of service.</span></span></label></li>
@@ -563,7 +594,7 @@
     <p class="sec-note">Mon and Tue: you and Morgan test. Wed to Fri: 4 more testers join and place a variety of order types. Log every problem in one list. Fixes start Mon Nov 2.</p>
 
     <h3>Mon Oct 26</h3>
-    <ul>
+    <ul data-date="2026-10-26">
       <li><label class="item"><input type="checkbox" id="d02-2"><span class="item__text"><span class="item__label">GA4 and Meta record a test purchase<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d26-1"><span class="item__text"><span class="item__label">Test order with each payment method<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Card, Shop Pay, PayPal, Klarna, Afterpay. Check tax and totals.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d26-2"><span class="item__text"><span class="item__label">Shipping rates on both sides of $150<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Try $149 and $151 of merchandise.</span></span></label></li>
@@ -571,7 +602,7 @@
     </ul>
 
     <h3>Tue Oct 27</h3>
-    <ul>
+    <ul data-date="2026-10-27">
       <li><label class="item"><input type="checkbox" id="d27-1"><span class="item__text"><span class="item__label">Order flows into ShipStation; label prints; tracking reaches Shopify<span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d27-2"><span class="item__text"><span class="item__label">Customer gets exactly one shipping email<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d27-3"><span class="item__text"><span class="item__label">Signature-required rule triggers above the set amount<span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
@@ -579,7 +610,7 @@
     </ul>
 
     <h3>Wed Oct 28</h3>
-    <ul>
+    <ul data-date="2026-10-28">
       <li><label class="item"><input type="checkbox" id="d28-1"><span class="item__text"><span class="item__label">Return issues store credit minus the 10% restocking fee<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Credit lands in the account; store credit email sends.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d28-2"><span class="item__text"><span class="item__label">Final sale items can't be returned<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d28-3"><span class="item__text"><span class="item__label">Every Shopify order email sends, branded, with working links<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li>
@@ -588,14 +619,14 @@
     </ul>
 
     <h3>Thu Oct 29</h3>
-    <ul>
+    <ul data-date="2026-10-29">
       <li><label class="item"><input type="checkbox" id="d29-3"><span class="item__text"><span class="item__label">Emails render in Gmail, Apple Mail and Outlook, phone and desktop, and land in the inbox<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d29-1"><span class="item__text"><span class="item__label">Each Klaviyo automation fires for a test profile<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d29-2"><span class="item__text"><span class="item__label">Checkout and footer sign-ups land in the Email List<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Including the double opt-in email.</span></span></label></li>
     </ul>
 
     <h3>Fri Oct 30</h3>
-    <ul>
+    <ul data-date="2026-10-30">
       <li><label class="item"><input type="checkbox" id="d02-4"><span class="item__text"><span class="item__label">Test on a real iPhone and Android phone<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d03-2"><span class="item__text"><span class="item__label">Close the test log: one fix list, owner on each item<span class="who who--both">Both</span><span class="flag">Blocker</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d30-1"><span class="item__text"><span class="item__label">Every page checked at 360, 768 and 1920<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Against Figma. Forms, cart drawer, search, 404.</span></span></label></li>
@@ -610,12 +641,12 @@
     <p class="sec-note">Fixes only, no new features.</p>
 
     <h3>Mon Nov 2</h3>
-    <ul>
+    <ul data-date="2026-11-02">
       <li><label class="item"><input type="checkbox" id="d04-1"><span class="item__text"><span class="item__label">Fix and retest the test list<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Nov 2–5. Fixes only, no new features.</span></span></label></li>
     </ul>
 
     <h3>Fri Nov 6</h3>
-    <ul>
+    <ul data-date="2026-11-06">
       <li><label class="item"><input type="checkbox" id="d06-1"><span class="item__text"><span class="item__label">Remove test orders and customers; reset stock counts<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Including test profiles in Klaviyo.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d06-2"><span class="item__text"><span class="item__label">Client signs off the site and every email<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
     </ul>
@@ -626,7 +657,7 @@
     <div class="sec-head"><span class="sec-num">05</span><h2>Launch</h2><span class="sec-date">Nov 7–9</span></div>
 
     <h3>Mon Nov 9</h3>
-    <ul>
+    <ul data-date="2026-11-09">
       <li><label class="item"><input type="checkbox" id="d09-2"><span class="item__text"><span class="item__label">Connect the main branch to the live theme and publish<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Claude never pushes to main without your say-so.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d09-3"><span class="item__text"><span class="item__label">Remove the store password<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Online Store → Preferences → Password protection → off.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d09-4"><span class="item__text"><span class="item__label">signaturesociety.com is the primary domain; www redirects<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
@@ -643,7 +674,7 @@
     <div class="sec-head"><span class="sec-num">06</span><h2>After launch</h2><span class="sec-date">Nov 10 onward</span></div>
 
     <h3>Next</h3>
-    <ul>
+    <ul data-date="">
       <li><label class="item"><input type="checkbox" id="a-1"><span class="item__text"><span class="item__label">Archive the launch party lists; build engaged, buyer and Original Society segments<span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="a-5"><span class="item__text"><span class="item__label">Revisit order processing times after 30–60 days<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Launch-period terms: 3–4 day prep, ship within 10 days.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="a-2"><span class="item__text"><span class="item__label">Refill reminder automation<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Blades and cartridges for THE HEIRLOOM™ and THE SIGNATURE EDIT™.</span></span></label></li>
@@ -748,5 +779,94 @@
     paint();
   })();
 </script>
+<script>
+  // Still outstanding: every unticked task due today or earlier, grouped by day
+  (function () {
+    var box = document.getElementById('outstanding');
+    if (!box) return;
+    var body = box.querySelector('.out-body');
+    var count = box.querySelector('.out-count');
+    var pending = null;
+
+    function today() {
+      var d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+    function dayLabel(g) {
+      var name = g.querySelector('.day__name'), date = g.querySelector('.day__date');
+      if (name && date) return name.textContent.slice(0, 3) + ' ' + date.textContent;
+      var h = g.previousElementSibling;
+      return h && h.tagName === 'H3' ? h.textContent : g.dataset.date;
+    }
+    function taskName(item) {
+      var label = item.querySelector('.item__label').cloneNode(true);
+      label.querySelectorAll('.app, .who, .flag').forEach(function (n) { n.remove(); });
+      return label.textContent.trim();
+    }
+    function build() {
+      var now = today(), total = 0;
+      body.textContent = '';
+      document.querySelectorAll('[data-date]').forEach(function (g) {
+        if (!g.dataset.date || g.dataset.date > now || box.contains(g)) return;
+        var open = Array.prototype.filter.call(g.querySelectorAll('.item input'), function (i) { return !i.checked; });
+        if (!open.length) return;
+        total += open.length;
+        var head = document.createElement('p');
+        head.className = 'out-day';
+        head.textContent = dayLabel(g);
+        var list = document.createElement('ul');
+        list.className = 'out-list';
+        open.forEach(function (input) {
+          var item = input.closest('li');
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = '#' + input.id;
+          a.dataset.task = input.id;
+          a.textContent = taskName(item);
+          li.appendChild(a);
+          if (item.querySelector('.item__label .flag')) {
+            var flag = document.createElement('span');
+            flag.className = 'out-flag';
+            flag.textContent = 'Blocker';
+            li.appendChild(flag);
+          }
+          list.appendChild(li);
+        });
+        body.appendChild(head);
+        body.appendChild(list);
+      });
+      count.textContent = '(' + total + ')';
+      if (!total) {
+        var none = document.createElement('p');
+        none.className = 'out-empty';
+        none.textContent = 'Nothing outstanding. Everything due so far is ticked off.';
+        body.appendChild(none);
+      }
+    }
+    function later() {
+      if (pending) return;
+      pending = requestAnimationFrame(function () { pending = null; build(); });
+    }
+
+    body.addEventListener('click', function (e) {
+      var a = e.target.closest('a[data-task]');
+      if (!a) return;
+      e.preventDefault();
+      var input = document.getElementById(a.dataset.task);
+      var item = input && input.closest('li');
+      if (!item) return;
+      item.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      item.classList.add('is-flash');
+      setTimeout(function () { item.classList.remove('is-flash'); }, 1600);
+    });
+    document.addEventListener('change', later);
+    document.addEventListener('click', function (e) { if (e.target.closest('button')) setTimeout(later, 0); });
+    new MutationObserver(function (muts) {
+      if (muts.some(function (m) { return !box.contains(m.target); })) later();
+    }).observe(document.body, { childList: true, subtree: true });
+    build();
+  })();
+</script>
+
 </body>
 </html>
