@@ -7,6 +7,12 @@
       "runtimeArgs": ["-c", "python3 -m http.server ${PORT:-8766}"],
       "port": 8766,
       "autoPort": true
+    },
+    {
+      "name": "sig-theme-dev",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/lindsaydev/Github/signaturesociety-theme && shopify theme dev -e dev"],
+      "port": 9292
     }
   ]
 }
