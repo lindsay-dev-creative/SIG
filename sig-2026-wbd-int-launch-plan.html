@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Internal Launch Plan · Signature Society</title>
+<style>
+  /* Royals Serif, from fonts/royals next to this file.
+     Body: Medium and Medium Italic. Headers and labels: Medium. Buttons: SemiBold. */
+  @font-face {
+    font-family: "Royals Serif";
+    src: url("fonts/royals/royalsserif-medium-webfont.woff2") format("woff2"),
+         url("fonts/royals/royalsserif-medium-webfont.woff") format("woff");
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Royals Serif";
+    src: url("fonts/royals/royalsserif-mediumitalic-webfont.woff2") format("woff2"),
+         url("fonts/royals/royalsserif-mediumitalic-webfont.woff") format("woff");
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Royals Serif Medium";
+    src: url("fonts/royals/royalsserif-medium-webfont.woff2") format("woff2"),
+         url("fonts/royals/royalsserif-medium-webfont.woff") format("woff");
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Royals Serif SemiBold";
+    src: url("fonts/royals/royalsserif-semibold-webfont.woff2") format("woff2"),
+         url("fonts/royals/royalsserif-semibold-webfont.woff") format("woff");
+    font-style: normal;
+    font-display: swap;
+  }
+  :root {
+    --navy:        #010515;
+    --navy-raised: #060c1f;
+    --cream:       #f5f2eb;
+    --gold:        #ab946e;
+    --gold-deep:   #8d764d;
+    --sand:        #e1d8c9;
+    --burgundy:    #5f2426;
+    --button-text: #fefbfb;
+    --rule:        rgb(157 132 90 / 0.35);
+    --rule-faint:  rgb(157 132 90 / 0.18);
+
+    --display: "Royals Serif Medium", Georgia, "Times New Roman", serif;
+    --subhead: "Royals Serif Medium", Georgia, "Times New Roman", serif;
+    --body:    "Royals Serif", Georgia, "Times New Roman", serif;
+    --caption: "Royals Serif Medium", Georgia, "Times New Roman", serif;
+    --button:  "Royals Serif SemiBold", Georgia, "Times New Roman", serif;
+
+    --measure: 74ch;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--navy);
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -8%, rgb(171 148 110 / 0.14), transparent 70%),
+      radial-gradient(ellipse 70% 40% at 90% 105%, rgb(95 36 38 / 0.22), transparent 72%);
+    background-attachment: fixed;
+    color: var(--gold);
+    font-family: var(--body);
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 72px 28px 120px; }
+
+  /* ---- Masthead ---- */
+  .eyebrow {
+    font-family: var(--caption);
+    font-size: 12px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin: 0 0 22px;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(38px, 7vw, 62px);
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+    color: var(--cream);
+    margin: 0 0 18px;
+  }
+  .standfirst { max-width: var(--measure); margin: 0 0 40px; color: var(--sand); }
+
+  .event-line {
+    font-family: var(--caption);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-block: 1px solid var(--rule);
+    padding: 14px 0;
+    margin-bottom: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 28px;
+  }
+  .event-line span::before { content: "·"; margin-right: 28px; color: var(--gold-deep); }
+  .event-line span:first-child::before { content: none; margin: 0; }
+
+  /* ---- Timeline ---- */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+    margin: 0 0 48px;
+  }
+  .timeline a {
+    display: block;
+    padding: 12px 10px 13px;
+    border-top: 2px solid var(--rule);
+    text-decoration: none;
+    color: var(--gold-deep);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .timeline a:hover { border-top-color: var(--cream); color: var(--cream); }
+  .timeline .t-date {
+    display: block;
+    font-family: var(--caption);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .timeline .t-name { display: block; font-size: 15px; color: var(--sand); line-height: 1.35; margin-top: 4px; }
+  .timeline a.is-test { border-top-color: var(--burgundy); }
+  .timeline a.is-launch { border-top-color: var(--cream); }
+
+  /* ---- Snapshot table ---- */
+  table { width: 100%; border-collapse: collapse; font-size: 15.5px; margin: 6px 0 4px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule-faint); vertical-align: top; }
+  th {
+    font-family: var(--caption);
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  td { color: var(--sand); }
+  td:first-child { color: var(--cream); }
+  .ok   { color: #9fb48a; }
+  .no   { color: #d08a8f; }
+  .warn { color: #d9b56e; }
+
+  /* ---- Progress ---- */
+  .meter {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: color-mix(in srgb, var(--navy) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule-faint);
+    padding: 14px 0 15px;
+    margin-bottom: 52px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .meter__track { flex: 1; height: 2px; background: rgb(245 242 235 / 0.12); overflow: hidden; }
+  .meter__fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--gold-deep), var(--cream));
+    transition: width 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .meter__count {
+    font-family: var(--caption);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .meter button {
+    font-family: var(--caption);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    padding: 2px 0;
+    cursor: pointer;
+  }
+  .meter button:hover { color: var(--cream); border-bottom-color: currentColor; }
+
+  /* ---- Sections ---- */
+  section { margin-bottom: 58px; scroll-margin-top: 90px; }
+  .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 8px; flex-wrap: wrap; }
+  .sec-num { font-family: var(--caption); font-size: 12px; letter-spacing: 0.2em; color: var(--gold-deep); font-variant-numeric: tabular-nums; }
+  h2 {
+    font-family: var(--subhead);
+    font-weight: 400;
+    font-size: clamp(22px, 3.4vw, 28px);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin: 0;
+  }
+  .sec-date {
+    font-family: var(--caption);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-left: auto;
+  }
+  .sec-note {
+    max-width: var(--measure);
+    font-size: 15px;
+    color: var(--gold-deep);
+    margin: 0 0 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule-faint);
+  }
+  h3 {
+    font-family: var(--caption);
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 26px 0 8px 12px;
+  }
+
+  /* ---- Items ---- */
+  ul { list-style: none; margin: 0; padding: 0; }
+  li + li { margin-top: 2px; }
+
+  .item {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 16px;
+    padding: 13px 14px 14px 12px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.22s, border-color 0.22s;
+  }
+  .item:hover { background: var(--navy-raised); border-color: var(--rule-faint); }
+  .item input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin: 4px 0 0;
+    border: 1px solid var(--gold);
+    background: transparent;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .item input::after {
+    content: "";
+    width: 10px;
+    height: 6px;
+    border-left: 1.5px solid var(--navy);
+    border-bottom: 1.5px solid var(--navy);
+    transform: rotate(-45deg) scale(0);
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-top: -2px;
+  }
+  .item input:checked { background: var(--cream); border-color: var(--cream); }
+  .item input:checked::after { transform: rotate(-45deg) scale(1); }
+  .item input:focus-visible { outline: 2px solid var(--sand); outline-offset: 3px; }
+
+  .item__text { min-width: 0; }
+  .item__label { color: var(--cream); font-size: 15px; line-height: 1.45; display: block; transition: color 0.22s; }
+  .item__hint { display: block; margin-top: 5px; font-size: 15px; font-style: italic; line-height: 1.55; color: var(--gold-deep); transition: color 0.22s; }
+  .item__hint b { font-weight: 400; color: var(--sand); }
+  /* Table under a checklist item, lined up with the item text */
+  .item-table { width: calc(100% - 55px); margin: 0 0 10px 55px; }
+  .item-table td:last-child, .item-table th:last-child { text-align: right; white-space: nowrap; }
+  .item input:checked ~ .item__text .item__label {
+    color: var(--gold-deep);
+    text-decoration: line-through;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 1px;
+  }
+  .item input:checked ~ .item__text .item__hint { opacity: 0.55; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.86em;
+    color: var(--sand);
+    background: rgb(245 242 235 / 0.06);
+    padding: 1px 5px;
+    word-break: break-word;
+  }
+
+  /* Owner and priority tags */
+  .who, .flag {
+    display: inline-block;
+    font-family: var(--caption);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    margin-left: 8px;
+    vertical-align: 2px;
+    white-space: nowrap;
+  }
+  .who { color: var(--sand); border: 1px solid var(--rule); }
+  .who--claude { color: var(--navy); background: var(--gold); border-color: var(--gold); }
+  .who--both { color: var(--cream); border-color: var(--cream); }
+  .flag { color: var(--button-text); background: var(--burgundy); }
+  .flag--soft { background: transparent; color: var(--gold); border: 1px solid var(--rule); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; color: var(--gold-deep); margin: -26px 0 44px; }
+  .legend .who, .legend .flag { margin-left: 0; margin-right: 8px; }
+
+
+  /* Decisions */
+  ol.decisions { margin: 0; padding: 0 0 0 1.4em; color: var(--cream); }
+  ol.decisions li { padding: 6px 0; }
+  ol.decisions li span { display: block; font-size: 14.5px; color: var(--gold-deep); }
+
+  .sign-off {
+    margin-top: 72px;
+    padding-top: 26px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--caption);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--gold-deep);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 720px) {
+    .timeline { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 48px 16px 90px; }
+    .meter { gap: 14px; }
+    .meter__count { font-size: 11px; }
+    .sec-date { margin-left: 0; flex-basis: 100%; }
+    .timeline { grid-template-columns: repeat(2, 1fr); }
+    table { font-size: 14px; }
+    th, td { padding: 8px 6px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #222; }
+    .meter, .timeline { display: none; }
+    h1, h2, .item__label, td:first-child, ol.decisions { color: #000; }
+    .item__hint, .sec-note, .sec-num, .eyebrow, td, .sec-date, h3 { color: #555; }
+    .item { break-inside: avoid; }
+    .who, .flag { border: 1px solid #999; background: none; color: #000; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  /* ---- Day-by-day (internal plan) ---- */
+  .who--matt { color: var(--navy); background: var(--sand); border-color: var(--sand); }
+  .who--morgan { color: var(--cream); background: var(--burgundy); border-color: var(--burgundy); }
+  .week { margin-bottom: 64px; scroll-margin-top: 90px; }
+  .day { margin: 0 0 30px; scroll-margin-top: 90px; }
+  .day__head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 0 0 6px;
+    padding: 0 0 8px 12px;
+    border-bottom: 1px solid var(--rule-faint);
+  }
+  .day__name {
+    font-family: var(--subhead);
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    color: var(--cream);
+    text-transform: uppercase;
+  }
+  .day__date {
+    font-family: var(--caption);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  .day__tag {
+    margin-left: auto;
+    font-family: var(--caption);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .day.is-today .day__head { border-bottom-color: var(--cream); }
+  .day.is-today .day__name::after {
+    content: "Today";
+    font-family: var(--caption);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--cream);
+    padding: 3px 8px;
+    margin-left: 12px;
+    vertical-align: 3px;
+  }
+  .day--event .day__head { border-bottom-style: dashed; }
+  .day--empty { color: var(--gold-deep); font-size: 15px; padding: 4px 12px 0; margin: 0; }
+  .timeline--weeks { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 720px) { .timeline--weeks { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 600px) { .timeline--weeks { grid-template-columns: repeat(2, 1fr); } }
+
+  /* Platform tags: where the task is done */
+  .app {
+    display: inline-block;
+    font-family: var(--caption);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 2px 9px;
+    margin-left: 8px;
+    border-radius: 999px;
+    vertical-align: 2px;
+    white-space: nowrap;
+  }
+  .app--shopify { color: #c3d3a0; border: 1px solid rgb(149 191 71 / 0.5); }
+  .app--klaviyo { color: var(--sand); border: 1px solid var(--sand); }
+  .legend .app, .app-legend .app { margin-left: 0; margin-right: 8px; }
+  .app-legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; color: var(--gold-deep); margin: -26px 0 44px; }
+  @media print { .app { border: 1px solid #999; color: #000; } }
+
+  /* Moving tasks between days */
+  .meter__status { font-family: var(--caption); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); white-space: nowrap; }
+  .meter__status.is-warn { color: var(--cream); }
+  .move-help { margin: -40px 0 44px; font-size: 14.5px; color: var(--gold-deep); }
+  .day li[draggable="true"] { cursor: grab; position: relative; }
+  .day li.is-dragging { opacity: 0.35; }
+  .day ul.is-over { outline: 1px dashed var(--gold); outline-offset: 4px; }
+  .carried { display: block; margin-top: 5px; font-family: var(--caption); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .drop-hint { display: none; padding: 12px; font-size: 14.5px; color: var(--gold-deep); font-style: italic; }
+  .day ul.is-empty .drop-hint { display: block; }
+  .move {
+    position: absolute;
+    right: 8px;
+    top: 12px;
+    font-family: var(--caption);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    background: var(--navy);
+    border: 1px solid var(--rule-faint);
+    padding: 3px 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .day li:hover .move, .move:focus { opacity: 1; }
+  @media (hover: hover) { .day li[draggable="true"] > .item { padding-right: 130px; } }
+  @media (hover: none) { .move { opacity: 1; position: static; margin: -6px 0 10px 54px; } }
+  @media print { .move, .move-help, .drop-hint { display: none !important; } }
+  .meter button, .move { font-family: var(--button); }
+  .legend { display: none; }
+  .done-group { margin: 0 0 6px; }
+  .done-group summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 10px 12px;
+    font-family: var(--caption);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  .done-group summary::-webkit-details-marker { display: none; }
+  .done-group summary::before { content: "+"; display: inline-block; width: 18px; color: var(--gold); }
+  .done-group details[open] summary::before { content: "\2212"; }
+  .done-group summary:hover { color: var(--cream); }
+  .done-list { list-style: none; margin: 0; padding: 0; }
+  @media print { .done-group details > *:not(summary) { display: block; } }
+  label.item { cursor: default; }
+  .day li[draggable="true"] > label.item { cursor: grab; }
+  .item input { cursor: pointer; }
+  .item__name { cursor: text; border-radius: 2px; }
+  .item__name:hover { background: rgb(245 242 235 / 0.04); }
+  .item__name:focus { outline: 1px dashed var(--gold); outline-offset: 3px; background: none; }
+  /* Still outstanding: one accordion at the top, built by the script */
+  .outstanding { margin: 0 0 44px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .outstanding summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 12px;
+    font-family: var(--caption);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .outstanding summary::-webkit-details-marker { display: none; }
+  .outstanding summary::before { content: "+"; display: inline-block; width: 18px; }
+  .outstanding details[open] summary::before { content: "\2212"; }
+  .outstanding summary:hover { color: var(--cream); }
+  .out-body { padding: 0 12px 18px 30px; }
+  .out-day { font-family: var(--caption); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); margin: 14px 0 4px; }
+  .out-list { list-style: none; margin: 0; padding: 0; }
+  .out-list li { padding: 4px 0; }
+  .out-list a { color: var(--cream); text-decoration: none; border-bottom: 1px solid transparent; }
+  .out-list a:hover { border-bottom-color: currentColor; }
+  .out-flag { margin-left: 8px; font-family: var(--caption); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+  .out-empty { margin: 4px 0 0; color: var(--gold-deep); }
+  .is-flash { outline: 1px solid var(--gold); outline-offset: 4px; }
+  @media print { .outstanding { display: none; } }
+  /* Where things stand: a closed accordion */
+  .snap > summary { list-style: none; cursor: pointer; }
+  .snap > summary::-webkit-details-marker { display: none; }
+  .snap > summary::before { content: "+"; align-self: center; width: 18px; margin-right: -6px; font-family: var(--caption); font-size: 20px; color: var(--gold); }
+  .snap[open] > summary::before { content: "\2212"; }
+  .snap > summary:hover h2 { color: var(--gold); }
+  @media print { .snap > *:not(summary) { display: block; } .snap > summary::before { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Launch Plan, Day by Day</h1>
+  <p class="standfirst">The internal working version of the launch plan, broken into days from October 12. Setup and builds finish October 23, testing runs October 26 to 30, and fixes and sign-off finish November 6. Your progress is saved in this browser, separately from the client plan.</p>
+
+  <div class="event-line">
+    <span>Last updated 10/14/2026.</span>
+  </div>
+
+  <nav class="timeline timeline--weeks" aria-label="Weeks">
+    <a href="#w1"><span class="t-date">Oct 12–16</span><span class="t-name">Setup decisions and store basics</span></a>
+    <a href="#w2"><span class="t-date">Oct 19–23</span><span class="t-name">Products, pages, fulfillment and email</span></a>
+    <a href="#w4" class="is-test"><span class="t-date">Oct 26–30</span><span class="t-name">Testing</span></a>
+    <a href="#w5"><span class="t-date">Nov 2–6</span><span class="t-name">Fixes and sign-off</span></a>
+    <a href="#w6" class="is-launch"><span class="t-date">Nov 7–9</span><span class="t-name">Launch</span></a>
+    <a href="#w7"><span class="t-date">Nov 10 onward</span><span class="t-name">After launch</span></a>
+  </nav>
+
+  <div class="legend">
+    <span><span class="who">You</span>Lindsay, by hand</span>
+    <span><span class="who who--claude">Claude</span>Claude can do it</span>
+    <span><span class="who who--both">Both</span>Claude builds, you approve</span>
+    <span><span class="who who--matt">Matt</span>client</span>
+    <span><span class="flag">Blocker</span>launch can't happen without it</span>
+    <span><span class="app app--shopify">Shopify</span>done in Shopify</span>
+    <span><span class="app app--klaviyo">Klaviyo</span>done in Klaviyo</span>
+  </div>
+
+  <section id="snapshot">
+    <details class="snap">
+    <summary class="sec-head"><h2>Where things stand</h2><span class="sec-date">Checked Oct 12</span></summary>
+    <p class="sec-note">Read from the live Klaviyo account and the Shopify product catalog.</p>
+    <table>
+      <thead><tr><th>Area</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Klaviyo receives Shopify orders and checkouts</td><td class="ok">Working</td></tr>
+        <tr><td>Klaviyo sending domain <code>send.signaturesociety.com</code></td><td class="ok">Active</td></tr>
+        <tr><td>Store policies: privacy, shipping, returns, contact</td><td class="ok">Published</td></tr>
+        <tr><td>Klaviyo shopping automations</td><td class="no">None. Only the two launch party RSVP automations exist.</td></tr>
+        <tr><td>Klaviyo Back in Stock automation</td><td class="no">Missing. "Notify me" records sign-ups, but no email goes out.</td></tr>
+        <tr><td>Klaviyo signup forms</td><td class="no">None</td></tr>
+        <tr><td>Terms of service</td><td class="no">Not set. The shipping and returns policies link to it.</td></tr>
+        <tr><td>Shopify products</td><td class="warn">All 9 are Draft, with 0 stock and stock tracking off</td></tr>
+        <tr><td>Shopify fulfillment location</td><td class="warn">One location: the Maryland Way office</td></tr>
+      </tbody>
+    </table>
+    </details>
+  </section>
+
+  <section id="decisions">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Decisions needed</h2><span class="sec-date">Wed Oct 14</span></div>
+    <p class="sec-note">Setup can't finish without these.</p>
+    <ol class="decisions">
+      <li>For orders under $150: one flat shipping price, or priced by weight?<span>Matt, Wed Oct 14.</span></li>
+      <li>Above what order value is a signature required?<span>Matt, Wed Oct 14.</span></li>
+      <li>Does Matt already have a ShipStation account, or do we create one?<span>Matt, as soon as possible. The ShipStation install waits on it.</span></li>
+    </ol>
+  </section>
+
+  <div class="meter">
+    <span class="meter__count"><span id="done">0</span> / <span id="total">107</span> complete</span>
+    <span class="meter__track"><span class="meter__fill" id="fill"></span></span>
+    <button type="button" id="undo-moves" hidden="">Undo moves</button>
+    <span class="meter__status" id="file-status"></span>
+    <button type="button" id="save-file">Connect file</button>
+    <button type="button" id="reset">Reset</button>
+  </div>
+  <p class="move-help">Drag a task to another day, or use its Move menu. Anything not ticked off by the end of a day moves to the next day on its own. Click Connect file once and pick this plan in Drive. After that, every move and checkmark saves straight into the file.</p>
+
+  <section class="outstanding" id="outstanding" aria-label="Still outstanding">
+    <details><summary>Still outstanding <span class="out-count"></span></summary><div class="out-body"></div></details>
+  </section>
+
+
+  <section class="week" id="w1">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Setup decisions and store basics</h2><span class="sec-date">Oct 12–16</span></div>
+    <p class="sec-note">Decisions first: the type scale, colors and the secondary font set everything else in motion. Then the tokens: text and buttons Wednesday, color and spacing Thursday. Form fields follow on Monday.</p>
+    <div class="day" data-date="2026-10-12" id="day-2026-10-12">
+      <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 12</span><span class="day__tag">Done</span></div>
+      <ul><li><label class="item"><input type="checkbox" id="d12-1" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Publish the privacy, shipping, return and contact policies</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Copied word for word from the final copy docs. Privacy policy switched off the automated version.</span></span></label></li><li><label class="item"><input type="checkbox" id="d12-3" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Write the launch plan</span><span class="who who--claude">Claude</span></span></span></label></li>
+      
+      
+      </ul>
+    </div>
+    <div class="day" data-date="2026-10-13" id="day-2026-10-13">
+      <div class="day__head"><span class="day__name">Tuesday</span><span class="day__date">Oct 13</span></div>
+      <ul><li><label class="item"><input type="checkbox" id="d13-1" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Send Matt the information request</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Weights and stock for every product, sweatshirt and eye patch details plus stock per size, and the ShipStation questions. Due back Wed Oct 14.</span></span></label></li><li><label class="item"><input type="checkbox" id="d13-3" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Markets: United States only, international off</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Markets.</span></span></label></li><li><label class="item"><input type="checkbox" id="d13-4" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Turn on the new customer accounts</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Customer accounts. Store credit needs these.</span></span></label></li>
+      
+      
+      
+      
+      
+      </ul>
+    </div>
+    <div class="day" data-date="2026-10-14" id="day-2026-10-14">
+      <div class="day__head"><span class="day__name">Wednesday</span><span class="day__date">Oct 14</span></div>
+      <ul><li><label class="item"><input type="checkbox" id="d14-1" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Decide the type scale, gray family and button burgundy</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Keep the Oct 2 type-test scale? Warm or cool grays for text on navy? Buttons <code>#3F1214</code> or <code>#5f2426</code>?</span></span></label></li><li><label class="item"><input type="checkbox" id="d16-1" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Decide the secondary brand font and what it covers</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Small text, labels, buttons, nav, or all. Check the web license covers the site and email.</span></span></label></li><li><label class="item"><input type="checkbox" id="d15-6" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Add account.signaturesociety.com as the customer accounts domain</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Domains → Connect existing domain. Shopify then shows the DNS record to add.</span></span></label></li><li><label class="item"><input type="checkbox" id="d14-5" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Set the return rules</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Settings → Policies → Return and cancellation rules: 14 days, 10% restocking fee, customer pays return shipping, final sale excluded. Leave self-serve returns off.</span></span></label></li><li><label class="item"><input type="checkbox" id="d14-2" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Rebuild the type scale as <code>--step</code> tokens and remove the root size override</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Edit the source in <code>SIG_2026_WBD_Main/css/</code>, then rebuild <code>sig-tokens.css</code>. Point <code>custom.css</code> and <code>sig-custom.css</code> at the same scale.</span></span></label></li><li><label class="item"><input type="checkbox" id="d14-3" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Move the token breakpoints to Prestige's 700 and 1000</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Today they switch at 768 and 1024, so type and layout change at different widths.</span></span></label></li><li><label class="item"><input type="checkbox" id="d19-1" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Add the secondary font to the theme CSS</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Load it, add it to the type tokens, map it onto its roles. Right after the font decision this morning.</span></span></label></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d13-2"><span class="item__text"><span class="item__label"><span class="item__name">Matt completes the Shopify Payments setup</span><span class="app app--shopify">Shopify</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Sent to Matt today. Settings → Payments: bank verified, payouts on.</span></span></label></li><li><label class="item"><input type="checkbox" id="d13-5"><span class="item__text"><span class="item__label"><span class="item__name">Start the ShipStation install</span><span class="who">You</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Waiting on Matt (asked Oct 14): is there already a ShipStation account, or do we create one? If we create it, Matt picks the plan and adds billing.</span></span></label></li><li><label class="item"><input type="checkbox" id="d16-2"><span class="item__text"><span class="item__label"><span class="item__name">Matt sends weights, stock, product details and ShipStation answers</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Includes launch line-up, under-$150 shipping (flat or by weight), signature threshold and carriers.</span></span></label></li><li><label class="item"><input type="checkbox" id="d14-4"><span class="item__text"><span class="item__label"><span class="item__name">Turn on Shopify Tax and add Tennessee, plus any other state you're registered in</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Taxes and duties.</span></span></label></li><li><label class="item"><input type="checkbox" id="d14-6"><span class="item__text"><span class="item__label"><span class="item__name">Add the account DNS record in GoDaddy</span><span class="who">You</span></span><span class="item__hint">GoDaddy → DNS for signaturesociety.com → add the CNAME record Shopify shows for <code>account</code>. Then check it connects in Shopify.</span></span></label></li><li><label class="item"><input type="checkbox" id="d16-4"><span class="item__text"><span class="item__label"><span class="item__name">Redo the button tokens and the button CSS for the theme</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">One set of button tokens and the button CSS the theme uses. Uses today's button burgundy decision.</span></span></label></li><li><label class="item"><input type="checkbox" id="d16-5"><span class="item__text"><span class="item__label"><span class="item__name">Design the high-fidelity product landing page</span><span class="who">You</span></span><span class="item__hint">In Figma. Built in Klaviyo next.</span></span></label></li><li><label class="item"><input type="checkbox" id="d21-3"><span class="item__text"><span class="item__label"><span class="item__name">DMARC record on the signaturesociety.com DNS</span><span class="who">You</span></span><span class="item__hint">In GoDaddy, add a TXT record. Name: <code>_dmarc</code>. Value: <code>v=DMARC1; p=none; rua=mailto:contact@signaturesociety.com</code>. <b>p=none</b> only monitors; it doesn't block any mail.</span></span></label></li><li><label class="item"><input type="checkbox" id="d15-1"><span class="item__text"><span class="item__label"><span class="item__name">Replace raw colors with the color tokens</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">18 raw colors in <code>sig-custom.css</code>, 63 in <code>sig-nav.css</code>. Needs Wednesday's decisions.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-15" id="day-2026-10-15">
+      <div class="day__head"><span class="day__name">Thursday</span><span class="day__date">Oct 15</span></div>
+      <ul class=""><li><label class="item"><input type="checkbox" id="d15-5" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Update the product prices in Shopify</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart. Monday's approval checks these.</span></span></label>
+        <table class="item-table">
+          <thead><tr><th>Product</th><th>Price</th></tr></thead>
+          <tbody>
+          <tr><td>The Heirloom, both finishes</td><td>$118</td></tr>
+          <tr><td>The Signature Edit, Tortoiseshell</td><td>$138</td></tr>
+          <tr><td>The Signature Edit, Marble</td><td>$148</td></tr>
+          <tr><td>MRBL Atelier Brush</td><td>$248</td></tr>
+          <tr><td>The Night Standard</td><td>$148</td></tr>
+          <tr><td>The Concierge, Oxblood</td><td>$48</td></tr>
+          <tr><td>The Concierge, Tortoiseshell</td><td>$58</td></tr>
+          <tr><td>Eye Patches</td><td>$38</td></tr>
+          <tr><td>Sweatshirt</td><td>$128</td></tr>
+          <tr><td>Heirloom Reserve, 4-pack</td><td>$38</td></tr>
+          <tr><td>Heirloom Reserve, 8-pack</td><td>$68</td></tr>
+          </tbody>
+        </table>
+      </li><li><label class="item"><input type="checkbox" id="d15-2" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Replace raw px spacing with the spacing tokens</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">32 values in <code>sig-custom.css</code>. Flag any deliberate one-offs.</span></span></label></li><li><label class="item"><input type="checkbox" id="d25-2" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Build the Policies page (Delivery &amp; Returns)</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Anchors for <code>#shipping</code>, <code>#returns</code>, <code>#guarantee</code>, plus <code>#warranty</code> for the FAQ links.</span></span></label></li><li><label class="item"><input type="checkbox" id="d25-3" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Style the policy page template</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">One template shows privacy, shipping, returns and contact.</span></span></label></li>
+      
+      
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d15-3"><span class="item__text"><span class="item__label"><span class="item__name">Finish, preview and commit the form CSS</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Field styles were written Oct 12 in <code>sig-custom.css</code> (from line 667) and logged in <code>CHANGES.md</code>, not yet committed or previewed. Uses the button tokens from Wednesday. Still open: which face typed text uses (decided Wednesday), the "filled" state, label and help text roles. Review at 360, 768 and 1920, run the theme check and preview before pushing to <code>launch</code>.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-16" id="day-2026-10-16">
+      <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Oct 16</span></div>
+      <ul>
+      
+      </ul>
+    </div>
+  </section>
+
+  <section class="week" id="w2">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Products, pages, fulfillment and email</h2><span class="sec-date">Oct 19–23</span></div>
+    <p class="sec-note">Products and shipping are set from Matt's answers. Fonts go into the theme. All site pages are built by Thursday. Email copy is written; every Klaviyo email, including the launch-day email, is built by Friday.</p>
+    <div class="day" data-date="2026-10-19" id="day-2026-10-19">
+      <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 19</span></div>
+      <ul><li><label class="item"><input type="checkbox" id="d19-2" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Add the secondary font to Figma text styles and variables</span><span class="who">You</span></span></span></label></li>
+      
+      
+      
+      
+      
+      
+      
+
+
+<li><label class="item"><input type="checkbox" id="d15-4"><span class="item__text"><span class="item__label"><span class="item__name">Turn on Shop Pay, PayPal, Klarna and Afterpay</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Waiting on Matt. Settings → Payments, once Shopify Payments is active.</span></span></label></li><li><label class="item"><input type="checkbox" id="d16-3"><span class="item__text"><span class="item__label"><span class="item__name">Approve product photos, prices and alt text</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li><li><label class="item"><input type="checkbox" id="kv-01"><span class="item__text"><span class="item__label"><span class="item__name">Build the Welcome email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-02"><span class="item__text"><span class="item__label"><span class="item__name">Build the Back in Stock email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-03"><span class="item__text"><span class="item__label"><span class="item__name">Build the Cart Reminder email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="d19-4"><span class="item__text"><span class="item__label"><span class="item__name">Shipping rates: free over $150, paid under</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Shipping and delivery. Flat or by weight, per Matt.</span></span></label></li><li><label class="item"><input type="checkbox" id="d19-3"><span class="item__text"><span class="item__label"><span class="item__name">Products: stock tracking on, SKUs, weights, package sizes</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">From Matt's list.</span></span></label></li><li><label class="item"><input type="checkbox" id="d20-1"><span class="item__text"><span class="item__label"><span class="item__name">Create the product fields and fill them in</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Material, care, final sale, set, refill product, marble type.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-20" id="day-2026-10-20">
+      <div class="day__head"><span class="day__name">Tuesday</span><span class="day__date">Oct 20</span></div>
+      <ul>
+      
+      
+      
+      
+      
+      
+
+
+<li><label class="item"><input type="checkbox" id="d20-4"><span class="item__text"><span class="item__label"><span class="item__name">Matt enters the stock count for each product in Shopify</span><span class="app app--shopify">Shopify</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d20-2"><span class="item__text"><span class="item__label"><span class="item__name">ShipStation: carriers, ship-from address, package presets, packing slip, insurance</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d20-3"><span class="item__text"><span class="item__label"><span class="item__name">ShipStation: signature-required rule, and its own customer emails off</span><span class="who">You</span></span><span class="item__hint">Shopify sends the shipping email.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-04"><span class="item__text"><span class="item__label"><span class="item__name">Build the Order Confirmation email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-05"><span class="item__text"><span class="item__label"><span class="item__name">Build the Order Canceled email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-06"><span class="item__text"><span class="item__label"><span class="item__name">Build the Shipping Confirmation email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="d24-1"><span class="item__text"><span class="item__label"><span class="item__name">Build the Collection page</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Grid drops columns from desktop to tablet to phone.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-21" id="day-2026-10-21">
+      <div class="day__head"><span class="day__name">Wednesday</span><span class="day__date">Oct 21</span></div>
+      <ul class=""><li><label class="item"><input type="checkbox" id="d21-1" checked=""><span class="item__text"><span class="item__label"><span class="item__name">Copy for every Klaviyo and Shopify email</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Already written, including the launch-day email.</span></span></label></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+
+<li><label class="item"><input type="checkbox" id="d21-2"><span class="item__text"><span class="item__label"><span class="item__name">Order email sender set to concierge@, domain authenticated</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Notifications → Sender email → Authenticate domain.</span></span></label></li><li class=""><label class="item"><input type="checkbox" id="d21-4"><span class="item__text"><span class="item__label"><span class="item__name">Klaviyo onsite tracking on; checkout email sign-up checkbox on</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Online Store → Themes → Customize → App embeds → Klaviyo. Settings → Checkout.</span></span></label></li><li><label class="item"><input type="checkbox" id="d21-5"><span class="item__text"><span class="item__label"><span class="item__name">Turn off Shopify's abandoned checkout email</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Klaviyo sends it instead.</span></span></label></li><li><label class="item"><input type="checkbox" id="d05-2"><span class="item__text"><span class="item__label"><span class="item__name">Staff permissions and two-step login for everyone</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Users.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-07"><span class="item__text"><span class="item__label"><span class="item__name">Build the Out for Delivery email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-08"><span class="item__text"><span class="item__label"><span class="item__name">Build the Delivery Confirmation email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-09"><span class="item__text"><span class="item__label"><span class="item__name">Build the Post-Purchase Review Request email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="d19-5"><span class="item__text"><span class="item__label"><span class="item__name">Create the universal templates in Klaviyo</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Includes the brand template. Every Klaviyo email this week is built from them.</span></span></label></li><li><label class="item"><input type="checkbox" id="d24-2"><span class="item__text"><span class="item__label"><span class="item__name">Finish the product page (PDP)</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Accordions read the product fields, Final Sale badge, Notify me, sweatshirt size picker.</span></span></label></li><li><label class="item"><input type="checkbox" id="d21-6"><span class="item__text"><span class="item__label"><span class="item__name">Build the product landing page in Klaviyo</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">From the Friday design. Claude helps with the build.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-22" id="day-2026-10-22">
+      <div class="day__head"><span class="day__name">Thursday</span><span class="day__date">Oct 22</span></div>
+      <ul>
+      
+      
+      
+      
+      
+      
+      
+
+
+<li><label class="item"><input type="checkbox" id="d22-3"><span class="item__text"><span class="item__label"><span class="item__name">Install Google &amp; YouTube and Facebook &amp; Instagram</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Confirm GA4 data retention is 2 months.</span></span></label></li><li><label class="item"><input type="checkbox" id="d22-4"><span class="item__text"><span class="item__label"><span class="item__name">Cookie banner and data sharing opt-out on</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Customer privacy.</span></span></label></li><li><label class="item"><input type="checkbox" id="d05-3"><span class="item__text"><span class="item__label"><span class="item__name">Confirm the Shopify plan and billing</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="kv-10"><span class="item__text"><span class="item__label"><span class="item__name">Build the Review Reminder email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-11"><span class="item__text"><span class="item__label"><span class="item__name">Build the Return Approved email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="kv-12"><span class="item__text"><span class="item__label"><span class="item__name">Build the Refund Issued email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li><li><label class="item"><input type="checkbox" id="d22-1"><span class="item__text"><span class="item__label"><span class="item__name">Brand the double opt-in email</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d22-2"><span class="item__text"><span class="item__label"><span class="item__name">Build Back in Stock and the welcome series</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">As drafts for your review.</span></span></label></li><li><label class="item"><input type="checkbox" id="d25-1"><span class="item__text"><span class="item__label"><span class="item__name">Build the Concierge page with the guarantee claim form</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-23" id="day-2026-10-23">
+      <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Oct 23</span></div>
+      <ul>
+      
+      
+      
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d23-4"><span class="item__text"><span class="item__label"><span class="item__name">Matt sends the Terms of Service</span><span class="who who--matt">Matt</span></span><span class="item__hint">Drafting with his attorney. The shipping and returns policies link to it.</span></span></label></li><li><label class="item"><input type="checkbox" id="d23-3"><span class="item__text"><span class="item__label"><span class="item__name">Install and set up Judge.me</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d25-4"><span class="item__text"><span class="item__label"><span class="item__name">Publish the Terms of Service</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Policies → Terms of service.</span></span></label></li><li><label class="item"><input type="checkbox" id="t-01"><span class="item__text"><span class="item__label"><span class="item__name">Line up 4 testers and give each one a set of orders to place</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Testing with them runs Wed Oct 28 to Fri Oct 30. Send the store link, the password and how to log problems.</span></span></label></li><li><label class="item"><input type="checkbox" id="d23-1"><span class="item__text"><span class="item__label"><span class="item__name">Build abandoned checkout and post-purchase</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">As drafts for your review.</span></span></label></li><li><label class="item"><input type="checkbox" id="d04-2"><span class="item__text"><span class="item__label"><span class="item__name">Build abandoned cart, browse abandonment and the review request</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">As drafts for your review. All Klaviyo emails are built by today. The review request needs Judge.me, installed today.</span></span></label></li><li><label class="item"><input type="checkbox" id="d05-1"><span class="item__text"><span class="item__label"><span class="item__name">Build the launch-day email and test-send it</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">To the Email List and Original Society. Sends on launch day, Nov 9.</span></span></label></li><li><label class="item"><input type="checkbox" id="d23-2"><span class="item__text"><span class="item__label"><span class="item__name">Brand and rewrite the Shopify order emails</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Confirmation, shipping, canceled, store credit and refund, returns, gift card, accounts. Copy is written.</span></span></label></li></ul>
+    </div>
+  </section>
+
+
+  <section class="week" id="w4">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Testing</h2><span class="sec-date">Oct 26–30</span></div>
+    <p class="sec-note">Mon and Tue: you and Morgan test. Wed to Fri: 4 more testers join and place a variety of order types. Log every problem in one list. Fixes start Mon Nov 2.</p>
+    <div class="day" data-date="2026-10-26" id="day-2026-10-26">
+      <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 26</span><span class="day__tag">Testing starts</span></div>
+      <ul>
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d02-2"><span class="item__text"><span class="item__label"><span class="item__name">GA4 and Meta record a test purchase</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d26-1"><span class="item__text"><span class="item__label"><span class="item__name">Test order with each payment method</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Card, Shop Pay, PayPal, Klarna, Afterpay. Check tax and totals.</span></span></label></li><li><label class="item"><input type="checkbox" id="d26-2"><span class="item__text"><span class="item__label"><span class="item__name">Shipping rates on both sides of $150</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Try $149 and $151 of merchandise.</span></span></label></li><li><label class="item"><input type="checkbox" id="d02-1"><span class="item__text"><span class="item__label"><span class="item__name">Cookie banner appears; declining it blocks GA4 and Meta</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-27" id="day-2026-10-27">
+      <div class="day__head"><span class="day__name">Tuesday</span><span class="day__date">Oct 27</span></div>
+      <ul>
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d27-1"><span class="item__text"><span class="item__label"><span class="item__name">Order flows into ShipStation; label prints; tracking reaches Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d27-2"><span class="item__text"><span class="item__label"><span class="item__name">Customer gets exactly one shipping email</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d27-3"><span class="item__text"><span class="item__label"><span class="item__name">Signature-required rule triggers above the set amount</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d03-1"><span class="item__text"><span class="item__label"><span class="item__name">One real order, start to finish</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Real card, ship through ShipStation, then cancel or issue store credit.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-28" id="day-2026-10-28">
+      <div class="day__head"><span class="day__name">Wednesday</span><span class="day__date">Oct 28</span><span class="day__tag">4 testers join</span></div>
+      <ul>
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="t-02"><span class="item__text"><span class="item__label"><span class="item__name">4 testers place a variety of order types</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Guest and account checkout, each payment method, under and over $150, a discount code, above the signature amount, a final sale item, phone and desktop. Runs through Fri.</span></span></label></li><li><label class="item"><input type="checkbox" id="d28-1"><span class="item__text"><span class="item__label"><span class="item__name">Return issues store credit minus the 10% restocking fee</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Credit lands in the account; store credit email sends.</span></span></label></li><li><label class="item"><input type="checkbox" id="d28-2"><span class="item__text"><span class="item__label"><span class="item__name">Final sale items can't be returned</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d28-3"><span class="item__text"><span class="item__label"><span class="item__name">Every Shopify order email sends, branded, with working links</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d02-3"><span class="item__text"><span class="item__label"><span class="item__name">Submit the Concierge claim form; it reaches concierge@</span><span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Photo uploads, errors, success message.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-29" id="day-2026-10-29">
+      <div class="day__head"><span class="day__name">Thursday</span><span class="day__date">Oct 29</span></div>
+      <ul>
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d29-3"><span class="item__text"><span class="item__label"><span class="item__name">Emails render in Gmail, Apple Mail and Outlook, phone and desktop, and land in the inbox</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d29-1"><span class="item__text"><span class="item__label"><span class="item__name">Each Klaviyo automation fires for a test profile</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d29-2"><span class="item__text"><span class="item__label"><span class="item__name">Checkout and footer sign-ups land in the Email List</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Including the double opt-in email.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-10-30" id="day-2026-10-30">
+      <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Oct 30</span><span class="day__tag">Testing ends</span></div>
+      <ul>
+      
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d02-4"><span class="item__text"><span class="item__label"><span class="item__name">Test on a real iPhone and Android phone</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d03-2"><span class="item__text"><span class="item__label"><span class="item__name">Close the test log: one fix list, owner on each item</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d30-1"><span class="item__text"><span class="item__label"><span class="item__name">Every page checked at 360, 768 and 1920</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Against Figma. Forms, cart drawer, search, 404.</span></span></label></li><li><label class="item"><input type="checkbox" id="d30-2"><span class="item__text"><span class="item__label"><span class="item__name">Every footer, FAQ and policy link works</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d30-3"><span class="item__text"><span class="item__label"><span class="item__name">Theme passes Shopify's checks with no errors</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li></ul>
+    </div>
+  </section>
+
+  <section class="week" id="w5">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Fixes and sign-off</h2><span class="sec-date">Nov 2–6</span></div>
+    <p class="sec-note">Fixes only, no new features.</p>
+    <div class="day" data-date="2026-11-02" id="day-2026-11-02">
+      <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Nov 2</span></div>
+      <ul>
+      
+      <li><label class="item"><input type="checkbox" id="d04-1"><span class="item__text"><span class="item__label"><span class="item__name">Fix and retest the test list</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Nov 2–5. Fixes only, no new features.</span></span></label></li></ul>
+    </div>
+    <div class="day" data-date="2026-11-06" id="day-2026-11-06">
+      <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Nov 6</span><span class="day__tag">Sign-off</span></div>
+      <ul>
+      
+      
+      <li><label class="item"><input type="checkbox" id="d06-1"><span class="item__text"><span class="item__label"><span class="item__name">Remove test orders and customers; reset stock counts</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Including test profiles in Klaviyo.</span></span></label></li><li><label class="item"><input type="checkbox" id="d06-2"><span class="item__text"><span class="item__label"><span class="item__name">Client signs off the site and every email</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li></ul>
+    </div>
+  </section>
+
+  <section class="week" id="w6">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Launch</h2><span class="sec-date">Nov 7–9</span></div>
+    <div class="day day--event" data-date="2026-11-07" id="day-2026-11-07">
+      <div class="day__head"><span class="day__name">Saturday</span><span class="day__date">Nov 7</span><span class="day__tag">Launch party</span></div>
+      <p class="day--empty">Launch party. No site work scheduled.</p>
+    </div>
+    <div class="day" data-date="2026-11-09" id="day-2026-11-09">
+      <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Nov 9</span><span class="day__tag">Launch day</span></div>
+      <ul>
+      
+      
+      
+      
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="d09-2"><span class="item__text"><span class="item__label"><span class="item__name">Connect the main branch to the live theme and publish</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Claude never pushes to main without your say-so.</span></span></label></li><li><label class="item"><input type="checkbox" id="d09-3"><span class="item__text"><span class="item__label"><span class="item__name">Remove the store password</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Online Store → Preferences → Password protection → off.</span></span></label></li><li><label class="item"><input type="checkbox" id="d09-4"><span class="item__text"><span class="item__label"><span class="item__name">signaturesociety.com is the primary domain; www redirects</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d09-8"><span class="item__text"><span class="item__label"><span class="item__name">Set up Google Search Console and submit the sitemap</span><span class="who">You</span></span><span class="item__hint">Verify signaturesociety.com as a domain property (DNS record), submit signaturesociety.com/sitemap.xml, then check the home page with URL inspection.</span></span></label></li><li><label class="item"><input type="checkbox" id="d09-5"><span class="item__text"><span class="item__label"><span class="item__name">Turn on the Klaviyo automations and send the launch email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d09-6"><span class="item__text"><span class="item__label"><span class="item__name">Place the first real order</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d09-7"><span class="item__text"><span class="item__label"><span class="item__name">Watch orders, ShipStation and Klaviyo for 48 hours</span><span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d09-1"><span class="item__text"><span class="item__label"><span class="item__name">Set every launch product to Active</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li></ul>
+    </div>
+  </section>
+
+  <section class="week" id="w7">
+    <div class="sec-head"><span class="sec-num">07</span><h2>After launch</h2><span class="sec-date">Nov 10 onward</span></div>
+    <div class="day" data-date="" id="day-w7">
+      <div class="day__head"><span class="day__name">Next</span><span class="day__date"></span></div>
+      <ul>
+      
+      
+      
+      
+      
+      <li><label class="item"><input type="checkbox" id="a-1"><span class="item__text"><span class="item__label"><span class="item__name">Archive the launch party lists; build engaged, buyer and Original Society segments</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span></span></label></li><li><label class="item"><input type="checkbox" id="a-5"><span class="item__text"><span class="item__label"><span class="item__name">Revisit order processing times after 30–60 days</span><span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Launch-period terms: 3–4 day prep, ship within 10 days.</span></span></label></li><li><label class="item"><input type="checkbox" id="a-2"><span class="item__text"><span class="item__label"><span class="item__name">Refill reminder automation</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Blades and cartridges for THE HEIRLOOM™ and THE SIGNATURE EDIT™.</span></span></label></li><li><label class="item"><input type="checkbox" id="a-3"><span class="item__text"><span class="item__label"><span class="item__name">Win-back, and removing inactive subscribers</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li><li><label class="item"><input type="checkbox" id="a-4"><span class="item__text"><span class="item__label"><span class="item__name">Klaviyo signup popup</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li></ul>
+    </div>
+  </section>
+
+  <!-- ==================== APPS ==================== -->
+  <section id="apps">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Apps worth installing</h2></div>
+    <p class="sec-note">Any app that collects customer data and isn't listed in the privacy policy has to be added to it.</p>
+    <table>
+      <thead><tr><th>App</th><th>Why</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>ShipStation</td><td>Fulfillment and labels; in the privacy policy</td><td>Paid</td></tr>
+        <tr><td>Klaviyo</td><td>Already connected</td><td>Paid</td></tr>
+        <tr><td>Judge.me</td><td>Reviews and review requests; in the privacy policy</td><td>Free or paid</td></tr>
+        <tr><td>Shopify Flow</td><td>Flag high-value orders for signature, low-stock alerts, notify the team about big orders</td><td>Free</td></tr>
+        <tr><td>Shopify Search &amp; Discovery</td><td>Better search and filters</td><td>Free</td></tr>
+        <tr><td>Google &amp; YouTube, Facebook &amp; Instagram</td><td>Ads and analytics; in the privacy policy</td><td>Free</td></tr>
+        <tr><td>Shopify Forms</td><td>The Concierge claim form, if not custom-built</td><td>Free</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== DECISIONS ==================== -->
+
+  <div class="sign-off">
+    <span>Signature Society · Internal · Launch November 9, 2026</span>
+    <span id="stamp"></span>
+  </div>
+
+</div>
+
+<script>
+  (function () {
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('.item input'));
+    var done = document.getElementById('done');
+    var total = document.getElementById('total');
+    var fill = document.getElementById('fill');
+    var KEY = 'sig-plan-ticks';  // shared with the client launch plan
+
+    total.textContent = boxes.length;
+
+    function saved() {
+      try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+      catch (err) { return {}; }
+    }
+    function store(state) {
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (err) {}
+    }
+    function paint() {
+      var count = boxes.filter(function (box) { return box.checked; }).length;
+      done.textContent = count;
+      fill.style.width = (count / boxes.length * 100) + '%';
+    }
+    function show(when) {
+      document.getElementById('stamp').textContent =
+        'Last updated ' + when.toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) +
+        ' at ' + when.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    }
+    function stamp() {
+      var when = new Date();
+      show(when);
+      try { localStorage.setItem(KEY + '-stamp', when.toISOString()); } catch (err) {}
+    }
+
+    var state = saved();
+    boxes.forEach(function (box) {
+      if (Object.prototype.hasOwnProperty.call(state, box.id)) box.checked = !!state[box.id];
+      box.addEventListener('change', function () {
+        var next = saved();
+        next[box.id] = box.checked;
+        store(next);
+        paint();
+        stamp();
+      });
+    });
+
+    var previous = null;
+    try { previous = localStorage.getItem(KEY + '-stamp'); } catch (err) {}
+    if (previous) show(new Date(previous));
+
+    document.getElementById('reset').addEventListener('click', function () {
+      boxes.forEach(function (box) { box.checked = box.defaultChecked; });
+      store({});
+      try { localStorage.removeItem(KEY + '-stamp'); } catch (err) {}
+      document.getElementById('stamp').textContent = '';
+      paint();
+    });
+
+    // Ticks are shared with the other launch plan on this site. Follow changes made there.
+    window.addEventListener('storage', function (e) {
+      if (e.key !== KEY) return;
+      var now = saved();
+      boxes.forEach(function (box) {
+        var want = Object.prototype.hasOwnProperty.call(now, box.id) ? !!now[box.id] : box.defaultChecked;
+        if (box.checked === want) return;
+        box.checked = want;
+        box.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+
+    paint();
+  })();
+</script>
+
+<script>
+  (function () {
+    var d = new Date();
+    var iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    var el = document.querySelector('.day[data-date="' + iso + '"]');
+    if (el) el.classList.add('is-today');
+  })();
+</script>
+<script>
+  (function () {
+    var KEY = 'sig-int-launch-plan-order';
+    var days = Array.prototype.slice.call(document.querySelectorAll('.day'));
+    var lists = days.map(function (day) { return day.querySelector('ul'); }).filter(Boolean);
+    var undo = document.getElementById('undo-moves');
+    var original = snapshot();
+    var dragged = null;
+
+    function taskId(li) {
+      if (li.classList.contains('done-group')) return null;
+      var box = li.querySelector('.item input');
+      return box ? box.id : null;
+    }
+    function dayLabel(day) {
+      var name = day.querySelector('.day__name'), date = day.querySelector('.day__date');
+      var section = day.closest('section');
+      if (name && date && date.textContent) return name.textContent.slice(0, 3) + ' ' + date.textContent;
+      var h2 = section && section.querySelector('h2');
+      return h2 ? h2.textContent : day.id;
+    }
+    function snapshot() {
+      var out = {};
+      lists.forEach(function (ul) {
+        out[ul.closest('.day').id] = Array.prototype.slice.call(ul.querySelectorAll('li'))
+          .map(taskId).filter(Boolean);
+      });
+      return out;
+    }
+    function read() {
+      try { return JSON.parse(localStorage.getItem(KEY)); } catch (err) { return null; }
+    }
+    function save() {
+      var now = snapshot();
+      function members(o) {
+        var out = {};
+        Object.keys(o).forEach(function (k) { out[k] = o[k].slice().sort(); });
+        return JSON.stringify(out);
+      }
+      var changed = members(now) !== members(original);
+      try {
+        if (changed) localStorage.setItem(KEY, JSON.stringify(now));
+        else localStorage.removeItem(KEY);
+      } catch (err) {}
+      undo.hidden = !changed;
+    }
+    function li(id) { var box = document.getElementById(id); return box && box.closest('li'); }
+    function apply(order) {
+      Object.keys(order).forEach(function (dayId) {
+        var day = document.getElementById(dayId);
+        var ul = day && day.querySelector('ul');
+        if (!ul) return;
+        order[dayId].forEach(function (id) {
+          var item = li(id);
+          if (item) ul.insertBefore(item, ul.querySelector('.drop-hint'));
+        });
+      });
+    }
+    // Ticked tasks sit in a closed "Completed" accordion at the top of their day
+    function group(ul) {
+      var g = ul.querySelector(':scope > .done-group');
+      if (!g) {
+        g = document.createElement('li');
+        g.className = 'done-group';
+        g.innerHTML = '<details><summary>Completed <span class="done-count"></span></summary><ul class="done-list"></ul></details>';
+        ul.insertBefore(g, ul.firstChild);
+      }
+      return g;
+    }
+    function placeDone() {
+      lists.forEach(function (ul) {
+        var g = group(ul), list = g.querySelector('.done-list');
+        Array.prototype.slice.call(list.children).forEach(function (item) {
+          if (!item.querySelector('.item input').checked) ul.insertBefore(item, ul.querySelector('.drop-hint'));
+        });
+        Array.prototype.slice.call(ul.children).forEach(function (item) {
+          var box = taskId(item) && item.querySelector('.item input');
+          if (box && box.checked) list.appendChild(item);
+        });
+        Array.prototype.slice.call(list.children)
+          .sort(function (a, b) { return (fileOrder[taskId(a)] || 0) - (fileOrder[taskId(b)] || 0); })
+          .forEach(function (item) { list.appendChild(item); });
+        g.querySelector('.done-count').textContent = '(' + list.children.length + ')';
+        g.hidden = list.children.length === 0;
+      });
+    }
+    function refresh() {
+      lists.forEach(function (ul) {
+        var count = Array.prototype.filter.call(ul.children, function (c) { return taskId(c); }).length;
+        var done = ul.querySelectorAll('.done-list > li').length;
+        ul.classList.toggle('is-empty', count === 0);
+        ul.querySelector('.drop-hint').textContent = done ? 'All done. Drop a task here to add one.' : 'No tasks. Drop one here.';
+      });
+      document.querySelectorAll('.move').forEach(function (sel) {
+        sel.value = sel.closest('.day').id;
+      });
+    }
+
+    // Empty-day hint and a Move menu on every task
+    lists.forEach(function (ul) {
+      var hint = document.createElement('li');
+      hint.className = 'drop-hint';
+      hint.textContent = 'No tasks. Drop one here.';
+      ul.appendChild(hint);
+    });
+    var options = days.filter(function (d) { return d.querySelector('ul'); })
+      .map(function (d) { return '<option value="' + d.id + '">' + dayLabel(d) + '</option>'; }).join('');
+    lists.forEach(function (ul) {
+      Array.prototype.forEach.call(ul.children, function (item) {
+        if (!taskId(item)) return;
+        item.setAttribute('draggable', 'true');
+        var sel = document.createElement('select');
+        sel.className = 'move';
+        sel.setAttribute('aria-label', 'Move to another day');
+        sel.innerHTML = options;
+        sel.addEventListener('change', function () {
+          var ul2 = document.getElementById(sel.value).querySelector('ul');
+          ul2.insertBefore(item, ul2.querySelector('.drop-hint'));
+          placeDone(); sortDays(); refresh(); save();
+          item.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        });
+        item.appendChild(sel);
+      });
+    });
+
+    // Drag and drop
+    document.addEventListener('dragstart', function (e) {
+      var item = e.target.closest && e.target.closest('li[draggable="true"]');
+      if (!item) return;
+      dragged = item;
+      item.classList.add('is-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', taskId(item)); } catch (err) {}
+    });
+    document.addEventListener('dragend', function () {
+      if (dragged) dragged.classList.remove('is-dragging');
+      dragged = null;
+      lists.forEach(function (ul) { ul.classList.remove('is-over'); });
+    });
+    lists.forEach(function (ul) {
+      ul.addEventListener('dragover', function (e) {
+        if (!dragged) return;
+        e.preventDefault();
+        ul.classList.add('is-over');
+        var after = null;
+        Array.prototype.some.call(ul.children, function (c) {
+          if (c === dragged || !taskId(c)) return false;
+          var box = c.getBoundingClientRect();
+          if (e.clientY < box.top + box.height / 2) { after = c; return true; }
+          return false;
+        });
+        ul.insertBefore(dragged, after || ul.querySelector('.drop-hint'));
+      });
+      ul.addEventListener('dragleave', function (e) {
+        if (!ul.contains(e.relatedTarget)) ul.classList.remove('is-over');
+      });
+      ul.addEventListener('drop', function (e) {
+        e.preventDefault();
+        ul.classList.remove('is-over');
+        placeDone(); sortDays(); refresh(); save();
+      });
+    });
+
+    var stored = read();
+    if (stored) apply(stored);
+
+    // Roll unfinished tasks from past days onto today (or the next day in the plan)
+    (function rollOver() {
+      var d = new Date();
+      var today = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      var dated = days.filter(function (day) { return day.dataset.date && day.querySelector('ul'); });
+      var target = dated.filter(function (day) { return day.dataset.date >= today; })[0];
+      if (!target) return;
+      var ul = target.querySelector('ul');
+      var first = ul.firstElementChild;
+      dated.forEach(function (day) {
+        if (day.dataset.date >= today) return;
+        Array.prototype.slice.call(day.querySelector('ul').children).forEach(function (item) {
+          var box = taskId(item) && item.querySelector('.item input');
+          if (!box || box.checked) return;
+          var note = item.querySelector('.carried');
+          if (!note) {
+            note = document.createElement('span');
+            note.className = 'carried';
+            note.textContent = 'Moved from ' + dayLabel(day);
+            item.querySelector('.item__text').appendChild(note);
+          }
+          ul.insertBefore(item, first);
+        });
+      });
+    })();
+
+
+    // Within each day: Matt (or waiting on Matt) first, then You, Both, Claude
+    function rank(item) {
+      var label = item.querySelector('.item__label');
+      var hint = item.querySelector('.item__hint');
+      if (!label) return 9;
+      if (label.querySelector('.who--matt') || (hint && /Waiting on Matt/.test(hint.textContent))) return 0;
+      if (label.querySelector('.who--both')) return 2;
+      if (label.querySelector('.who--claude')) return 3;
+      if (label.querySelector('.who')) return 1;
+      return 4;
+    }
+    var fileOrder = {};
+    Object.keys(original).forEach(function (k) {
+      original[k].forEach(function (id) { fileOrder[id] = Object.keys(fileOrder).length; });
+    });
+    function sortDays() {
+      lists.forEach(function (ul) {
+        var items = Array.prototype.filter.call(ul.children, function (c) { return taskId(c); });
+        items.map(function (item, i) {
+          var id = taskId(item);
+          return { item: item, r: rank(item), i: id in fileOrder ? fileOrder[id] : 1e6 + i };
+        })
+          .sort(function (a, b) { return a.r - b.r || a.i - b.i; })
+          .forEach(function (x) { ul.insertBefore(x.item, ul.querySelector('.drop-hint')); });
+      });
+    }
+    placeDone();
+    sortDays();
+    refresh();
+    save();
+
+    // Task names can be edited in place. Edits are kept in this browser and
+    // saved into the file when it's connected.
+    var TEXT_KEY = 'sig-int-launch-plan-text';
+    function readText() { try { return JSON.parse(localStorage.getItem(TEXT_KEY)) || {}; } catch (err) { return {}; } }
+    var edits = readText();
+    document.querySelectorAll('.day .item__label').forEach(function (label) {
+      var name = label.querySelector('.item__name');
+      if (!name) {
+        name = document.createElement('span');
+        name.className = 'item__name';
+        while (label.firstChild && !(label.firstChild.nodeType === 1 &&
+               label.firstChild.matches('.app, .who, .flag'))) {
+          name.appendChild(label.firstChild);
+        }
+        label.insertBefore(name, label.firstChild);
+      }
+      var box = label.closest('.item').querySelector('input');
+      if (box && Object.prototype.hasOwnProperty.call(edits, box.id)) name.innerHTML = edits[box.id];
+      name.setAttribute('contenteditable', 'true');
+      name.setAttribute('spellcheck', 'true');
+      var before = '';
+      name.addEventListener('focus', function () {
+        before = name.innerHTML;
+        var li = name.closest('li');
+        if (li) li.setAttribute('draggable', 'false');
+      });
+      name.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); name.blur(); }
+        if (e.key === 'Escape') { name.innerHTML = before; name.blur(); }
+      });
+      name.addEventListener('paste', function (e) {
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text/plain').replace(/\s+/g, ' ');
+        document.execCommand('insertText', false, text);
+      });
+      name.addEventListener('blur', function () {
+        var li = name.closest('li');
+        if (li) li.setAttribute('draggable', 'true');
+        if (!name.textContent.trim()) name.innerHTML = before;
+        if (name.innerHTML === before || !box) return;
+        var all = readText();
+        all[box.id] = name.innerHTML;
+        try { localStorage.setItem(TEXT_KEY, JSON.stringify(all)); } catch (err) {}
+        queue();
+      });
+    });
+
+    // Only the box itself ticks a task; clicking the task text does nothing
+    document.addEventListener('click', function (e) {
+      var item = e.target.closest && e.target.closest('label.item');
+      if (item && !e.target.matches('.item input')) e.preventDefault();
+    });
+
+    // Ticking or unticking moves a task in or out of Completed
+    document.querySelectorAll('.day .item input').forEach(function (box) {
+      box.addEventListener('change', function () { placeDone(); sortDays(); refresh(); save(); });
+    });
+
+    undo.addEventListener('click', function () {
+      apply(original);
+      placeDone(); sortDays(); refresh(); save();
+    });
+
+    // The page as HTML, with the current days and checkmarks built in
+    function pageHtml() {
+      var copy = document.documentElement.cloneNode(true);
+      copy.querySelectorAll('.done-group').forEach(function (g) {
+        Array.prototype.slice.call(g.querySelectorAll('.done-list > li')).forEach(function (item) {
+          g.parentNode.insertBefore(item, g);
+        });
+        g.remove();
+      });
+      copy.querySelectorAll('.move, .drop-hint, .carried').forEach(function (n) { n.remove(); });
+      var snap = copy.querySelector('.snap');
+      if (snap) snap.removeAttribute('open');
+      var out = copy.querySelector('#outstanding');
+      if (out) {
+        out.querySelector('.out-body').textContent = '';
+        out.querySelector('.out-count').textContent = '';
+        out.querySelector('details').removeAttribute('open');
+      }
+      copy.querySelectorAll('[draggable]').forEach(function (n) { n.removeAttribute('draggable'); });
+      copy.querySelectorAll('[contenteditable]').forEach(function (n) {
+        n.removeAttribute('contenteditable');
+        n.removeAttribute('spellcheck');
+      });
+      copy.querySelectorAll('.is-empty, .is-over, .is-dragging, .is-today, .is-warn, .is-flash').forEach(function (n) {
+        n.classList.remove('is-empty', 'is-over', 'is-dragging', 'is-today', 'is-warn', 'is-flash');
+        if (!n.getAttribute('class')) n.removeAttribute('class');
+      });
+      copy.querySelector('#undo-moves').setAttribute('hidden', '');
+      copy.querySelector('#save-file').removeAttribute('hidden');
+      copy.querySelector('#save-file').textContent = 'Connect file';
+      copy.querySelector('#file-status').textContent = '';
+      document.querySelectorAll('.item input').forEach(function (box) {
+        var twin = copy.querySelector('#' + box.id);
+        if (!twin) return;
+        if (box.checked) twin.setAttribute('checked', ''); else twin.removeAttribute('checked');
+      });
+      copy.querySelector('#done').textContent = '0';
+      copy.querySelector('#fill').removeAttribute('style');
+      copy.querySelector('#stamp').textContent = '';
+      return '<!DOCTYPE html>\n' + copy.outerHTML;
+    }
+
+    // Save straight into the plan file (Chrome's file access). The file is
+    // picked once; the link is kept in IndexedDB for later visits.
+    var button = document.getElementById('save-file');
+    var status = document.getElementById('file-status');
+    var fileName = decodeURIComponent(location.pathname.split('/').pop()) || 'sig-2026-wbd-int-launch-plan.html';
+    var handle = null, known = 0, timer = null, blocked = false, writing = false, again = false;
+    var loadedAt = Date.parse(document.lastModified) || 0;
+
+    function say(text, warn) { status.textContent = text; status.classList.toggle('is-warn', !!warn); }
+    function idb(mode, value) {
+      return new Promise(function (resolve) {
+        try {
+          var req = indexedDB.open('sig-int-launch-plan', 1);
+          req.onupgradeneeded = function () { req.result.createObjectStore('kv'); };
+          req.onerror = function () { resolve(null); };
+          req.onsuccess = function () {
+            var tx = req.result.transaction('kv', mode === 'get' ? 'readonly' : 'readwrite');
+            var store = tx.objectStore('kv');
+            var r = mode === 'get' ? store.get('file') : store.put(value, 'file');
+            r.onsuccess = function () { resolve(mode === 'get' ? r.result : true); };
+            r.onerror = function () { resolve(null); };
+          };
+        } catch (err) { resolve(null); }
+      });
+    }
+    function connected(h, baseline) {
+      handle = h;
+      known = baseline;
+      button.hidden = true;
+      say('Saving to file');
+      queue();
+    }
+    function queue() {
+      if (!handle || blocked) return;
+      clearTimeout(timer);
+      timer = setTimeout(write, 700);
+    }
+    async function write() {
+      if (!handle || blocked) return;
+      if (writing) { again = true; return; }
+      writing = true;
+      try {
+        var file = await handle.getFile();
+        // Someone else (Claude, or another tab) changed the file since this page loaded
+        if (file.lastModified > known + 2000) {
+          blocked = true;
+          say('File changed. Refresh to keep saving', true);
+          return;
+        }
+        var w = await handle.createWritable();
+        await w.write(pageHtml());
+        await w.close();
+        known = (await handle.getFile()).lastModified;
+        say('Saved ' + new Date().toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }));
+      } catch (err) {
+        say('Not saved. Click Connect file', true);
+        button.hidden = false;
+        button.textContent = 'Connect file';
+        handle = null;
+      } finally {
+        writing = false;
+        if (again) { again = false; queue(); }
+      }
+    }
+
+    if (window.showOpenFilePicker) {
+      idb('get').then(async function (saved) {
+        if (!saved) return;
+        try {
+          var perm = await saved.queryPermission({ mode: 'readwrite' });
+          if (perm === 'granted') connected(saved, loadedAt);
+          else { button.textContent = 'Reconnect file'; button._saved = saved; }
+        } catch (err) {}
+      });
+      button.addEventListener('click', async function () {
+        try {
+          var h = button._saved;
+          if (h && (await h.requestPermission({ mode: 'readwrite' })) === 'granted') {
+            connected(h, loadedAt);
+            return;
+          }
+          var picked = await window.showOpenFilePicker({
+            types: [{ description: 'Launch plan', accept: { 'text/html': ['.html'] } }]
+          });
+          h = picked[0];
+          if (h.name !== fileName) { say('Pick ' + fileName, true); return; }
+          if ((await h.requestPermission({ mode: 'readwrite' })) !== 'granted') return;
+          await idb('put', h);
+          connected(h, loadedAt);
+        } catch (err) {}
+      });
+    } else {
+      // No file access in this browser: download a copy instead
+      button.textContent = 'Save file';
+      button.addEventListener('click', function () {
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(new Blob([pageHtml()], { type: 'text/html' }));
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
+    }
+
+    // Save after every checkmark, move or reset
+    document.addEventListener('change', function (e) {
+      if (e.target.matches && e.target.matches('.item input, .move')) queue();
+    });
+    document.addEventListener('drop', queue);
+    document.getElementById('reset').addEventListener('click', queue);
+    undo.addEventListener('click', queue);
+  })();
+</script>
+
+
+<script>
+  // Still outstanding: every unticked task due today or earlier, grouped by day
+  (function () {
+    var box = document.getElementById('outstanding');
+    if (!box) return;
+    var body = box.querySelector('.out-body');
+    var count = box.querySelector('.out-count');
+    var pending = null;
+
+    function today() {
+      var d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+    function dayLabel(g) {
+      var name = g.querySelector('.day__name'), date = g.querySelector('.day__date');
+      if (name && date) return name.textContent.slice(0, 3) + ' ' + date.textContent;
+      var h = g.previousElementSibling;
+      return h && h.tagName === 'H3' ? h.textContent : g.dataset.date;
+    }
+    function taskName(item) {
+      var label = item.querySelector('.item__label').cloneNode(true);
+      label.querySelectorAll('.app, .who, .flag').forEach(function (n) { n.remove(); });
+      return label.textContent.trim();
+    }
+    function build() {
+      var now = today(), total = 0;
+      body.textContent = '';
+      document.querySelectorAll('[data-date]').forEach(function (g) {
+        if (!g.dataset.date || g.dataset.date > now || box.contains(g)) return;
+        var open = Array.prototype.filter.call(g.querySelectorAll('.item input'), function (i) { return !i.checked; });
+        if (!open.length) return;
+        total += open.length;
+        var head = document.createElement('p');
+        head.className = 'out-day';
+        head.textContent = dayLabel(g);
+        var list = document.createElement('ul');
+        list.className = 'out-list';
+        open.forEach(function (input) {
+          var item = input.closest('li');
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = '#' + input.id;
+          a.dataset.task = input.id;
+          a.textContent = taskName(item);
+          li.appendChild(a);
+          if (item.querySelector('.item__label .flag')) {
+            var flag = document.createElement('span');
+            flag.className = 'out-flag';
+            flag.textContent = 'Blocker';
+            li.appendChild(flag);
+          }
+          list.appendChild(li);
+        });
+        body.appendChild(head);
+        body.appendChild(list);
+      });
+      count.textContent = '(' + total + ')';
+      if (!total) {
+        var none = document.createElement('p');
+        none.className = 'out-empty';
+        none.textContent = 'Nothing outstanding. Everything due so far is ticked off.';
+        body.appendChild(none);
+      }
+    }
+    function later() {
+      if (pending) return;
+      pending = requestAnimationFrame(function () { pending = null; build(); });
+    }
+
+    body.addEventListener('click', function (e) {
+      var a = e.target.closest('a[data-task]');
+      if (!a) return;
+      e.preventDefault();
+      var input = document.getElementById(a.dataset.task);
+      var item = input && input.closest('li');
+      if (!item) return;
+      item.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      item.classList.add('is-flash');
+      setTimeout(function () { item.classList.remove('is-flash'); }, 1600);
+    });
+    document.addEventListener('change', later);
+    document.addEventListener('click', function (e) { if (e.target.closest('button')) setTimeout(later, 0); });
+    new MutationObserver(function (muts) {
+      if (muts.some(function (m) { return !box.contains(m.target); })) later();
+    }).observe(document.body, { childList: true, subtree: true });
+    build();
+  })();
+</script>
+
+</body></html>
