@@ -453,7 +453,7 @@
     <p class="sec-note">Setup can't finish without these.</p>
     <ol class="decisions">
       <li>Keep the Oct 2 type-test scale, warm or cool grays, and which button burgundy?<span>Due Wed Oct 14. The token cleanup waits on these.</span></li>
-      <li>Which secondary brand font, and what does it cover?<span>Due Wed Oct 14. The form CSS on Thursday waits on it.</span></li>
+      <li>Which secondary brand font, and what does it cover?<span>Due Wed Oct 14. Adding it to the theme CSS later that day waits on it.</span></li>
       <li>Are the Sweatshirt and Eye Patches launching?<span>Matt, Fri Oct 16.</span></li>
       <li>For orders under $150: one flat shipping price, or priced by weight?<span>Matt, Fri Oct 16.</span></li>
       <li>Above what order value is a signature required?<span>Matt, Fri Oct 16.</span></li>
@@ -469,7 +469,7 @@
 
   <section class="week" id="w1">
     <div class="sec-head"><span class="sec-num">02</span><h2>Setup decisions and store basics</h2><span class="sec-date">Oct 12–16</span></div>
-    <p class="sec-note">Decisions first: the type scale, colors and the secondary font set everything else in motion.</p>
+    <p class="sec-note">Decisions first: the type scale, colors and the secondary font set everything else in motion. Then the tokens, one group a day: text Wednesday, color Thursday, buttons and form fields Friday.</p>
     <div class="day" data-date="2026-10-12" id="day-2026-10-12">
       <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 12</span><span class="day__tag">Done</span></div>
       <ul>
@@ -494,6 +494,7 @@
       <li><label class="item"><input type="checkbox" id="d16-1"><span class="item__text"><span class="item__label">Decide the secondary brand font and what it covers<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Small text, labels, buttons, nav, or all. Check the web license covers the site and email.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-2"><span class="item__text"><span class="item__label">Rebuild the type scale as <code>--step</code> tokens and remove the root size override<span class="who who--claude">Claude</span></span><span class="item__hint">Edit the source in <code>SIG_2026_WBD_Main/css/</code>, then rebuild <code>sig-tokens.css</code>. Point <code>custom.css</code> and <code>sig-custom.css</code> at the same scale.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-3"><span class="item__text"><span class="item__label">Move the token breakpoints to Prestige's 700 and 1000<span class="who who--claude">Claude</span></span><span class="item__hint">Today they switch at 768 and 1024, so type and layout change at different widths.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d19-1"><span class="item__text"><span class="item__label">Add the secondary font to the theme CSS<span class="who who--claude">Claude</span></span><span class="item__hint">Load it, add it to the type tokens, map it onto its roles. Right after the font decision this morning.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-4"><span class="item__text"><span class="item__label">Turn on Shopify Tax and add Tennessee, plus any other state you're registered in<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Taxes and duties.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-5"><span class="item__text"><span class="item__label">Set the return rules<span class="who who--both">Both</span></span><span class="item__hint">Settings → Policies → Return and cancellation rules: 14 days, 10% restocking fee, customer pays return shipping, final sale excluded.</span></span></label></li>
       </ul>
@@ -501,9 +502,8 @@
     <div class="day" data-date="2026-10-15" id="day-2026-10-15">
       <div class="day__head"><span class="day__name">Thursday</span><span class="day__date">Oct 15</span></div>
       <ul>
-      <li><label class="item"><input type="checkbox" id="d15-1"><span class="item__text"><span class="item__label">Replace raw colors with tokens; merge the two button sets<span class="who who--claude">Claude</span></span><span class="item__hint">18 raw colors in <code>sig-custom.css</code>, 63 in <code>sig-nav.css</code>. Needs Wednesday's decisions.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d15-1"><span class="item__text"><span class="item__label">Replace raw colors with the color tokens<span class="who who--claude">Claude</span></span><span class="item__hint">18 raw colors in <code>sig-custom.css</code>, 63 in <code>sig-nav.css</code>. Needs Wednesday's decisions.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-2"><span class="item__text"><span class="item__label">Replace raw px spacing with the spacing tokens<span class="who who--claude">Claude</span></span><span class="item__hint">32 values in <code>sig-custom.css</code>. Flag any deliberate one-offs.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d15-3"><span class="item__text"><span class="item__label">Finish, preview and commit the form CSS<span class="who who--both">Both</span></span><span class="item__hint">Field styles were written Oct 12 in <code>sig-custom.css</code> (from line 667) and logged in <code>CHANGES.md</code>, not yet committed or previewed. Still open: which face typed text uses (decided Wednesday), the "filled" state, label and help text roles. Review at 360, 768 and 1920, run the theme check and preview before pushing to <code>launch</code>.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-4"><span class="item__text"><span class="item__label">Turn on Shop Pay, PayPal, Klarna and Afterpay<span class="who">You</span></span><span class="item__hint">Settings → Payments, once Shopify Payments is active.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-5"><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="who">You</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart. Friday's approval checks these.</span></span></label>
         <table class="item-table">
@@ -528,6 +528,8 @@
     <div class="day" data-date="2026-10-16" id="day-2026-10-16">
       <div class="day__head"><span class="day__name">Friday</span><span class="day__date">Oct 16</span><span class="day__tag">Deadline</span></div>
       <ul>
+      <li><label class="item"><input type="checkbox" id="d16-4"><span class="item__text"><span class="item__label">Merge the two button sets into one set of button tokens<span class="who who--claude">Claude</span></span><span class="item__hint">Uses Wednesday's button burgundy and Thursday's color tokens.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d15-3"><span class="item__text"><span class="item__label">Finish, preview and commit the form CSS<span class="who who--both">Both</span></span><span class="item__hint">Field styles were written Oct 12 in <code>sig-custom.css</code> (from line 667) and logged in <code>CHANGES.md</code>, not yet committed or previewed. Uses the button tokens from this morning. Still open: which face typed text uses (decided Wednesday), the "filled" state, label and help text roles. Review at 360, 768 and 1920, run the theme check and preview before pushing to <code>launch</code>.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-2"><span class="item__text"><span class="item__label">Matt sends weights, stock, product details and ShipStation answers<span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Includes launch line-up, under-$150 shipping (flat or by weight), signature threshold and carriers.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-3"><span class="item__text"><span class="item__label">Approve product photos, prices and alt text<span class="who">You</span></span></span></label></li>
       </ul>
@@ -540,10 +542,10 @@
     <div class="day" data-date="2026-10-19" id="day-2026-10-19">
       <div class="day__head"><span class="day__name">Monday</span><span class="day__date">Oct 19</span></div>
       <ul>
-      <li><label class="item"><input type="checkbox" id="d19-1"><span class="item__text"><span class="item__label">Add the secondary font to the theme CSS<span class="who who--claude">Claude</span></span><span class="item__hint">Load it, add it to the type tokens, map it onto its roles.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d19-2"><span class="item__text"><span class="item__label">Add the secondary font to Figma text styles and variables<span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d19-3"><span class="item__text"><span class="item__label">Products: stock tracking on, SKUs, weights, package sizes<span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">From Matt's list.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d19-4"><span class="item__text"><span class="item__label">Shipping rates: free over $150, paid under<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Shipping and delivery. Flat or by weight, per Matt.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d19-5"><span class="item__text"><span class="item__label">Create the universal templates in Klaviyo<span class="who who--both">Both</span></span><span class="item__hint">Every Klaviyo email this week is built from them.</span></span></label></li>
       </ul>
     </div>
     <div class="day" data-date="2026-10-20" id="day-2026-10-20">
