@@ -346,6 +346,24 @@
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
+
+  /* Platform tags: where the task is done */
+  .app {
+    display: inline-block;
+    font-family: var(--caption);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 2px 9px;
+    margin-left: 8px;
+    border-radius: 999px;
+    vertical-align: 2px;
+    white-space: nowrap;
+  }
+  .app--shopify { color: #c3d3a0; border: 1px solid rgb(149 191 71 / 0.5); }
+  .app--klaviyo { color: var(--sand); border: 1px solid var(--sand); }
+  .legend .app, .app-legend .app { margin-left: 0; margin-right: 8px; }
+  .app-legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; color: var(--gold-deep); margin: -26px 0 44px; }
+  @media print { .app { border: 1px solid #999; color: #000; } }
 </style>
 </head>
 <body>
@@ -375,6 +393,10 @@
     <span><span class="who who--claude">Claude</span>Claude can do it</span>
     <span><span class="who who--both">Both</span>Claude builds, you approve</span>
     <span><span class="flag">Blocker</span>launch can't happen without it</span>
+  </div>
+  <div class="app-legend">
+    <span><span class="app app--shopify">Shopify</span>done in Shopify</span>
+    <span><span class="app app--klaviyo">Klaviyo</span>done in Klaviyo</span>
   </div>
 
   <section id="snapshot">
@@ -410,15 +432,15 @@
     <h3>Brand type and forms</h3>
     <ul>
       <li><label class="item"><input type="checkbox" id="s-ty1"><span class="item__text"><span class="item__label">Decide the secondary brand font<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Every page, form and email template reads it, so it comes first. Lock it by <b>Oct 16</b>. Check the web license covers the site and email.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-ty2"><span class="item__text"><span class="item__label">Add the secondary font to the theme CSS<span class="who who--claude">Claude</span></span><span class="item__hint">Load it, add it to the type tokens, and map it onto the roles that use it, so Prestige sections and custom sections match.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-ty2"><span class="item__text"><span class="item__label">Add the secondary font to the theme CSS<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Load it, add it to the type tokens, and map it onto the roles that use it, so Prestige sections and custom sections match.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="s-ty3"><span class="item__text"><span class="item__label">Add the secondary font to Figma text styles and variables<span class="who">You</span></span><span class="item__hint">So the 360 and 1920 frames and the build use the same face.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-ty4"><span class="item__text"><span class="item__label">Finish the form CSS tokens<span class="who who--both">Both</span></span><span class="item__hint">Field, checkbox and state styles went into <code>sig-custom.css</code> on Oct 12. Still open: which face the typed text uses (Kepler now, or the new secondary font), the "filled" state, label and help text roles, and review at 360, 768 and 1920.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-ty4"><span class="item__text"><span class="item__label">Finish the form CSS tokens<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Field, checkbox and state styles went into <code>sig-custom.css</code> on Oct 12. Still open: which face the typed text uses (Kepler now, or the new secondary font), the "filled" state, label and help text roles, and review at 360, 768 and 1920.</span></span></label></li>
     </ul>
 
     <h3>Products</h3>
     <ul>
       <li><label class="item"><input type="checkbox" id="s-p1"><span class="item__text"><span class="item__label">Confirm the launch line-up<span class="who">You</span></span><span class="item__hint">Are <b>The Society Sweatshirt</b> and <b>The Awakening Eye Patches</b> launching? Everything else is assumed yes.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-p5"><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="who who--claude">Claude</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart.</span></span></label>
+      <li><label class="item"><input type="checkbox" id="s-p5"><span class="item__text"><span class="item__label">Update the product prices in Shopify<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Set each product and variant to the price below, then check every product page and the cart.</span></span></label>
         <table class="item-table">
           <thead><tr><th>Product</th><th>Price</th></tr></thead>
           <tbody>
@@ -436,28 +458,28 @@
           </tbody>
         </table>
       </li>
-      <li><label class="item"><input type="checkbox" id="s-p2"><span class="item__text"><span class="item__label">Turn on stock tracking, add SKUs, weights and package sizes<span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Weights drive the shipping rates. Send Claude the SKUs, weights and stock counts.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-p3"><span class="item__text"><span class="item__label">Create the product fields and fill them in<span class="who who--claude">Claude</span></span><span class="item__hint">Material, care instructions, final sale, sold as a set, refill product, marble type. The product page accordions and Final Sale badge read these.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-p4"><span class="item__text"><span class="item__label">Approve product photos, prices and alt text<span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-p2"><span class="item__text"><span class="item__label">Turn on stock tracking, add SKUs, weights and package sizes<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Weights drive the shipping rates. Send Claude the SKUs, weights and stock counts.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-p3"><span class="item__text"><span class="item__label">Create the product fields and fill them in<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Material, care instructions, final sale, sold as a set, refill product, marble type. The product page accordions and Final Sale badge read these.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-p4"><span class="item__text"><span class="item__label">Approve product photos, prices and alt text<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
     </ul>
 
     <h3>Payments</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="s-pay1"><span class="item__text"><span class="item__label">Shopify Payments active, bank verified, payouts on<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Payments.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-pay2"><span class="item__text"><span class="item__label">Turn on Shop Pay, PayPal, Klarna and Afterpay<span class="who">You</span></span><span class="item__hint">Settings → Payments. The privacy policy names all four.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-pay1"><span class="item__text"><span class="item__label">Shopify Payments active, bank verified, payouts on<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Payments.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-pay2"><span class="item__text"><span class="item__label">Turn on Shop Pay, PayPal, Klarna and Afterpay<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Payments. The privacy policy names all four.</span></span></label></li>
     </ul>
 
     <h3>Markets, shipping and taxes</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="s-sh1"><span class="item__text"><span class="item__label">United States only; turn international off<span class="who">You</span></span><span class="item__hint">Settings → Markets.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-sh2"><span class="item__text"><span class="item__label">Shipping rates: free over $150, paid rates under<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Shipping and delivery. The $150 counts merchandise only, before tax and shipping. You decide the under-$150 rate.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-sh3"><span class="item__text"><span class="item__label">Turn on Shopify Tax and add Tennessee, plus any other state you're registered in<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Taxes and duties.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-sh1"><span class="item__text"><span class="item__label">United States only; turn international off<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Markets.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-sh2"><span class="item__text"><span class="item__label">Shipping rates: free over $150, paid rates under<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Shipping and delivery. The $150 counts merchandise only, before tax and shipping. You decide the under-$150 rate.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-sh3"><span class="item__text"><span class="item__label">Turn on Shopify Tax and add Tennessee, plus any other state you're registered in<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Taxes and duties.</span></span></label></li>
     </ul>
 
     <h3>Returns and store credit</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="s-r1"><span class="item__text"><span class="item__label">Set the return rules<span class="who who--both">Both</span></span><span class="item__hint">Settings → Policies → Return and cancellation rules → Default rules: 14-day window, 10% restocking fee, customer pays return shipping, final sale items excluded.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-r2"><span class="item__text"><span class="item__label">Turn on the new customer accounts<span class="who">You</span></span><span class="item__hint">Settings → Customer accounts. Store credit needs these.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-r1"><span class="item__text"><span class="item__label">Set the return rules<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Settings → Policies → Return and cancellation rules → Default rules: 14-day window, 10% restocking fee, customer pays return shipping, final sale items excluded.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-r2"><span class="item__text"><span class="item__label">Turn on the new customer accounts<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Customer accounts. Store credit needs these.</span></span></label></li>
     </ul>
 
     <h3>Fulfillment (ShipStation)</h3>
@@ -466,7 +488,7 @@
       <li><label class="item"><input type="checkbox" id="s-f2"><span class="item__text"><span class="item__label">Set up package presets, a branded packing slip and insurance<span class="who">You</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="s-f3"><span class="item__text"><span class="item__label">Add a ShipStation rule: signature required above a set order value<span class="who">You</span></span><span class="item__hint">You pick the amount. The shipping policy says select high-value orders may need an adult signature.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="s-f4"><span class="item__text"><span class="item__label">Turn off ShipStation's own customer emails<span class="who">You</span></span><span class="item__hint">Shopify sends the shipping confirmation. With both on, customers get two.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="s-f5"><span class="item__text"><span class="item__label">Count the stock and enter it in Shopify; have presentation packaging ready<span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="s-f5"><span class="item__text"><span class="item__label">Count the stock and enter it in Shopify; have presentation packaging ready<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
     </ul>
   </section>
 
@@ -477,44 +499,44 @@
 
     <h3>Shopify order emails</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="b-n1"><span class="item__text"><span class="item__label">Set the sender to concierge@ and authenticate the domain<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Notifications → Sender email → Authenticate domain. Adds the DNS records that keep order emails out of spam.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-n2"><span class="item__text"><span class="item__label">Brand and rewrite the order emails<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Order confirmation, shipping confirmation and update, order canceled, store credit and refund, return emails, gift card, customer account emails. Claude edits them in Shopify; copy comes from you or your copywriter. Use "self care", never "grooming".</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-n3"><span class="item__text"><span class="item__label">Turn off Shopify's abandoned checkout email<span class="who">You</span></span><span class="item__hint">Klaviyo sends it instead. Leaving both on sends two.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-n1"><span class="item__text"><span class="item__label">Set the sender to concierge@ and authenticate the domain<span class="app app--shopify">Shopify</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Notifications → Sender email → Authenticate domain. Adds the DNS records that keep order emails out of spam.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-n2"><span class="item__text"><span class="item__label">Brand and rewrite the order emails<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Order confirmation, shipping confirmation and update, order canceled, store credit and refund, return emails, gift card, customer account emails. Claude edits them in Shopify; copy comes from you or your copywriter. Use "self care", never "grooming".</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-n3"><span class="item__text"><span class="item__label">Turn off Shopify's abandoned checkout email<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Klaviyo sends it instead. Leaving both on sends two.</span></span></label></li>
     </ul>
 
     <h3>Site pages</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="b-sp1"><span class="item__text"><span class="item__label">Build the Collection page<span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">From the Figma frames. Grid drops columns from desktop to tablet to phone. Shows Draft products once they're set to Active.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-sp2"><span class="item__text"><span class="item__label">Finish the product page (PDP)<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Started, not finalized. Still to close: accordions reading the product fields, Final Sale badge, Notify me, and the sweatshirt size picker. Needs the sweatshirt and eye patch details from Matt.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-pg2"><span class="item__text"><span class="item__label">Build the Concierge page, with the guarantee claim form<span class="who who--claude">Claude</span></span><span class="item__hint">The guarantee copy says "fill out the claim form on the Concierge page", so the form has to exist. Uses the new form styles.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-pg1"><span class="item__text"><span class="item__label">Build the Policies page (Delivery &amp; Returns)<span class="who who--claude">Claude</span></span><span class="item__hint">Shipping, returns and guarantee sections at <code>/pages/delivery-and-returns</code>, with the <code>#shipping</code>, <code>#returns</code> and <code>#guarantee</code> anchors the FAQ links to. The copy is ready.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-sp3"><span class="item__text"><span class="item__label">Style the Privacy Policy page<span class="who who--claude">Claude</span></span><span class="item__hint">The copy is published. Shopify shows privacy, shipping, returns and contact through one policy template, so styling it brands all four.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-pg3"><span class="item__text"><span class="item__label">Publish the Terms of Service<span class="who">You</span></span><span class="item__hint">Supply the copy, or use Settings → Policies → Terms of service → Insert template.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-pg4"><span class="item__text"><span class="item__label">Cookie banner and "Do Not Sell or Share" link on<span class="who">You</span></span><span class="item__hint">Settings → Customer privacy → Cookie banner on, Data sharing opt-out on. The privacy policy promises both.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-sp1"><span class="item__text"><span class="item__label">Build the Collection page<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">From the Figma frames. Grid drops columns from desktop to tablet to phone. Shows Draft products once they're set to Active.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-sp2"><span class="item__text"><span class="item__label">Finish the product page (PDP)<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Started, not finalized. Still to close: accordions reading the product fields, Final Sale badge, Notify me, and the sweatshirt size picker. Needs the sweatshirt and eye patch details from Matt.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-pg2"><span class="item__text"><span class="item__label">Build the Concierge page, with the guarantee claim form<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">The guarantee copy says "fill out the claim form on the Concierge page", so the form has to exist. Uses the new form styles.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-pg1"><span class="item__text"><span class="item__label">Build the Policies page (Delivery &amp; Returns)<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">Shipping, returns and guarantee sections at <code>/pages/delivery-and-returns</code>, with the <code>#shipping</code>, <code>#returns</code> and <code>#guarantee</code> anchors the FAQ links to. The copy is ready.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-sp3"><span class="item__text"><span class="item__label">Style the Privacy Policy page<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">The copy is published. Shopify shows privacy, shipping, returns and contact through one policy template, so styling it brands all four.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-pg3"><span class="item__text"><span class="item__label">Publish the Terms of Service<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Supply the copy, or use Settings → Policies → Terms of service → Insert template.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-pg4"><span class="item__text"><span class="item__label">Cookie banner and "Do Not Sell or Share" link on<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Customer privacy → Cookie banner on, Data sharing opt-out on. The privacy policy promises both.</span></span></label></li>
     </ul>
 
     <h3>Tracking and apps</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="b-t1"><span class="item__text"><span class="item__label">Install Google &amp; YouTube and Facebook &amp; Instagram<span class="who">You</span></span><span class="item__hint">GA4, Google Ads and Meta. Both are named in the privacy policy. Confirm GA4 data retention is 2 months, as the policy states.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-t2"><span class="item__text"><span class="item__label">Install and set up Judge.me<span class="who">You</span></span><span class="item__hint">Named in the privacy policy. Its review request can be set up now or in launch week.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-t1"><span class="item__text"><span class="item__label">Install Google &amp; YouTube and Facebook &amp; Instagram<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">GA4, Google Ads and Meta. Both are named in the privacy policy. Confirm GA4 data retention is 2 months, as the policy states.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-t2"><span class="item__text"><span class="item__label">Install and set up Judge.me<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Named in the privacy policy. Its review request can be set up now or in launch week.</span></span></label></li>
     </ul>
 
     <h3>Klaviyo foundations</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="b-k1"><span class="item__text"><span class="item__label">Turn on Klaviyo onsite tracking<span class="who">You</span></span><span class="item__hint">Online Store → Themes → Customize → App embeds → Klaviyo on. "Added to Cart" isn't recorded yet, and the abandoned cart email needs it.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-k2"><span class="item__text"><span class="item__label">Turn on the email marketing checkbox at checkout<span class="who">You</span></span><span class="item__hint">Settings → Checkout. Sign-ups then flow into Klaviyo.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-k1"><span class="item__text"><span class="item__label">Turn on Klaviyo onsite tracking<span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Online Store → Themes → Customize → App embeds → Klaviyo on. "Added to Cart" isn't recorded yet, and the abandoned cart email needs it.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-k2"><span class="item__text"><span class="item__label">Turn on the email marketing checkbox at checkout<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Checkout. Sign-ups then flow into Klaviyo.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="b-k3"><span class="item__text"><span class="item__label">Add a DMARC record to the signaturesociety.com DNS<span class="who">You</span></span><span class="item__hint">Gmail and Yahoo require one for bulk senders.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-k4"><span class="item__text"><span class="item__label">Build the brand email template<span class="who who--both">Both</span></span><span class="item__hint">Logo, colors, footer with the address (already set in Klaviyo).</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-k5"><span class="item__text"><span class="item__label">Brand the double opt-in confirmation email<span class="who who--both">Both</span></span><span class="item__hint">The Email List requires subscribers to confirm before they're added.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-k4"><span class="item__text"><span class="item__label">Build the brand email template<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Logo, colors, footer with the address (already set in Klaviyo).</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-k5"><span class="item__text"><span class="item__label">Brand the double opt-in confirmation email<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">The Email List requires subscribers to confirm before they're added.</span></span></label></li>
     </ul>
 
     <h3>Klaviyo must-have automations</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="b-f1"><span class="item__text"><span class="item__label">Back in Stock<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Starts when someone clicks Notify me. The sign-ups are already coming in.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-f2"><span class="item__text"><span class="item__label">Welcome series, 2–3 emails<span class="who who--both">Both</span></span><span class="item__hint">Starts when someone joins the Email List.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-f3"><span class="item__text"><span class="item__label">Abandoned checkout, 2 emails<span class="who who--both">Both</span></span><span class="item__hint">Starts when someone begins checkout and doesn't finish.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-f4"><span class="item__text"><span class="item__label">Post-purchase thank-you plus care guide by material<span class="who who--both">Both</span></span><span class="item__hint">Starts when someone places an order. Marble, silk, horn and acetate each get their own care content.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="b-f5"><span class="item__text"><span class="item__label">Email copy for all four automations delivered<span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Claude creates the automations as drafts; the words come from you or your copywriter.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-f1"><span class="item__text"><span class="item__label">Back in Stock<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Starts when someone clicks Notify me. The sign-ups are already coming in.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-f2"><span class="item__text"><span class="item__label">Welcome series, 2–3 emails<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Starts when someone joins the Email List.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-f3"><span class="item__text"><span class="item__label">Abandoned checkout, 2 emails<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Starts when someone begins checkout and doesn't finish.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-f4"><span class="item__text"><span class="item__label">Post-purchase thank-you plus care guide by material<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Starts when someone places an order. Marble, silk, horn and acetate each get their own care content.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="b-f5"><span class="item__text"><span class="item__label">Email copy for all four automations delivered<span class="app app--klaviyo">Klaviyo</span><span class="who">You</span><span class="flag">Blocker</span></span><span class="item__hint">Claude creates the automations as drafts; the words come from you or your copywriter.</span></span></label></li>
     </ul>
   </section>
 
@@ -525,41 +547,41 @@
 
     <h3>Orders and payments</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="t-o1"><span class="item__text"><span class="item__label">Test order with each payment method<span class="who who--both">Both</span></span><span class="item__hint">Card, Shop Pay, PayPal, Klarna, Afterpay. Check tax and the order total.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-o2"><span class="item__text"><span class="item__label">Shipping rates are right on both sides of $150<span class="who who--both">Both</span></span><span class="item__hint">Try $149 and $151 of merchandise. Free shipping should apply only above $150.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-o3"><span class="item__text"><span class="item__label">One real order, start to finish<span class="who">You</span></span><span class="item__hint">Pay with a real card, ship it through ShipStation, then cancel or issue store credit.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-o1"><span class="item__text"><span class="item__label">Test order with each payment method<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Card, Shop Pay, PayPal, Klarna, Afterpay. Check tax and the order total.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-o2"><span class="item__text"><span class="item__label">Shipping rates are right on both sides of $150<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Try $149 and $151 of merchandise. Free shipping should apply only above $150.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-o3"><span class="item__text"><span class="item__label">One real order, start to finish<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Pay with a real card, ship it through ShipStation, then cancel or issue store credit.</span></span></label></li>
     </ul>
 
     <h3>Fulfillment</h3>
     <ul>
       <li><label class="item"><input type="checkbox" id="t-f1"><span class="item__text"><span class="item__label">Order flows into ShipStation; label prints; tracking reaches Shopify<span class="who">You</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-f2"><span class="item__text"><span class="item__label">Customer gets exactly one shipping email<span class="who">You</span></span><span class="item__hint">From Shopify, with tracking. Not a second one from ShipStation.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-f2"><span class="item__text"><span class="item__label">Customer gets exactly one shipping email<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">From Shopify, with tracking. Not a second one from ShipStation.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="t-f3"><span class="item__text"><span class="item__label">The signature-required rule triggers above your amount<span class="who">You</span></span></span></label></li>
     </ul>
 
     <h3>Returns</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="t-r1"><span class="item__text"><span class="item__label">Standard return issues store credit minus the 10% restocking fee<span class="who who--both">Both</span></span><span class="item__hint">Check the credit lands in the customer account and the store credit email sends.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-r2"><span class="item__text"><span class="item__label">Final sale items can't be returned<span class="who who--both">Both</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-r1"><span class="item__text"><span class="item__label">Standard return issues store credit minus the 10% restocking fee<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Check the credit lands in the customer account and the store credit email sends.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-r2"><span class="item__text"><span class="item__label">Final sale items can't be returned<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li>
     </ul>
 
     <h3>Emails</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="t-e1"><span class="item__text"><span class="item__label">Every Shopify order email sends, branded, with working links<span class="who who--both">Both</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-e2"><span class="item__text"><span class="item__label">Each Klaviyo automation fires for a test profile<span class="who who--both">Both</span></span><span class="item__hint">Back in Stock, welcome series, abandoned checkout, post-purchase.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-e3"><span class="item__text"><span class="item__label">Checkout sign-up and footer sign-up both land in the Email List<span class="who who--both">Both</span></span><span class="item__hint">Including the double opt-in confirmation.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-e4"><span class="item__text"><span class="item__label">Emails look right in Gmail, Apple Mail and Outlook, on phone and desktop<span class="who">You</span></span><span class="item__hint">And arrive in the inbox, not spam.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-e1"><span class="item__text"><span class="item__label">Every Shopify order email sends, branded, with working links<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-e2"><span class="item__text"><span class="item__label">Each Klaviyo automation fires for a test profile<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Back in Stock, welcome series, abandoned checkout, post-purchase.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-e3"><span class="item__text"><span class="item__label">Checkout sign-up and footer sign-up both land in the Email List<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Including the double opt-in confirmation.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-e4"><span class="item__text"><span class="item__label">Emails look right in Gmail, Apple Mail and Outlook, on phone and desktop<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">And arrive in the inbox, not spam.</span></span></label></li>
     </ul>
 
     <h3>Site</h3>
     <ul>
-      <li><label class="item"><input type="checkbox" id="t-s1"><span class="item__text"><span class="item__label">Every page checked at phone, tablet and desktop widths<span class="who who--claude">Claude</span></span><span class="item__hint">360, 768 and 1920 against the Figma frames. Includes forms, cart drawer, search and 404.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-s7"><span class="item__text"><span class="item__label">Submit the Concierge claim form and confirm it reaches concierge@<span class="who who--both">Both</span></span><span class="item__hint">Including photo uploads, the error states and the success message.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-s2"><span class="item__text"><span class="item__label">Every footer, FAQ and policy link works<span class="who who--claude">Claude</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-s3"><span class="item__text"><span class="item__label">Theme passes Shopify's checks with no errors<span class="who who--claude">Claude</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-s4"><span class="item__text"><span class="item__label">Cookie banner appears; declining it blocks GA4 and Meta<span class="who who--both">Both</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-s5"><span class="item__text"><span class="item__label">GA4 and Meta record a test purchase<span class="who">You</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="t-s6"><span class="item__text"><span class="item__label">Test on a real iPhone and Android phone<span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s1"><span class="item__text"><span class="item__label">Every page checked at phone, tablet and desktop widths<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span><span class="item__hint">360, 768 and 1920 against the Figma frames. Includes forms, cart drawer, search and 404.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s7"><span class="item__text"><span class="item__label">Submit the Concierge claim form and confirm it reaches concierge@<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span><span class="item__hint">Including photo uploads, the error states and the success message.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s2"><span class="item__text"><span class="item__label">Every footer, FAQ and policy link works<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s3"><span class="item__text"><span class="item__label">Theme passes Shopify's checks with no errors<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s4"><span class="item__text"><span class="item__label">Cookie banner appears; declining it blocks GA4 and Meta<span class="app app--shopify">Shopify</span><span class="who who--both">Both</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s5"><span class="item__text"><span class="item__label">GA4 and Meta record a test purchase<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="t-s6"><span class="item__text"><span class="item__label">Test on a real iPhone and Android phone<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
     </ul>
   </section>
 
@@ -569,13 +591,13 @@
     <p class="sec-note">Fix what testing found, retest it, and get client approval. No new features this week.</p>
     <ul>
       <li><label class="item"><input type="checkbox" id="g-1"><span class="item__text"><span class="item__label">Fix everything on the test list and retest it<span class="who who--both">Both</span><span class="flag">Blocker</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-2"><span class="item__text"><span class="item__label">Build and test the launch-week automations<span class="who who--both">Both</span></span><span class="item__hint">Abandoned cart, browse abandonment, and the Judge.me review request. They can go live just after launch if time runs short.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-3"><span class="item__text"><span class="item__label">Draft the launch-day email and test-send it<span class="who who--both">Both</span></span><span class="item__hint">To the Email List and Original Society, scheduled for Nov 9.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-4"><span class="item__text"><span class="item__label">Clean up Klaviyo lists and build segments<span class="who">You</span></span><span class="item__hint">Archive the launch party lists after Nov 7. Create segments for engaged subscribers, buyers and Original Society.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-5"><span class="item__text"><span class="item__label">Remove test orders and test customers; reset stock counts<span class="who">You</span></span><span class="item__hint">Including test profiles in Klaviyo.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-6"><span class="item__text"><span class="item__label">Staff permissions and two-step login for everyone<span class="who">You</span></span><span class="item__hint">Settings → Users.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-7"><span class="item__text"><span class="item__label">Confirm the Shopify plan and billing<span class="who">You</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="g-8"><span class="item__text"><span class="item__label">Client signs off the site and every email<span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-2"><span class="item__text"><span class="item__label">Build and test the launch-week automations<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Abandoned cart, browse abandonment, and the Judge.me review request. They can go live just after launch if time runs short.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-3"><span class="item__text"><span class="item__label">Draft the launch-day email and test-send it<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">To the Email List and Original Society, scheduled for Nov 9.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-4"><span class="item__text"><span class="item__label">Clean up Klaviyo lists and build segments<span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Archive the launch party lists after Nov 7. Create segments for engaged subscribers, buyers and Original Society.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-5"><span class="item__text"><span class="item__label">Remove test orders and test customers; reset stock counts<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span><span class="item__hint">Including test profiles in Klaviyo.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-6"><span class="item__text"><span class="item__label">Staff permissions and two-step login for everyone<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Settings → Users.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-7"><span class="item__text"><span class="item__label">Confirm the Shopify plan and billing<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="g-8"><span class="item__text"><span class="item__label">Client signs off the site and every email<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li>
     </ul>
   </section>
 
@@ -584,13 +606,13 @@
     <div class="sec-head"><span class="sec-num">05</span><h2>Launch day</h2><span class="sec-date">Nov 9</span></div>
     <p class="sec-note">In this order.</p>
     <ul>
-      <li><label class="item"><input type="checkbox" id="l-1"><span class="item__text"><span class="item__label">Set every launch product to Active<span class="who who--claude">Claude</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="l-2"><span class="item__text"><span class="item__label">Connect the main branch to the live theme and publish<span class="who">You</span></span><span class="item__hint">Claude never pushes to main without your say-so.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="l-3"><span class="item__text"><span class="item__label">Remove the store password<span class="who">You</span></span><span class="item__hint">Online Store → Preferences → Password protection → off.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="l-4"><span class="item__text"><span class="item__label">signaturesociety.com is the primary domain; www redirects<span class="who">You</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="l-5"><span class="item__text"><span class="item__label">Turn on the Klaviyo automations and send the launch email<span class="who">You</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="l-6"><span class="item__text"><span class="item__label">Place the first real order<span class="who">You</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="l-7"><span class="item__text"><span class="item__label">Watch orders, ShipStation and Klaviyo for 48 hours<span class="who who--both">Both</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-1"><span class="item__text"><span class="item__label">Set every launch product to Active<span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-2"><span class="item__text"><span class="item__label">Connect the main branch to the live theme and publish<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Claude never pushes to main without your say-so.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-3"><span class="item__text"><span class="item__label">Remove the store password<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">Online Store → Preferences → Password protection → off.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-4"><span class="item__text"><span class="item__label">signaturesociety.com is the primary domain; www redirects<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-5"><span class="item__text"><span class="item__label">Turn on the Klaviyo automations and send the launch email<span class="app app--klaviyo">Klaviyo</span><span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-6"><span class="item__text"><span class="item__label">Place the first real order<span class="app app--shopify">Shopify</span><span class="who">You</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="l-7"><span class="item__text"><span class="item__label">Watch orders, ShipStation and Klaviyo for 48 hours<span class="app app--shopify">Shopify</span><span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li>
     </ul>
   </section>
 
@@ -598,10 +620,10 @@
   <section id="after">
     <div class="sec-head"><span class="sec-num">06</span><h2>After launch</h2><span class="sec-date">Nov 10 onward</span></div>
     <ul>
-      <li><label class="item"><input type="checkbox" id="a-1"><span class="item__text"><span class="item__label">Refill reminder automation<span class="who who--both">Both</span></span><span class="item__hint">Blades and cartridges, some days after buying THE HEIRLOOM™ or THE SIGNATURE EDIT™.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="a-2"><span class="item__text"><span class="item__label">Win-back, and removing inactive subscribers<span class="who who--both">Both</span></span><span class="item__hint">90 or more days with no activity.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="a-3"><span class="item__text"><span class="item__label">Klaviyo signup popup<span class="who who--both">Both</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="a-4"><span class="item__text"><span class="item__label">Revisit order processing times after 30–60 days<span class="who">You</span></span><span class="item__hint">The shipping copy's 3–4 day prep and 10-day ship windows are the launch-period terms.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="a-1"><span class="item__text"><span class="item__label">Refill reminder automation<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">Blades and cartridges, some days after buying THE HEIRLOOM™ or THE SIGNATURE EDIT™.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="a-2"><span class="item__text"><span class="item__label">Win-back, and removing inactive subscribers<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span><span class="item__hint">90 or more days with no activity.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="a-3"><span class="item__text"><span class="item__label">Klaviyo signup popup<span class="app app--klaviyo">Klaviyo</span><span class="who who--both">Both</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="a-4"><span class="item__text"><span class="item__label">Revisit order processing times after 30–60 days<span class="app app--shopify">Shopify</span><span class="who">You</span></span><span class="item__hint">The shipping copy's 3–4 day prep and 10-day ship windows are the launch-period terms.</span></span></label></li>
     </ul>
   </section>
 
