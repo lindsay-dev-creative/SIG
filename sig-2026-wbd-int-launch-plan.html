@@ -1502,4 +1502,48 @@
   })();
 </script>
 
+<script>
+  // Shared ticks for everyone: a Google Sheet behind apps-script/sig-launch-plan-ticks.gs.
+  // Until TICKS_URL is filled in, ticks stay in this browser only.
+  (function () {
+    var TICKS_URL = '';
+    if (!TICKS_URL || !window.fetch) return;
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('.item input'));
+    var applying = false;
+
+    function send(items) {
+      fetch(TICKS_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(items) })
+        .catch(function () {});
+    }
+    function apply(remote) {
+      if (!Object.keys(remote).length) {
+        // Empty Sheet: start it from this page's ticks
+        send(boxes.map(function (box) { return { id: box.id, done: box.checked }; }));
+        return;
+      }
+      applying = true;
+      boxes.forEach(function (box) {
+        if (!Object.prototype.hasOwnProperty.call(remote, box.id)) return;
+        var want = !!remote[box.id];
+        if (box.checked === want) return;
+        box.checked = want;
+        box.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      applying = false;
+    }
+    function pull() {
+      fetch(TICKS_URL).then(function (r) { return r.json(); }).then(apply).catch(function () {});
+    }
+
+    document.addEventListener('change', function (e) {
+      var box = e.target;
+      if (applying || !box.matches || !box.matches('.item input')) return;
+      send([{ id: box.id, done: box.checked }]);
+    });
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) pull(); });
+    setInterval(function () { if (!document.hidden) pull(); }, 30000);
+    pull();
+  })();
+</script>
+
 </body></html>
