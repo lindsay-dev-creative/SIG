@@ -9,6 +9,10 @@
  * ticked by anyone, on either page, in any browser, shows as ticked for
  * everyone. The pages poll it every 30 seconds.
  *
+ * It also keeps the owner tags (You, Matt, Morgan, Both, Claude) changed on
+ * the internal plan, in a second tab called Owners, so the client plan
+ * shows them too.
+ *
  * WHO CAN READ AND WRITE
  * ----------------------
  * There is no passcode. The /exec URL sits in the page source, so anyone
@@ -25,10 +29,18 @@
  * 4. Deploy > New deployment > type: Web app.
  *    Execute as: Me. Who has access: Anyone. Click Deploy.
  * 5. Copy the Web app URL (ends in /exec) and send it to Claude.
+ *
+ * UPDATING (after pasting a new version of this file)
+ * ---------------------------------------------------
+ * Deploy > Manage deployments > pencil icon > Version: New version > Deploy.
+ * The URL stays the same. The Owners tab is made on first use.
  */
 
 var SHEET_NAME = 'Ticks';
 var HEADER = ['Task ID', 'Done', 'Updated'];
+var WHO_SHEET = 'Owners';
+var WHO_HEADER = ['Task ID', 'Owners', 'Updated'];
+var WHO_RE = /^((you|matt|morgan|both|claude)(,(you|matt|morgan|both|claude))*)?$/;
 
 function setup() {
   var ss = SpreadsheetApp.create('SIG launch plan ticks');
@@ -40,52 +52,81 @@ function setup() {
   Logger.log('Sheet: ' + ss.getUrl());
 }
 
-function sheet_() {
+function book_() {
   var id = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
   if (!id) throw new Error('Run setup() first.');
-  return SpreadsheetApp.openById(id).getSheetByName(SHEET_NAME);
+  return SpreadsheetApp.openById(id);
+}
+
+function sheet_() {
+  return book_().getSheetByName(SHEET_NAME);
+}
+
+function whoSheet_() {
+  var ss = book_();
+  var sh = ss.getSheetByName(WHO_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(WHO_SHEET);
+    sh.appendRow(WHO_HEADER);
+    sh.setFrozenRows(1);
+    sh.getRange('B:B').setNumberFormat('@');
+  }
+  return sh;
+}
+
+// Write [id, value] pairs into a sheet, one row per task ID
+function upsert_(sh, pairs) {
+  var values = sh.getDataRange().getValues();
+  var rowOf = {};
+  for (var i = 1; i < values.length; i++) rowOf[String(values[i][0])] = i + 1;
+  var now = new Date();
+  pairs.forEach(function (p) {
+    if (rowOf[p[0]]) {
+      sh.getRange(rowOf[p[0]], 2, 1, 2).setValues([[p[1], now]]);
+    } else {
+      sh.appendRow([p[0], p[1], now]);
+      rowOf[p[0]] = sh.getLastRow();
+    }
+  });
 }
 
 function json_(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// GET: every task's state, as { "d14-1": true, ... }
+// GET: every task's state, as { "d14-1": true, ..., "_who": { "d14-1": "you,matt" } }
 function doGet() {
   var out = {};
   sheet_().getDataRange().getValues().slice(1).forEach(function (row) {
     if (row[0]) out[String(row[0])] = row[1] === true;
   });
+  var who = {}, any = false;
+  whoSheet_().getDataRange().getValues().slice(1).forEach(function (row) {
+    if (row[0]) { who[String(row[0])] = String(row[1]); any = true; }
+  });
+  if (any) out._who = who;
   return json_(out);
 }
 
-// POST: [{ "id": "d14-1", "done": true }, ...] (or one object)
+// POST: [{ "id": "d14-1", "done": true }, { "id": "d14-2", "who": "you,matt" }, ...]
+// (or one object). "who": "" means no owner tag.
 function doPost(e) {
   var body;
   try { body = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'bad json' }); }
   var items = (Array.isArray(body) ? body : [body]).filter(function (it) {
-    return it && /^[a-z0-9-]{1,24}$/.test(it.id) && typeof it.done === 'boolean';
+    return it && /^[a-z0-9-]{1,24}$/.test(it.id);
   }).slice(0, 300);
-  if (!items.length) return json_({ ok: false, error: 'nothing to save' });
+  var ticks = items.filter(function (it) { return typeof it.done === 'boolean'; });
+  var owners = items.filter(function (it) { return typeof it.who === 'string' && WHO_RE.test(it.who); });
+  if (!ticks.length && !owners.length) return json_({ ok: false, error: 'nothing to save' });
 
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    var sh = sheet_();
-    var values = sh.getDataRange().getValues();
-    var rowOf = {};
-    for (var i = 1; i < values.length; i++) rowOf[String(values[i][0])] = i + 1;
-    var now = new Date();
-    items.forEach(function (it) {
-      if (rowOf[it.id]) {
-        sh.getRange(rowOf[it.id], 2, 1, 2).setValues([[it.done, now]]);
-      } else {
-        sh.appendRow([it.id, it.done, now]);
-        rowOf[it.id] = sh.getLastRow();
-      }
-    });
+    if (ticks.length) upsert_(sheet_(), ticks.map(function (it) { return [it.id, it.done]; }));
+    if (owners.length) upsert_(whoSheet_(), owners.map(function (it) { return [it.id, it.who]; }));
   } finally {
     lock.releaseLock();
   }
-  return json_({ ok: true, saved: items.length });
+  return json_({ ok: true, saved: ticks.length + owners.length });
 }

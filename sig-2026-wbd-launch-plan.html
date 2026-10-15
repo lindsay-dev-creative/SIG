@@ -893,12 +893,39 @@
     if (!TICKS_URL || !window.fetch) return;
     var boxes = Array.prototype.slice.call(document.querySelectorAll('.item input'));
     var applying = false;
+    var recent = {};  // local changes the Sheet may not have yet: id -> time
+
+    // Owner tags set on the internal plan: { taskId: "you,matt", ... }
+    var OWNERS = [['you', 'Lindsay'], ['matt', 'Matt'], ['morgan', 'Morgan'], ['both', 'Both'], ['claude', 'Claude']];
+    window.sigWho = function (map) {
+      Object.keys(map).forEach(function (id) {
+        var box = document.getElementById(id);
+        var label = box && box.closest('.item') && box.closest('.item').querySelector('.item__label');
+        if (!label) return;
+        var list = String(map[id] || '').split(',');
+        label.querySelectorAll('.who').forEach(function (n) { n.remove(); });
+        var at = label.querySelector('.flag');
+        OWNERS.forEach(function (o) {
+          if (list.indexOf(o[0]) < 0) return;
+          var tag = document.createElement('span');
+          tag.className = o[0] === 'you' ? 'who' : 'who who--' + o[0];
+          tag.textContent = o[1];
+          label.insertBefore(tag, at);
+        });
+      });
+    };
 
     function send(items) {
+      items.forEach(function (it) { recent[(it.who === undefined ? '' : 'who:') + it.id] = Date.now(); });
       fetch(TICKS_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(items) })
         .catch(function () {});
     }
+    function fresh(key) { return Date.now() - (recent[key] || 0) < 60000; }
     function apply(remote) {
+      var who = remote._who || {};
+      delete remote._who;
+      Object.keys(who).forEach(function (id) { if (fresh('who:' + id)) delete who[id]; });
+      if (window.sigWho) window.sigWho(who);
       if (!Object.keys(remote).length) {
         // Empty Sheet: start it from this page's ticks
         send(boxes.map(function (box) { return { id: box.id, done: box.checked }; }));
@@ -906,7 +933,7 @@
       }
       applying = true;
       boxes.forEach(function (box) {
-        if (!Object.prototype.hasOwnProperty.call(remote, box.id)) return;
+        if (!Object.prototype.hasOwnProperty.call(remote, box.id) || fresh(box.id)) return;
         var want = !!remote[box.id];
         if (box.checked === want) return;
         box.checked = want;
@@ -923,6 +950,7 @@
       if (applying || !box.matches || !box.matches('.item input')) return;
       send([{ id: box.id, done: box.checked }]);
     });
+    document.addEventListener('sig-who', function (e) { send([e.detail]); });
     document.addEventListener('visibilitychange', function () { if (!document.hidden) pull(); });
     setInterval(function () { if (!document.hidden) pull(); }, 30000);
     pull();

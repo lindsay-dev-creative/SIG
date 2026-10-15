@@ -478,6 +478,44 @@
   @media print { .move, .move-help, .drop-hint { display: none !important; } }
   .meter button, .move { font-family: var(--button); }
   .legend { display: none; }
+  /* Owner tag editing: click a tag to remove it, + to add one */
+  .day .item__label .who { cursor: pointer; }
+  @media (hover: hover) { .day .item__label .who:hover::after { content: " \00d7"; } }
+  .who-add {
+    font-family: var(--caption);
+    font-size: 13px;
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin-left: 8px;
+    vertical-align: 1px;
+    color: var(--gold-deep);
+    background: none;
+    border: 1px dashed var(--rule);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .day li:hover .who-add, .who-add:focus-visible, .who-add[aria-expanded="true"] { opacity: 1; }
+  @media (hover: none) { .who-add { opacity: 1; } }
+  .who-menu {
+    position: absolute;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+    background: var(--navy);
+    border: 1px solid var(--rule);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+  }
+  .who-menu[hidden] { display: none; }
+  .who-menu .who { margin: 0; cursor: pointer; }
+  .who-menu .who--you, .who-menu .who--both { background: none; }
+  .who-menu .who:hover { outline: 1px solid var(--sand); outline-offset: 2px; }
+  @media print { .who-add, .who-menu { display: none !important; } }
   .done-group { margin: 0 0 6px; }
   .done-group summary {
     list-style: none;
@@ -1240,6 +1278,111 @@
       });
     });
 
+    // Owner tags: click a tag to remove it, + to add one. Changes are kept in
+    // this browser, shared through the Sheet and saved into the file.
+    var WHO_KEY = 'sig-int-launch-plan-who';
+    var OWNERS = [['you', 'You'], ['matt', 'Matt'], ['morgan', 'Morgan'], ['both', 'Both'], ['claude', 'Claude']];
+    function readWho() { try { return JSON.parse(localStorage.getItem(WHO_KEY)) || {}; } catch (err) { return {}; } }
+    function whoOf(label) {
+      return Array.prototype.map.call(label.querySelectorAll('.who'), function (n) {
+        var m = n.className.match(/who--(\w+)/);
+        return m ? m[1] : 'you';
+      });
+    }
+    function setWho(box, list, remote) {
+      var label = box.closest('.item').querySelector('.item__label');
+      list = OWNERS.map(function (o) { return o[0]; }).filter(function (k) { return list.indexOf(k) > -1; });
+      if (whoOf(label).join() === list.join()) return;
+      label.querySelectorAll('.who').forEach(function (n) { n.remove(); });
+      var at = label.querySelector('.flag, .who-add');
+      OWNERS.forEach(function (o) {
+        if (list.indexOf(o[0]) < 0) return;
+        var tag = document.createElement('span');
+        tag.className = o[0] === 'you' ? 'who' : 'who who--' + o[0];
+        tag.textContent = o[1];
+        label.insertBefore(tag, at);
+      });
+      var all = readWho();
+      all[box.id] = list.join(',');
+      try { localStorage.setItem(WHO_KEY, JSON.stringify(all)); } catch (err) {}
+      sortDays(); refresh(); queue();
+      if (!remote) document.dispatchEvent(new CustomEvent('sig-who', { detail: { id: box.id, who: list.join(',') } }));
+    }
+    // The Sheet sync calls this with { taskId: "you,matt", ... }
+    window.sigWho = function (map) {
+      Object.keys(map).forEach(function (id) {
+        var box = document.getElementById(id);
+        if (box && box.closest('.day')) setWho(box, String(map[id] || '').split(','), true);
+      });
+    };
+    document.querySelectorAll('.day .item__label').forEach(function (label) {
+      var add = document.createElement('button');
+      add.type = 'button';
+      add.className = 'who-add';
+      add.textContent = '+';
+      add.setAttribute('aria-label', 'Add an owner');
+      add.setAttribute('aria-expanded', 'false');
+      label.appendChild(add);
+    });
+    window.sigWho(readWho());
+    var whoMenu = document.createElement('div');
+    whoMenu.className = 'who-menu';
+    whoMenu.hidden = true;
+    document.body.appendChild(whoMenu);
+    var whoFor = null;
+    function closeWho() {
+      whoMenu.hidden = true;
+      if (whoFor) whoFor.setAttribute('aria-expanded', 'false');
+      whoFor = null;
+    }
+    function openWho(add) {
+      var label = add.closest('.item__label'), have = whoOf(label);
+      whoMenu.innerHTML = '';
+      OWNERS.forEach(function (o) {
+        if (have.indexOf(o[0]) > -1) return;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'who who--' + o[0];
+        b.textContent = o[1];
+        b.dataset.who = o[0];
+        whoMenu.appendChild(b);
+      });
+      if (!whoMenu.children.length) return;
+      whoFor = add;
+      add.setAttribute('aria-expanded', 'true');
+      whoMenu.hidden = false;
+      var r = add.getBoundingClientRect();
+      var left = Math.min(r.left, document.documentElement.clientWidth - whoMenu.offsetWidth - 16);
+      whoMenu.style.left = Math.max(16, left) + window.scrollX + 'px';
+      whoMenu.style.top = r.bottom + 6 + window.scrollY + 'px';
+      whoMenu.firstChild.focus();
+    }
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t.closest('.who-menu')) {
+        var pick = t.closest('[data-who]');
+        if (pick && whoFor) {
+          var box = whoFor.closest('.item').querySelector('input');
+          setWho(box, whoOf(whoFor.closest('.item__label')).concat(pick.dataset.who));
+        }
+        closeWho();
+        return;
+      }
+      var add = t.closest('.who-add');
+      if (add) { var again = add === whoFor; closeWho(); if (!again) openWho(add); return; }
+      closeWho();
+      var tag = t.closest('.day .item__label .who');
+      if (tag) {
+        var label = tag.closest('.item__label');
+        var gone = (tag.className.match(/who--(\w+)/) || [0, 'you'])[1];
+        setWho(label.closest('.item').querySelector('input'), whoOf(label).filter(function (k) { return k !== gone; }));
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && whoFor) { var add = whoFor; closeWho(); add.focus(); }
+    });
+    window.addEventListener('resize', closeWho);
+
     // Only the box itself ticks a task; clicking the task text does nothing
     document.addEventListener('click', function (e) {
       var item = e.target.closest && e.target.closest('label.item');
@@ -1265,7 +1408,7 @@
         });
         g.remove();
       });
-      copy.querySelectorAll('.move, .drop-hint, .carried').forEach(function (n) { n.remove(); });
+      copy.querySelectorAll('.move, .drop-hint, .carried, .who-add, .who-menu').forEach(function (n) { n.remove(); });
       var snap = copy.querySelector('.snap');
       if (snap) snap.removeAttribute('open');
       var out = copy.querySelector('#outstanding');
@@ -1434,7 +1577,7 @@
     }
     function taskName(item) {
       var label = item.querySelector('.item__label').cloneNode(true);
-      label.querySelectorAll('.app, .who, .flag').forEach(function (n) { n.remove(); });
+      label.querySelectorAll('.app, .who, .flag, .who-add').forEach(function (n) { n.remove(); });
       return label.textContent.trim();
     }
     function build() {
@@ -1510,12 +1653,19 @@
     if (!TICKS_URL || !window.fetch) return;
     var boxes = Array.prototype.slice.call(document.querySelectorAll('.item input'));
     var applying = false;
+    var recent = {};  // local changes the Sheet may not have yet: id -> time
 
     function send(items) {
+      items.forEach(function (it) { recent[(it.who === undefined ? '' : 'who:') + it.id] = Date.now(); });
       fetch(TICKS_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(items) })
         .catch(function () {});
     }
+    function fresh(key) { return Date.now() - (recent[key] || 0) < 60000; }
     function apply(remote) {
+      var who = remote._who || {};
+      delete remote._who;
+      Object.keys(who).forEach(function (id) { if (fresh('who:' + id)) delete who[id]; });
+      if (window.sigWho) window.sigWho(who);
       if (!Object.keys(remote).length) {
         // Empty Sheet: start it from this page's ticks
         send(boxes.map(function (box) { return { id: box.id, done: box.checked }; }));
@@ -1523,7 +1673,7 @@
       }
       applying = true;
       boxes.forEach(function (box) {
-        if (!Object.prototype.hasOwnProperty.call(remote, box.id)) return;
+        if (!Object.prototype.hasOwnProperty.call(remote, box.id) || fresh(box.id)) return;
         var want = !!remote[box.id];
         if (box.checked === want) return;
         box.checked = want;
@@ -1540,6 +1690,7 @@
       if (applying || !box.matches || !box.matches('.item input')) return;
       send([{ id: box.id, done: box.checked }]);
     });
+    document.addEventListener('sig-who', function (e) { send([e.detail]); });
     document.addEventListener('visibilitychange', function () { if (!document.hidden) pull(); });
     setInterval(function () { if (!document.hidden) pull(); }, 30000);
     pull();
