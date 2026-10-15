@@ -1506,7 +1506,7 @@
   // Shared ticks for everyone: a Google Sheet behind apps-script/sig-launch-plan-ticks.gs.
   // Until TICKS_URL is filled in, ticks stay in this browser only.
   (function () {
-    var TICKS_URL = '';
+    var TICKS_URL = 'https://script.google.com/macros/s/AKfycbxLq-UZI9PVN8taxKy71W3doJDFztJ9qST1WZhJYCfPERE_aiTiNCdsovLyDOLIx91d/exec';
     if (!TICKS_URL || !window.fetch) return;
     var boxes = Array.prototype.slice.call(document.querySelectorAll('.item input'));
     var applying = false;
