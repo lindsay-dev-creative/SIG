@@ -422,7 +422,6 @@
 
   <div class="legend">
     <span><span class="who">Lindsay</span>done by hand</span>
-    <span><span class="who who--claude">Claude</span>Claude can do it</span>
     <span><span class="who who--both">Both</span>Claude builds, you approve</span>
     <span><span class="flag">Blocker</span>launch can't happen without it</span>
   </div>
@@ -466,7 +465,7 @@
 
     <h3>Mon Oct 12</h3>
     <ul data-date="2026-10-12">
-      <li><label class="item"><input type="checkbox" id="d12-1" checked><span class="item__text"><span class="item__label">Publish the privacy, shipping, return and contact policies<span class="who who--claude">Claude</span></span><span class="item__hint">Copied word for word from the final copy docs. Privacy policy switched off the automated version.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d12-1" checked><span class="item__text"><span class="item__label">Publish the privacy, shipping, return and contact policies</span><span class="item__hint">Copied word for word from the final copy docs. Privacy policy switched off the automated version.</span></span></label></li>
     </ul>
 
     <h3>Tue Oct 13</h3>
@@ -482,9 +481,9 @@
       <li><label class="item"><input type="checkbox" id="d16-1" checked><span class="item__text"><span class="item__label">Decide the secondary brand font and what it covers<span class="who">Lindsay</span><span class="flag">Blocker</span></span><span class="item__hint">Small text, labels, buttons, nav, or all. Check the web license covers the site and email.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-6" checked><span class="item__text"><span class="item__label">Add account.signaturesociety.com as the customer accounts domain<span class="who">Lindsay</span></span><span class="item__hint">Settings → Domains → Connect existing domain. Shopify then shows the DNS record to add.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d14-5" checked><span class="item__text"><span class="item__label">Set the return rules<span class="who who--both">Both</span></span><span class="item__hint">Settings → Policies → Return and cancellation rules: 14 days, 10% restocking fee, customer pays return shipping, final sale excluded. Leave self-serve returns off.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d14-2" checked><span class="item__text"><span class="item__label">Rebuild the type scale as <code>--step</code> tokens and remove the root size override<span class="who who--claude">Claude</span></span><span class="item__hint">Edit the source in <code>SIG_2026_WBD_Main/css/</code>, then rebuild <code>sig-tokens.css</code>. Point <code>custom.css</code> and <code>sig-custom.css</code> at the same scale.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d14-3" checked><span class="item__text"><span class="item__label">Move the token breakpoints to Prestige's 700 and 1000<span class="who who--claude">Claude</span></span><span class="item__hint">Today they switch at 768 and 1024, so type and layout change at different widths.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d19-1" checked><span class="item__text"><span class="item__label">Add the secondary font to the theme CSS<span class="who who--claude">Claude</span></span><span class="item__hint">Load it, add it to the type tokens, map it onto its roles. Right after the font decision this morning.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d14-2" checked><span class="item__text"><span class="item__label">Rebuild the type scale as <code>--step</code> tokens and remove the root size override</span><span class="item__hint">Edit the source in <code>SIG_2026_WBD_Main/css/</code>, then rebuild <code>sig-tokens.css</code>. Point <code>custom.css</code> and <code>sig-custom.css</code> at the same scale.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d14-3" checked><span class="item__text"><span class="item__label">Move the token breakpoints to Prestige's 700 and 1000</span><span class="item__hint">Today they switch at 768 and 1024, so type and layout change at different widths.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d19-1" checked><span class="item__text"><span class="item__label">Add the secondary font to the theme CSS</span><span class="item__hint">Load it, add it to the type tokens, map it onto its roles. Right after the font decision this morning.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d13-2"><span class="item__text"><span class="item__label">Matt completes the Shopify Payments setup<span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Sent to Matt today. Settings → Payments: bank verified, payouts on.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d13-5"><span class="item__text"><span class="item__label">Start the ShipStation install<span class="who">Lindsay</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Waiting on Matt (asked Oct 14): is there already a ShipStation account, or do we create one? If we create it, Matt picks the plan and adds billing.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-2"><span class="item__text"><span class="item__label">Matt sends weights, stock, product details and ShipStation answers<span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">Includes launch line-up, under-$150 shipping (flat or by weight), signature threshold and carriers.</span></span></label></li>
@@ -495,7 +494,7 @@
       <li><label class="item"><input type="checkbox" id="d16-4"><span class="item__text"><span class="item__label">Redo the button tokens and the button CSS for the theme<span class="who">Lindsay</span></span><span class="item__hint">One set of button tokens and the button CSS the theme uses. Uses today's button burgundy decision.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d16-5"><span class="item__text"><span class="item__label">Design the high-fidelity product landing page<span class="who">Lindsay</span></span><span class="item__hint">In Figma. Built in Klaviyo next.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d21-3"><span class="item__text"><span class="item__label">DMARC record on the signaturesociety.com DNS<span class="who">Lindsay</span></span><span class="item__hint">In GoDaddy, add a TXT record. Name: <code>_dmarc</code>. Value: <code>v=DMARC1; p=none; rua=mailto:contact@signaturesociety.com</code>. <b>p=none</b> only monitors; it doesn't block any mail.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d15-1"><span class="item__text"><span class="item__label">Replace raw colors with the color tokens<span class="who who--claude">Claude</span></span><span class="item__hint">18 raw colors in <code>sig-custom.css</code>, 63 in <code>sig-nav.css</code>. Needs Wednesday's decisions.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d15-1"><span class="item__text"><span class="item__label">Replace raw colors with the color tokens</span><span class="item__hint">18 raw colors in <code>sig-custom.css</code>, 63 in <code>sig-nav.css</code>. Needs Wednesday's decisions.</span></span></label></li>
     </ul>
 
     <h3>Thu Oct 15</h3>
@@ -518,9 +517,9 @@
           </tbody>
         </table>
       </li>
-      <li><label class="item"><input type="checkbox" id="d15-2" checked><span class="item__text"><span class="item__label">Replace raw px spacing with the spacing tokens<span class="who who--claude">Claude</span></span><span class="item__hint">32 values in <code>sig-custom.css</code>. Flag any deliberate one-offs.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d25-2" checked><span class="item__text"><span class="item__label">Build the Policies page (Delivery &amp; Returns)<span class="who who--claude">Claude</span></span><span class="item__hint">Anchors for <code>#shipping</code>, <code>#returns</code>, <code>#guarantee</code>, plus <code>#warranty</code> for the FAQ links.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d25-3" checked><span class="item__text"><span class="item__label">Style the policy page template<span class="who who--claude">Claude</span></span><span class="item__hint">One template shows privacy, shipping, returns and contact.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d15-2" checked><span class="item__text"><span class="item__label">Replace raw px spacing with the spacing tokens</span><span class="item__hint">32 values in <code>sig-custom.css</code>. Flag any deliberate one-offs.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d25-2" checked><span class="item__text"><span class="item__label">Build the Policies page (Delivery &amp; Returns)</span><span class="item__hint">Anchors for <code>#shipping</code>, <code>#returns</code>, <code>#guarantee</code>, plus <code>#warranty</code> for the FAQ links.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d25-3" checked><span class="item__text"><span class="item__label">Style the policy page template</span><span class="item__hint">One template shows privacy, shipping, returns and contact.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d23-4"><span class="item__text"><span class="item__label">Send the Terms of Service copy (from the attorney)<span class="who who--matt">Matt</span></span><span class="item__hint">Drafting with his attorney. Due Fri Oct 23. The shipping and returns policies link to it.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d25-4"><span class="item__text"><span class="item__label">Publish the Terms of Service<span class="who">Lindsay</span></span><span class="item__hint">Settings → Policies → Terms of service. After Matt sends it. Due Fri Oct 23.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d15-7"><span class="item__text"><span class="item__label">Fill in the missing weights in the product sheet<span class="who who--matt">Matt</span></span><span class="item__hint">In &ldquo;Weight &amp; Stock Count of Products in Packaging&rdquo;, the weights are TBD or blank for The Heirloom™, The Night Standard™, The Signature Sweatshirt and all four Reserve™ packs. Also add The MRBL Atelier Brush™ (all 3 marbles), which isn't in the sheet yet.</span></span></label></li>
@@ -544,8 +543,8 @@
       <li><label class="item"><input type="checkbox" id="kv-02"><span class="item__text"><span class="item__label">Build the Back in Stock email<span class="who">Lindsay</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="kv-03"><span class="item__text"><span class="item__label">Build the Cart Reminder email<span class="who">Lindsay</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d19-4"><span class="item__text"><span class="item__label">Shipping rates: free over $150, paid under<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">Settings → Shipping and delivery. Flat or by weight, per Matt.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d19-3"><span class="item__text"><span class="item__label">Products: stock tracking on, SKUs, weights, package sizes<span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">From Matt's list.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d20-1"><span class="item__text"><span class="item__label">Create the product fields and fill them in<span class="who who--claude">Claude</span></span><span class="item__hint">Material, care, final sale, set, refill product, marble type.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d19-3"><span class="item__text"><span class="item__label">Products: stock tracking on, SKUs, weights, package sizes<span class="flag">Blocker</span></span><span class="item__hint">From Matt's list.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d20-1"><span class="item__text"><span class="item__label">Create the product fields and fill them in</span><span class="item__hint">Material, care, final sale, set, refill product, marble type.</span></span></label></li>
     </ul>
 
     <h3>Tue Oct 20</h3>
@@ -556,7 +555,7 @@
       <li><label class="item"><input type="checkbox" id="kv-04"><span class="item__text"><span class="item__label">Build the Order Confirmation email<span class="who">Lindsay</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="kv-05"><span class="item__text"><span class="item__label">Build the Order Canceled email<span class="who">Lindsay</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="kv-06"><span class="item__text"><span class="item__label">Build the Shipping Confirmation email<span class="who">Lindsay</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d24-1"><span class="item__text"><span class="item__label">Build the Collection page<span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Grid drops columns from desktop to tablet to phone.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d24-1"><span class="item__text"><span class="item__label">Build the Collection page<span class="flag">Blocker</span></span><span class="item__hint">Grid drops columns from desktop to tablet to phone.</span></span></label></li>
     </ul>
 
     <h3>Wed Oct 21</h3>
@@ -583,7 +582,7 @@
       <li><label class="item"><input type="checkbox" id="kv-12"><span class="item__text"><span class="item__label">Build the Refund Issued email<span class="who">Lindsay</span></span><span class="item__hint">Klaviyo flow email, from the universal templates.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d22-1"><span class="item__text"><span class="item__label">Brand the double opt-in email<span class="who who--both">Both</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d22-2"><span class="item__text"><span class="item__label">Build Back in Stock and the welcome series<span class="who who--both">Both</span><span class="flag">Blocker</span></span><span class="item__hint">As drafts for your review.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d25-1"><span class="item__text"><span class="item__label">Build the Concierge page with the guarantee claim form<span class="who who--claude">Claude</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d25-1"><span class="item__text"><span class="item__label">Build the Concierge page with the guarantee claim form</span></span></label></li>
     </ul>
 
     <h3>Fri Oct 23</h3>
@@ -638,9 +637,9 @@
     <ul data-date="2026-10-30">
       <li><label class="item"><input type="checkbox" id="d02-4"><span class="item__text"><span class="item__label">Test on a real iPhone and Android phone<span class="who">Lindsay</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d03-2"><span class="item__text"><span class="item__label">Close the test log: one fix list, owner on each item<span class="who who--both">Both</span><span class="flag">Blocker</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d30-1"><span class="item__text"><span class="item__label">Every page checked at 360, 768 and 1920<span class="who who--claude">Claude</span></span><span class="item__hint">Against Figma. Forms, cart drawer, search, 404.</span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d30-2"><span class="item__text"><span class="item__label">Every footer, FAQ and policy link works<span class="who who--claude">Claude</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d30-3"><span class="item__text"><span class="item__label">Theme passes Shopify's checks with no errors<span class="who who--claude">Claude</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d30-1"><span class="item__text"><span class="item__label">Every page checked at 360, 768 and 1920</span><span class="item__hint">Against Figma. Forms, cart drawer, search, 404.</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d30-2"><span class="item__text"><span class="item__label">Every footer, FAQ and policy link works</span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d30-3"><span class="item__text"><span class="item__label">Theme passes Shopify's checks with no errors</span></span></label></li>
     </ul>
   </section>
 
@@ -674,7 +673,7 @@
       <li><label class="item"><input type="checkbox" id="d09-5"><span class="item__text"><span class="item__label">Turn on the Klaviyo automations and send the launch email<span class="who">Lindsay</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d09-6"><span class="item__text"><span class="item__label">Place the first real order<span class="who">Lindsay</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d09-7"><span class="item__text"><span class="item__label">Watch orders, ShipStation and Klaviyo for 48 hours<span class="who who--both">Both</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d09-1"><span class="item__text"><span class="item__label">Set every launch product to Active<span class="who who--claude">Claude</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d09-1"><span class="item__text"><span class="item__label">Set every launch product to Active</span></span></label></li>
     </ul>
   </section>
 
@@ -900,7 +899,7 @@
     var recent = {};  // local changes the Sheet may not have yet: id -> time
 
     // Owner tags set on the internal plan: { taskId: "you,matt", ... }
-    var OWNERS = [['you', 'Lindsay'], ['matt', 'Matt'], ['morgan', 'Morgan'], ['both', 'Both'], ['claude', 'Claude']];
+    var OWNERS = [['you', 'Lindsay'], ['matt', 'Matt'], ['morgan', 'Morgan'], ['both', 'Both']];
     window.sigWho = function (map) {
       Object.keys(map).forEach(function (id) {
         var box = document.getElementById(id);
