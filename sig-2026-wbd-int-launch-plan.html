@@ -1634,12 +1634,6 @@
           a.dataset.task = input.id;
           a.textContent = taskName(item);
           li.appendChild(a);
-          if (item.querySelector('.item__label .flag')) {
-            var flag = document.createElement('span');
-            flag.className = 'out-flag';
-            flag.textContent = 'Blocker';
-            li.appendChild(flag);
-          }
           list.appendChild(li);
         });
         body.appendChild(head);
