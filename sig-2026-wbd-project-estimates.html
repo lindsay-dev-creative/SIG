@@ -34,12 +34,19 @@
   --fs-body-lg: calc(var(--fs-body) * var(--ratio));
   --fs-body-sm: max(.8125rem, calc(var(--fs-body) / var(--ratio)));   /* never below 13px */
   --fs-caption: max(.75rem, calc(var(--fs-body-sm) / var(--ratio)));  /* never below 12px */
-  --fs-h6: calc(var(--fs-body-lg) * var(--ratio));
+  --fs-h6: calc(var(--fs-body) * var(--ratio) * var(--ratio));   /* from body, so a fixed body-lg doesn't shrink headings */
   --fs-h5: calc(var(--fs-h6) * var(--ratio));
   --fs-h4: calc(var(--fs-h5) * var(--ratio));
   --fs-h3: calc(var(--fs-h4) * var(--ratio));
   --fs-h2: calc(var(--fs-h3) * var(--ratio));
   --fs-h1: calc(var(--fs-h2) * var(--ratio));
+}
+/* Desktop: fixed small and large body sizes */
+@media (min-width: 1100px) {
+  :root {
+    --fs-body-sm: .8125rem;   /* 13px */
+    --fs-body-lg: 1.0625rem;  /* 17px */
+  }
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--body); font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; }
