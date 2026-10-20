@@ -569,6 +569,14 @@
   .out-group { font-family: var(--caption); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand); margin: 18px 0 6px; }
   .out-group:first-child { margin-top: 4px; }
   .matt-todo ol.decisions { padding-left: 1.4em; }
+  /* Numbered sections fold open and shut from their heading, built by the script */
+  .sec-head--toggle { cursor: pointer; }
+  .sec-head--toggle::before { content: "\2212"; align-self: center; width: 18px; margin-right: -6px; font-family: var(--caption); font-size: 20px; color: var(--gold); }
+  .is-collapsed > .sec-head--toggle::before { content: "+"; }
+  .sec-head--toggle:hover h2 { color: var(--gold); }
+  .sec-head--toggle:focus-visible { outline: 1px dashed var(--gold); outline-offset: 4px; }
+  .is-collapsed > :not(.sec-head) { display: none; }
+  @media print { .is-collapsed > :not(.sec-head) { display: revert !important; } .sec-head--toggle::before { display: none; } }
   /* Where things stand: a closed accordion */
   .snap > summary { list-style: none; cursor: pointer; }
   .snap > summary::-webkit-details-marker { display: none; }
@@ -1128,6 +1136,7 @@
           var ul2 = document.getElementById(sel.value).querySelector('ul');
           ul2.insertBefore(item, ul2.querySelector('.drop-hint'));
           placeDone(); sortDays(); refresh(); save();
+          if (window.sigOpenSection) window.sigOpenSection(item);
           item.scrollIntoView({ block: 'center', behavior: 'smooth' });
         });
         item.appendChild(sel);
@@ -1416,12 +1425,16 @@
       copy.querySelectorAll('.move, .drop-hint, .carried, .who-add, .who-menu').forEach(function (n) { n.remove(); });
       var snap = copy.querySelector('.snap');
       if (snap) snap.removeAttribute('open');
-      var out = copy.querySelector('#outstanding');
-      if (out) {
-        out.querySelector('.out-body').textContent = '';
-        out.querySelector('.out-count').textContent = '';
-        out.querySelector('details').removeAttribute('open');
+      var matt = copy.querySelector('#matt-todo');
+      if (matt) {
+        matt.querySelector('.out-body').textContent = '';
+        matt.querySelector('.out-count').textContent = '';
       }
+      copy.querySelectorAll('.sec-head--toggle').forEach(function (h) {
+        h.classList.remove('sec-head--toggle');
+        h.removeAttribute('role'); h.removeAttribute('tabindex'); h.removeAttribute('aria-expanded');
+      });
+      copy.querySelectorAll('.is-collapsed').forEach(function (n) { n.classList.remove('is-collapsed'); });
       copy.querySelectorAll('[draggable]').forEach(function (n) { n.removeAttribute('draggable'); });
       copy.querySelectorAll('[contenteditable]').forEach(function (n) {
         n.removeAttribute('contenteditable');
@@ -1562,6 +1575,43 @@
 
 
 <script>
+  // Numbered sections: click the heading to show or hide the section. Remembered in this browser.
+  (function () {
+    var KEY = 'sig-plan-folded';
+    var folded = {};
+    try { folded = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (err) {}
+    function set(section, shut) {
+      section.classList.toggle('is-collapsed', shut);
+      section.querySelector(':scope > .sec-head').setAttribute('aria-expanded', String(!shut));
+    }
+    function remember(section) {
+      if (section.classList.contains('is-collapsed')) folded[section.id] = true; else delete folded[section.id];
+      try { localStorage.setItem(KEY, JSON.stringify(folded)); } catch (err) {}
+    }
+    document.querySelectorAll('section > .sec-head').forEach(function (head) {
+      var section = head.parentNode;
+      if (!section.id || !head.querySelector('.sec-num')) return;
+      head.classList.add('sec-head--toggle');
+      head.setAttribute('role', 'button');
+      head.setAttribute('tabindex', '0');
+      set(section, !!folded[section.id]);
+      function toggle(e) {
+        if (e.target.closest('a, button, input, select, [contenteditable]')) return;
+        set(section, !section.classList.contains('is-collapsed'));
+        remember(section);
+      }
+      head.addEventListener('click', toggle);
+      head.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(e); }
+      });
+    });
+    // Anything that scrolls to a task opens its section first
+    window.sigOpenSection = function (el) {
+      var section = el && el.closest('.is-collapsed');
+      if (section) { set(section, false); remember(section); }
+    };
+  })();
+
   // Matt's to-do: the decisions plus every unticked task that's his alone, or shared and a Blocker
   (function () {
     var box = document.getElementById('matt-todo');
@@ -1651,6 +1701,7 @@
       var input = document.getElementById(a.dataset.task);
       var item = input && input.closest('li');
       if (!item) return;
+      if (window.sigOpenSection) window.sigOpenSection(item);
       item.scrollIntoView({ block: 'center', behavior: 'smooth' });
       item.classList.add('is-flash');
       setTimeout(function () { item.classList.remove('is-flash'); }, 1600);
