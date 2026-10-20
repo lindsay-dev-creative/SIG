@@ -332,6 +332,7 @@
   /* Decisions */
   ol.decisions { margin: 0; padding: 0 0 0 1.4em; color: var(--cream); }
   ol.decisions li { padding: 6px 0; }
+  .decided { margin: 0; color: var(--cream); }
   ol.decisions li span { display: block; font-size: 14.5px; color: var(--gold-deep); }
 
   .sign-off {
@@ -364,7 +365,7 @@
   @media print {
     body { background: #fff; color: #222; }
     .meter, .timeline { display: none; }
-    h1, h2, .item__label, td:first-child, ol.decisions { color: #000; }
+    h1, h2, .item__label, td:first-child, ol.decisions, .decided { color: #000; }
     .item__hint, .sec-note, .sec-num, .eyebrow, td, .sec-date, h3 { color: #555; }
     .item { break-inside: avoid; }
     .who, .flag { border: 1px solid #999; background: none; color: #000; }
@@ -635,10 +636,10 @@
   </section>
 
   <section id="decisions">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Decisions needed</h2><span class="sec-date">Wed Oct 14</span></div>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Decisions needed</h2><span class="sec-date">Decided Oct 20</span></div>
     <ol class="decisions">
-      <li>Above what order value is a signature required?<span>Matt, Wed Oct 14.</span></li>
     </ol>
+    <p class="decided">All decided. Shipping: $9.95 flat under $150, free at $150 and over, standard only, US only. Signature required on orders of $250 and over. Both approved by Matt on Oct 20.</p>
   </section>
 
   <div class="meter">
@@ -760,7 +761,7 @@
       
 
 
-<li><label class="item"><input type="checkbox" id="d20-4"><span class="item__text"><span class="item__label"><span class="item__name">Matt sends Lindsay the stock count for each product</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">By email. Lindsay enters them in Shopify.</span></span></label></li><li><label class="item"><input type="checkbox" id="d20-2"><span class="item__text"><span class="item__label"><span class="item__name">ShipStation: carriers, ship-from address, package presets, packing slip, insurance</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d20-3"><span class="item__text"><span class="item__label"><span class="item__name">ShipStation: signature-required rule, and its own customer emails off</span><span class="who">You</span></span><span class="item__hint">Klaviyo sends the shipping email.</span></span></label></li><li><label class="item"><input type="checkbox" id="d24-1"><span class="item__text"><span class="item__label"><span class="item__name">Build the Collection page</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Grid drops columns from desktop to tablet to phone.</span></span></label></li></ul>
+<li><label class="item"><input type="checkbox" id="d20-4"><span class="item__text"><span class="item__label"><span class="item__name">Matt sends Lindsay the stock count for each product</span><span class="who who--matt">Matt</span><span class="flag">Blocker</span></span><span class="item__hint">By email. Lindsay enters them in Shopify.</span></span></label></li><li><label class="item"><input type="checkbox" id="d20-2"><span class="item__text"><span class="item__label"><span class="item__name">ShipStation: carriers, ship-from address, package presets, packing slip, insurance</span><span class="who">You</span><span class="flag">Blocker</span></span></span></label></li><li><label class="item"><input type="checkbox" id="d20-3"><span class="item__text"><span class="item__label"><span class="item__name">ShipStation: signature required on orders of $250 and over, and its own customer emails off</span><span class="who">You</span></span><span class="item__hint">Matt approved $250 on Oct 20. Klaviyo sends the shipping email.</span></span></label></li><li><label class="item"><input type="checkbox" id="d24-1"><span class="item__text"><span class="item__label"><span class="item__name">Build the Collection page</span><span class="app app--shopify">Shopify</span><span class="who who--claude">Claude</span><span class="flag">Blocker</span></span><span class="item__hint">Grid drops columns from desktop to tablet to phone.</span></span></label></li></ul>
     </div>
     <div class="day" data-date="2026-10-21" id="day-2026-10-21">
       <div class="day__head"><span class="day__name">Wednesday</span><span class="day__date">Oct 21</span></div>
@@ -848,7 +849,7 @@
       <div class="day__head"><span class="day__name">Tuesday</span><span class="day__date">Oct 27</span></div>
       <ul>
       <li><label class="item"><input type="checkbox" id="d27-1"><span class="item__text"><span class="item__label"><span class="item__name">Order flows into ShipStation; label prints; tracking reaches Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
-      <li><label class="item"><input type="checkbox" id="d27-3"><span class="item__text"><span class="item__label"><span class="item__name">Signature-required rule triggers above the set amount</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
+      <li><label class="item"><input type="checkbox" id="d27-3"><span class="item__text"><span class="item__label"><span class="item__name">Signature required on a $250 order, not on a $249 one</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d03-1"><span class="item__text"><span class="item__label"><span class="item__name">One real order, start to finish</span><span class="app app--shopify">Shopify</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span><span class="item__hint">Real card, ship through ShipStation, then cancel or issue store credit.</span></span></label></li>
       <li><label class="item"><input type="checkbox" id="d27-2"><span class="item__text"><span class="item__label"><span class="item__name">Customer gets exactly one shipping email</span><span class="app app--klaviyo">Klaviyo</span><span class="who">You</span><span class="who who--morgan">Morgan</span></span></span></label></li>
     </ul>
@@ -1692,7 +1693,7 @@
         });
         if (open.length) tasks.push({ g: g, open: open });
       });
-      if (decisions) {
+      if (decisions && decisions.children.length) {
         var n = decisions.children.length;
         total += n;
         group('Decisions (' + n + ')');
