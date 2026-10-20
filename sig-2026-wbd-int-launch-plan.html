@@ -1262,12 +1262,15 @@
     Object.keys(original).forEach(function (k) {
       original[k].forEach(function (id) { fileOrder[id] = Object.keys(fileOrder).length; });
     });
+    // Oct 21 and 22 keep the file's order (admin above build and design) instead of sorting by person
+    var keepOrder = { 'day-2026-10-21': true, 'day-2026-10-22': true };
     function sortDays() {
       lists.forEach(function (ul) {
+        var keep = keepOrder[ul.closest('.day').id];
         var items = Array.prototype.filter.call(ul.children, function (c) { return taskId(c); });
         items.map(function (item, i) {
           var id = taskId(item);
-          return { item: item, r: rank(item), i: id in fileOrder ? fileOrder[id] : 1e6 + i };
+          return { item: item, r: keep ? 0 : rank(item), i: id in fileOrder ? fileOrder[id] : 1e6 + i };
         })
           .sort(function (a, b) { return a.r - b.r || a.i - b.i; })
           .forEach(function (x) { ul.insertBefore(x.item, ul.querySelector('.drop-hint')); });
