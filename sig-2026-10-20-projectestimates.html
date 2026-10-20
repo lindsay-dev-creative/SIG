@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Signature Society Estimates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #0A0A0A;
+  --surface: #1A1A1A;
+  --line: #2E2E2E;
+  --heading: #EDEDED;
+  --body: #B8B8B8;
+  --muted: #989898;
+  --gold: #D4A85A;
+  --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--body); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 64px 16px 96px; display: grid; gap: 64px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--heading); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.08; }
+h1 em { font-style: italic; color: var(--gold); }
+h2 { font-size: clamp(1.6rem, 4vw, 2rem); line-height: 1.2; }
+h3 { font-size: 1.25rem; line-height: 1.3; }
+p { margin: 0; max-width: 70ch; }
+header { display: grid; gap: 16px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.stat { background: var(--bg); padding: 20px 24px; display: grid; gap: 4px; }
+.stat b { font-family: var(--serif); font-weight: 400; font-size: 2.2rem; line-height: 1.1; color: var(--heading); }
+.stat span { color: var(--muted); font-size: .9rem; }
+section { display: grid; gap: 24px; }
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.total { font-family: var(--serif); font-size: 1.6rem; color: var(--gold); }
+.note { color: var(--muted); }
+.group { display: grid; gap: 8px; }
+.ghead { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.ghead span { color: var(--heading); font-weight: 500; font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: .85rem; }
+td.day { white-space: nowrap; color: var(--muted); width: 9.5rem; }
+.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; width: 6rem; padding-right: 0; }
+td.num { color: var(--heading); }
+@media (max-width: 560px) { td.day { width: auto; } th, td { padding-right: 8px; } }
+footer { color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); padding-top: 24px; }
+footer a { color: var(--heading); text-decoration-color: var(--gold); text-underline-offset: .2em; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+  <h1>Signature Society <em>estimates</em></h1>
+  <p>The work left on the Signature Society website, with the estimated hours and target day for each task. Launch is November 9.</p>
+</header>
+<div class="stats" role="list">
+  <div class="stat" role="listitem"><b>50.5 hrs</b><span>Before launch</span></div>
+  <div class="stat" role="listitem"><b>18.75 hrs</b><span>After launch</span></div>
+  <div class="stat" role="listitem"><b>6.5 hrs</b><span>Out of scope, pending approval</span></div>
+</div>
+<section aria-labelledby="before"><div class="head"><h2 id="before">Before launch</h2><p class="total">50.5 hrs</p></div><p class="note">Building, setup and email finish by October 23. Testing runs October 26 to 30. Fixes and sign-off run November 2 to 6.</p>
+<div class="group"><div class="ghead"><h3>Site build</h3><span>11.75 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Product page: Final Sale badge, size picker, product FAQs</td><td class="day">Tue, Oct 20</td><td class="num">2 hrs</td></tr>
+<tr><td>Product fields: material, care, final sale, refills</td><td class="day">Tue, Oct 20</td><td class="num">30 min</td></tr>
+<tr><td>Image refining and renaming</td><td class="day">Tue, Oct 20</td><td class="num">1.5 hrs</td></tr>
+<tr><td>Cookie banner and privacy settings</td><td class="day">Tue, Oct 20</td><td class="num">15 min</td></tr>
+<tr><td>Stock, SKUs and weights</td><td class="day">Wed, Oct 21</td><td class="num">15 min</td></tr>
+<tr><td>Homepage final pass</td><td class="day">Wed, Oct 21</td><td class="num">30 min</td></tr>
+<tr><td>FAQ page</td><td class="day">Wed, Oct 21</td><td class="num">30 min</td></tr>
+<tr><td>Customer login and account pages</td><td class="day">Thu, Oct 22</td><td class="num">30 min</td></tr>
+<tr><td>Page titles and descriptions for search</td><td class="day">Thu, Oct 22</td><td class="num">15 min</td></tr>
+<tr><td>Collection page design</td><td class="day">Fri, Oct 23</td><td class="num">1.5 hrs</td></tr>
+<tr><td>Collection page build</td><td class="day">Fri, Oct 23</td><td class="num">1 hr</td></tr>
+<tr><td>Cart</td><td class="day">Fri, Oct 23</td><td class="num">30 min</td></tr>
+<tr><td>Checkout branding</td><td class="day">Fri, Oct 23</td><td class="num">30 min</td></tr>
+<tr><td>Concierge page with guarantee claim form</td><td class="day">Fri, Oct 23</td><td class="num">45 min</td></tr>
+<tr><td>Navigation</td><td class="day">Mon, Oct 26</td><td class="num">1 hr</td></tr>
+<tr><td>Policy page and Terms of Service</td><td class="day">Mon, Oct 26</td><td class="num">15 min</td></tr>
+</tbody></table></div></div>
+<div class="group"><div class="ghead"><h3>Store setup</h3><span>6.5 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Shopify Payments with Matt</td><td class="day">Tue, Oct 20</td><td class="num">15 min</td></tr>
+<tr><td>Shop Pay, PayPal, Klarna and Afterpay</td><td class="day">Tue, Oct 20</td><td class="num">15 min</td></tr>
+<tr><td>Shopify Tax</td><td class="day">Tue, Oct 20</td><td class="num">15 min</td></tr>
+<tr><td>Klaviyo site tracking and checkout sign-up</td><td class="day">Tue, Oct 20</td><td class="num">15 min</td></tr>
+<tr><td>Klaviyo account check</td><td class="day">Tue, Oct 20</td><td class="num">10 min</td></tr>
+<tr><td>Shipping rates</td><td class="day">Thu, Oct 22</td><td class="num">15 min</td></tr>
+<tr><td>ShipStation setup</td><td class="day">Thu, Oct 22</td><td class="num">1 hr</td></tr>
+<tr><td>ShipStation signature rule</td><td class="day">Thu, Oct 22</td><td class="num">15 min</td></tr>
+<tr><td>Order email sender and domain</td><td class="day">Thu, Oct 22</td><td class="num">15 min</td></tr>
+<tr><td>Turn off Shopify&#x27;s abandoned checkout email</td><td class="day">Thu, Oct 22</td><td class="num">5 min</td></tr>
+<tr><td>Google and Meta apps</td><td class="day">Thu, Oct 22</td><td class="num">1.5 hrs</td></tr>
+<tr><td>Shopify-only emails: store credit, gift card, account</td><td class="day">Thu, Oct 22</td><td class="num">1 hr</td></tr>
+<tr><td>Staff access and two-step login</td><td class="day">Fri, Oct 23</td><td class="num">15 min</td></tr>
+<tr><td>Shopify plan and billing</td><td class="day">Fri, Oct 23</td><td class="num">5 min</td></tr>
+<tr><td>Judge.me reviews</td><td class="day">Fri, Oct 23</td><td class="num">30 min</td></tr>
+<tr><td>Final store settings check</td><td class="day">Fri, Oct 23</td><td class="num">15 min</td></tr>
+</tbody></table></div></div>
+<div class="group"><div class="ghead"><h3>Email</h3><span>6.75 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Email template</td><td class="day">Wed, Oct 21</td><td class="num">1.5 hrs</td></tr>
+<tr><td>10 store emails: welcome, order, shipping, delivery and more</td><td class="day">Wed, Oct 21</td><td class="num">3.5 hrs</td></tr>
+<tr><td>Email lists and segments</td><td class="day">Wed, Oct 21</td><td class="num">15 min</td></tr>
+<tr><td>Email flows: timing, filters and tests</td><td class="day">Thu, Oct 22</td><td class="num">1.5 hrs</td></tr>
+</tbody></table></div></div>
+<div class="group"><div class="ghead"><h3>Testing</h3><span>7.5 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Line up testers and gather one fix list</td><td class="day">Fri, Oct 23</td><td class="num">1 hr</td></tr>
+<tr><td>Product and collection check</td><td class="day">Mon, Oct 26</td><td class="num">15 min</td></tr>
+<tr><td>Cart and checkout testing</td><td class="day">Mon, Oct 26</td><td class="num">1.5 hrs</td></tr>
+<tr><td>Analytics, tracking and cookie check</td><td class="day">Mon, Oct 26</td><td class="num">30 min</td></tr>
+<tr><td>Shipping, tax and store settings check</td><td class="day">Tue, Oct 27</td><td class="num">30 min</td></tr>
+<tr><td>Original Member 10% benefit</td><td class="day">Wed, Oct 28</td><td class="num">15 min</td></tr>
+<tr><td>Forms and email testing</td><td class="day">Thu, Oct 29</td><td class="num">1 hr</td></tr>
+<tr><td>Accessibility check</td><td class="day">Thu, Oct 29</td><td class="num">30 min</td></tr>
+<tr><td>Page speed check</td><td class="day">Thu, Oct 29</td><td class="num">30 min</td></tr>
+<tr><td>Phone and browser testing</td><td class="day">Fri, Oct 30</td><td class="num">1 hr</td></tr>
+<tr><td>Search data check</td><td class="day">Fri, Oct 30</td><td class="num">10 min</td></tr>
+<tr><td>Link and navigation check</td><td class="day">Fri, Oct 30</td><td class="num">15 min</td></tr>
+</tbody></table></div></div>
+<div class="group"><div class="ghead"><h3>Fixes and launch</h3><span>6 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Fixes and retest</td><td class="day">Nov 2 to 5</td><td class="num">4 hrs</td></tr>
+<tr><td>Sign-off, cleanup and launch day</td><td class="day">Nov 2 to 9</td><td class="num">2 hrs</td></tr>
+</tbody></table></div></div>
+<div class="group"><div class="ghead"><h3>Project management</h3><span>12 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Project support</td><td class="day">Weekly</td><td class="num">9 hrs</td></tr>
+<tr><td>Emails and coordination</td><td class="day">Weekly</td><td class="num">3 hrs</td></tr>
+</tbody></table></div></div>
+</section>
+<section aria-labelledby="after"><div class="head"><h2 id="after">After launch</h2><p class="total">18.75 hrs</p></div><p class="note">Pages and emails that can follow launch, plus support through December.</p>
+<div class="group"><div class="ghead"><h3>After launch</h3><span>18.75 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>The House page</td><td class="day">After launch</td><td class="num">3 hrs</td></tr>
+<tr><td>The Society page</td><td class="day">After launch</td><td class="num">2.5 hrs</td></tr>
+<tr><td>Review reminder, return and refund emails</td><td class="day">After launch</td><td class="num">45 min</td></tr>
+<tr><td>Refill reminder and win-back emails</td><td class="day">After launch</td><td class="num">30 min</td></tr>
+<tr><td>Fixes and support through December</td><td class="day">Nov 10 to Dec</td><td class="num">12 hrs</td></tr>
+</tbody></table></div></div>
+</section>
+<section aria-labelledby="out"><div class="head"><h2 id="out">Out of scope</h2><p class="total">6.5 hrs</p></div><p class="note">Work outside the website agreement. Nothing here starts or is billed until it's approved.</p>
+<div class="group"><div class="ghead"><h3>Out of scope, pending approval</h3><span>6.5 hrs</span></div><div class="scroll"><table><thead><tr><th scope="col">Task</th><th scope="col">Target day</th><th scope="col" class="num">Estimate</th></tr></thead><tbody>
+<tr><td>Product information page design</td><td class="day">Before Nov 7</td><td class="num">1.5 hrs</td></tr>
+<tr><td>Product information page build</td><td class="day">Before Nov 7</td><td class="num">3 hrs</td></tr>
+<tr><td>Sweatshirt and eye patch product copy</td><td class="day">Pending approval</td><td class="num">2 hrs</td></tr>
+</tbody></table></div></div>
+</section>
+<footer><p>Questions? Email Lindsay at <a href="mailto:lindsay@lindsaydev.com">lindsay@lindsaydev.com</a>.</p></footer>
+</main>
+</body>
+</html>
