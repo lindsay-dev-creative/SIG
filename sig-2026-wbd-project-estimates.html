@@ -35,7 +35,7 @@
   --fs-body-lg: calc(var(--fs-body) * var(--ratio));
   --fs-body-sm: max(.8125rem, calc(var(--fs-body) / var(--ratio)));   /* never below 13px */
   --fs-caption: max(.75rem, calc(var(--fs-body-sm) / var(--ratio)));  /* never below 12px */
-  --fs-h6: calc(var(--fs-body) * var(--ratio) * var(--ratio));   /* from body, so a fixed body-lg doesn't shrink headings */
+  --fs-h6: 1.1875rem;   /* 19px at every screen size; h5 → h1 step up from here by the ratio */
   --fs-h5: calc(var(--fs-h6) * var(--ratio));
   --fs-h4: calc(var(--fs-h5) * var(--ratio));
   --fs-h3: calc(var(--fs-h4) * var(--ratio));
